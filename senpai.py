@@ -47,20 +47,28 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    """Answers your question with a yes or no."""
     message_content = message.content
+    """Answers question with a yes or no."""
     if (message_content.startswith("!8ball")):
         offset = len("!8ball")
         question = message_content[offset+1:]
-        reply = ("`Question: " + question + "\n" +
-          "Answer: " + answers[random.randint(0, num_answers)] + "`")
-
+        if len(question) > 0:
+            reply = ("`Question: " + question + "\n" +
+                     "Answer: " + answers[random.randint(0, num_answers)] + "`")
+        else:
+            reply = ("`Kouhai, dou shita no?`")
         await bot.send_message(message.channel, reply)
+            
+        
+    """Help menu for commands."""
+    if (message_content == "!help"):
+        reply = "`!8ball <question>`                                            Senpai knows all..."
+        await bot.send_message(message.channel, reply)        
 
 # @bot.command()
 # async def fortune(question : str):
-#    reply = "`" + answers[random.randint(0, num_answers)] + "`"
-#    await bot.say(reply)
+    # reply = "`" + answers[random.randint(0, num_answers)] + "`"
+    # await bot.say(reply)
 
 bot.run(token)
 bot.logout()
