@@ -25,8 +25,28 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def ball(question : str):
+async def fortune(question : str):
     """Answers your question with a yes or no."""
-    await bot.say('Yes.')
+    answers = ["It is certain", \
+               "It is decidedly so", \
+               "Without a doubt", \
+               "Yes definitely", \
+               "You may rely on it", \
+               "As I see it yes", \
+               "Most likely", \
+               "Outlook good", \
+               "Yes", \
+               "Signs point to yes", \
+               "Reply hazy try again", \
+               "Ask again later", \
+               "Better not tell you now", \
+               "Cannot predict now", \
+               "Concentrate and ask again", \
+               "Don't count on it", \
+               "My reply is no", \
+               "My sources say no", \
+               "Outlook not so good", \
+               "Very doubtful"]
+    await bot.say("`" + answers[random.randint(0, len(answers))-1] + "`")
 
 bot.run(token)
