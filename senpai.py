@@ -9,7 +9,6 @@ description = '''The senpai of the server.'''
 argc = len(sys.argv)
 # bot token
 token = ""
-
 # parse command line arguments
 for i in range(argc):
     if (sys.argv[i] == "-t" and i < argc):
@@ -50,9 +49,8 @@ async def on_ready():
 async def on_message(message):
     """Answers your question with a yes or no."""
     message_content = message.content
-
-    if (message_content.startswith("!fortune")):
-        offset = len("!fortune")
+    if (message_content.startswith("!8ball")):
+        offset = len("!8ball")
         question = message_content[offset+1:]
         reply = ("`Question: " + question + "\n" +
           "Answer: " + answers[random.randint(0, num_answers)] + "`")
@@ -61,7 +59,6 @@ async def on_message(message):
 
 # @bot.command()
 # async def fortune(question : str):
-
 #    reply = "`" + answers[random.randint(0, num_answers)] + "`"
 #    await bot.say(reply)
 
