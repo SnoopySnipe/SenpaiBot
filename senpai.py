@@ -1,10 +1,8 @@
 import sys
 import signal
-
 import discord
 from discord.ext import commands
 import random
-
 from bot_answers import *
 
 description = '''The senpai of the server.'''
@@ -77,11 +75,11 @@ async def on_message(message):
         await bot.send_message(message.channel, reply)
 
     # make bot join the voice channel the user is currently in
-    elif (message_content.startswith("!join")):
+    elif (message_content == "!join"):
         await join_voice_channel_of_user(message)
 
     # disconnect bot from all connected voice channels
-    elif (message_content.startswith("!leave")):
+    elif (message_content == "!leave"):
         connected_voices = []
         # get a list of all voice channels the bot is connected to
         for voice in bot.voice_clients:
@@ -101,8 +99,8 @@ async def on_message(message):
     # Help menu for commands
     elif (message_content == "!help"):
         reply = ("```" +
-                 "!8ball <question>" + "\t" * 4 + "Senpai knows all...\n" +
-                 "!join" + "\t" * 7 + "Joins the voice channel of sender\n" +
+                 "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
+                 "!join " + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "!leave" + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "```")
         await bot.send_message(message.channel, reply)
