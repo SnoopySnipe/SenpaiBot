@@ -114,7 +114,8 @@ async def on_message(message):
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
                  "!join " + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "!leave" + "\t" * 7 + "Joins the voice channel of sender\n" +
-                 "!play <youtube url>" + "\t" * 4 "Plays a video on YouTube\n" +
+                 "!play <youtube url>" + "\t" * 4 + 
+                 "Plays a video on YouTube\n" +
                  "```")
         await bot.send_message(message.channel, reply)
 
