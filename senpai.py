@@ -39,6 +39,7 @@ async def join_voice_channel_of_user(message):
     '''(Message) -> null
     given the message of a user, join their voice channel if they are in one
     '''
+
     # get the sender of the messge
     author = message.author
     # get their current voice channel
@@ -50,6 +51,27 @@ async def join_voice_channel_of_user(message):
     else:
         error_msg = "\@" + str(author) + ", please join a server"
         await bot.send_message(message.channel, error_msg)
+
+async def leave_all_voice_channels(bot):
+    '''(Client) -> null
+    makes the Client leave all connected voice channels
+    '''
+
+    connected_voices = []
+    # get a list of all voice channels the bot is connected to
+    for voice in bot.voice_clients:
+        # if bot is connected to the channel, add it to the list
+        if (voice.is_connected()):
+            connected_voices.append(voice)
+    # if bot is not connected to any voice channel, print error message
+    if (not connected_voices):
+        error_msg = ("\@" + str(message.author) +
+          ", I am not connected to any voice channels.")
+        await bot.send_message(message.channel, error_msg)
+    else:
+        # disconnect bot from all connected voice channels
+        for voice in connected_voices:
+            await voice.disconnect()
 
 @bot.event
 async def on_ready():
@@ -80,21 +102,7 @@ async def on_message(message):
 
     # disconnect bot from all connected voice channels
     elif (message_content == "!leave"):
-        connected_voices = []
-        # get a list of all voice channels the bot is connected to
-        for voice in bot.voice_clients:
-            # if bot is connected to the channel, add it to the list
-            if (voice.is_connected()):
-                connected_voices.append(voice)
-        # if bot is not connected to any voice channel, print error message
-        if (not connected_voices):
-            error_msg = ("\@" + str(message.author) +
-              ", I am not connected to any voice channels.")
-            await bot.send_message(message.channel, error_msg)
-        else:
-            # disconnect bot from all connected voice channels
-            for voice in connected_voices:
-                await voice.disconnect()
+        await leave_all_voice_channels(bot)
 
     # Help menu for commands
     elif (message_content == "!help"):
