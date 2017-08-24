@@ -1,8 +1,11 @@
 import sys
 import signal
+import asyncio
+
 import discord
 from discord.ext import commands
 import random
+
 from bot_answers import *
 
 description = '''The senpai of the server.'''
@@ -36,10 +39,11 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 async def join_voice_channel_of_user(message):
-    '''(Message) -> voice
+    '''(Message) -> VoiceClient
     given the message of a user, join their voice channel if they are in one
     '''
-    bot_voice = 0
+
+    bot_voice = False
     # get the sender of the messge
     author = message.author
     # get their current voice channel
@@ -47,11 +51,9 @@ async def join_voice_channel_of_user(message):
     # if they are in a voice channel, join it
     if (cur_author_vchannel):
         bot_voice = await bot.join_voice_channel(cur_author_vchannel)
-    # otherwise, print error message on to screen.
-    else:
-        error_msg = "\@" + str(author) + ", please join a server"
-        await bot.send_message(message.channel, error_msg)
+
     return bot_voice
+
 
 async def leave_all_voice_channels(bot):
     '''(Client) -> null
@@ -65,11 +67,7 @@ async def leave_all_voice_channels(bot):
         if (voice.is_connected()):
             connected_voices.append(voice)
     # if bot is not connected to any voice channel, print error message
-    if (not connected_voices):
-        error_msg = ("\@" + str(message.author) +
-          ", I am not connected to any voice channels.")
-        await bot.send_message(message.channel, error_msg)
-    else:
+    if (connected_voices):
         # disconnect bot from all connected voice channels
         for voice in connected_voices:
             await voice.disconnect()
@@ -87,23 +85,28 @@ async def on_message(message):
 
     # Answers question with a yes or no
     if (message_content.startswith("!8ball")):
+        reply = ("`Kouhai, dou shita no?`")
+
         offset = len("!8ball")
         question = message_content[offset+1:]
+
         # check if user actually asked a question
         if len(question) > 0:
             reply = ("`Question: " + question + "\n" +
                      "Answer: " + answers[random.randint(0, num_answers)] + "`")
-        else:
-            reply = ("`Kouhai, dou shita no?`")
+
         await bot.send_message(message.channel, reply)
+
 
     # make bot join the voice channel the user is currently in
     elif (message_content == "!join"):
         await join_voice_channel_of_user(message)
 
+
     # disconnect bot from all connected voice channels
     elif (message_content == "!leave"):
         await leave_all_voice_channels(bot)
+
 
     # Help menu for commands
     elif (message_content == "!help"):
@@ -111,23 +114,46 @@ async def on_message(message):
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
                  "!join " + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "!leave" + "\t" * 7 + "Joins the voice channel of sender\n" +
+                 "!play <youtube url>" + "\t" * 4 "Plays a video on YouTube\n"
                  "```")
         await bot.send_message(message.channel, reply)
-        
+
     # start playing youtube
-    elif (message_content.startswith("!music")):
-        offset = len("!music")
+    elif (message_content.startswith("!play")):
+        reply = ("`Kouhai, dou shita no?`")
+
+        offset = len("!play")
         url = message_content[offset+1:]
-        if len(url) > 0:
-            voice = await join_voice_channel_of_user(message)
-            if (voice != 0):
-                player = await voice.create_ytdl_player(url)
+
+        # check if it is a valid url
+        if (url.startswith("http")):
+            bot_voice = False
+            # check if bot is already connected.
+            for voice in bot.voice_clients:
+                if (voice.is_connected()):
+                    bot_voice = voice
+                    break
+
+            # if bot is not already connected,
+            # then connect them to voice channel
+            if (not bot_voice):
+                bot_voice = await join_voice_channel_of_user(message)
+            # if successfully connected, play music
+            if (bot_voice):
+                player = await bot_voice.create_ytdl_player(url)
                 player.start()
-                reply = ("`Playing" + player.title + "`")
-        else:
-            reply = ("`Kouhai, dou shita no?`")
+                reply = ("`Playing: \"" + player.title + "\"`")
+                while (player.is_playing()):
+                    await asyncio.sleep(3)
+                player.stop()
+                await leave_all_voice_channels(bot)
+            # otherwise, print error message on to screen.
+            else:
+                reply = ("\@" + str(author) +
+                    ", please join a voice channel to play music")
+
         await bot.send_message(message.channel, reply)
-        
+
 
 # @bot.command()
 # async def fortune(question : str):
