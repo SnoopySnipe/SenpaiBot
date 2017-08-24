@@ -36,10 +36,10 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 async def join_voice_channel_of_user(message):
-    '''(Message) -> null
+    '''(Message) -> voice
     given the message of a user, join their voice channel if they are in one
     '''
-
+    bot_voice = 0
     # get the sender of the messge
     author = message.author
     # get their current voice channel
@@ -51,6 +51,7 @@ async def join_voice_channel_of_user(message):
     else:
         error_msg = "\@" + str(author) + ", please join a server"
         await bot.send_message(message.channel, error_msg)
+    return bot_voice
 
 async def leave_all_voice_channels(bot):
     '''(Client) -> null
@@ -112,6 +113,21 @@ async def on_message(message):
                  "!leave" + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "```")
         await bot.send_message(message.channel, reply)
+        
+    # start playing youtube
+    elif (message_content.startswith("!music")):
+        offset = len("!music")
+        url = message_content[offset+1:]
+        if len(url) > 0:
+            voice = await join_voice_channel_of_user(message)
+            if (voice != 0):
+                player = await voice.create_ytdl_player(url)
+                player.start()
+                reply = ("`Playing" + player.title + "`")
+        else:
+            reply = ("`Kouhai, dou shita no?`")
+        await bot.send_message(message.channel, reply)
+        
 
 # @bot.command()
 # async def fortune(question : str):
