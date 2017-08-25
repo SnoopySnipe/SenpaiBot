@@ -26,6 +26,9 @@ queue = []
 # players
 player_list = []
 
+# keep track of volume
+#global_volume = 1
+
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -89,6 +92,8 @@ async def play_video(bot_voice, message):
         url = queue.pop(0)
         # play the song
         player = await bot_voice.create_ytdl_player(url)
+        # adjust the volume
+        #player.volume = global_volume
         player.start()
         player_list.append(player)
         # print a message showing what is currently playing
@@ -231,14 +236,19 @@ async def on_message(message):
             elif (url.startswith("volume")):
                 volume_offset = len("volume")
                 volume = url[volume_offset+1 : ]
+                # display current volume
                 if volume == "":
                     for player in player_list:
                         vol = player.volume
                     reply = "`Volume is currently at " + str(vol * 50) + ".`"
+                # if valid volume, adjust it right now and globally
                 elif (float(volume) >= 0 and float(volume) <= 100):
                     for player in player_list:
                         player.volume = float(volume) / 50
+                    # adjust the global volume
+                    #global_volume = float(volume) / 50
                     reply = "`Volume has been adjusted to " + str(volume) + ".`"
+                # prompt for a valid volume if invalid
                 else:
                     reply = "`Please enter a volume between 0 and 100.`"
                 await bot.send_message(message.channel, reply)                
