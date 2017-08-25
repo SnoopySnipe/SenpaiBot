@@ -32,7 +32,7 @@ def signal_handler(signal, frame):
     '''
 
     print("\nLogging out bot...")
-    clear_queue()
+    queue.clear()
     player_skip()
     # log out bot and close connection
     bot.logout()
@@ -43,11 +43,6 @@ def signal_handler(signal, frame):
 
 # map Ctrl+C to trigger signal_handler function
 signal.signal(signal.SIGINT, signal_handler)
-
-
-def clear_queue():
-    while (queue):
-        queue.pop()
 
 
 async def join_voice_channel_of_user(message):
@@ -79,7 +74,7 @@ async def leave_all_voice_channels(bot):
         if (voice.is_connected()):
             connected_voices.append(voice)
     # if bot is not connected to any voice channel, print error message
-    if (connected_voices):
+    if (connected_voices):       
         # disconnect bot from all connected voice channels
         for voice in connected_voices:
             await voice.disconnect()
@@ -97,6 +92,8 @@ async def play_video(bot_voice, message):
             await asyncio.sleep(3)
         player.stop()
         player_list.pop()
+    reply = "`Leaving voice channel.`"
+    await bot.send_message(message.channel, reply)     
     await leave_all_voice_channels(bot)
 
 
@@ -148,8 +145,7 @@ async def on_message(message):
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
                  "!join " + "\t" * 7 + "Joins the voice channel of sender\n" +
                  "!leave" + "\t" * 7 + "Leaves the voice channel\n" +
-                 "!play <youtube url>" + "\t" * 4 + 
-                 "Plays a video on YouTube\n" +
+                 "!play" + "\t" * 4 + "Plays YouTube videos\n" +
                  "```")
         await bot.send_message(message.channel, reply)
 
@@ -178,11 +174,33 @@ async def on_message(message):
                 if (not already_connected):
                     await play_video(bot_voice, message)
                 else:
-                    reply = "enqueued."
+                    reply = "`Enqueued.`"
                     await bot.send_message(message.channel, reply)
 
             elif (url == "skip"):
                 await player_skip()
+                
+            elif (url == "stop"):
+                queue.clear()
+                await player_skip()
+                
+            elif (url == "queue"):
+                reply = "`"
+                for i in range(len(queue)):
+                    if i != 0:
+                        reply += "\n"
+                    reply += str(i) + "\t" * 4 + queue[i]
+                reply += "`"
+                await bot.send_message(message.channel, reply)
+                
+            elif (url == ""):
+                reply = ("```" +
+                 "!play <url>" + "\t" * 4 + "Play the YouTube URL\n" +
+                 "!play skip" + "\t" * 4 + "Skip to the next song in the queue\n" +
+                 "!play stop" + "\t" * 4 + "Empties the song queue\n" +
+                 "!play queue" + "\t" * 4 + "Display the song queue\n" +
+                 "```")
+                await bot.send_message(message.channel, reply)
 
         elif (not bot_voice):
             reply = ("\@" + str(author) +
