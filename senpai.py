@@ -129,7 +129,7 @@ async def on_message(message):
         reply = ("```" +
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
                  "!join " + "\t" * 7 + "Joins the voice channel of sender\n" +
-                 "!leave" + "\t" * 7 + "Joins the voice channel of sender\n" +
+                 "!leave" + "\t" * 7 + "Leaves the voice channel\n" +
                  "!play <youtube url>" + "\t" * 4 + 
                  "Plays a video on YouTube\n" +
                  "```")
@@ -163,13 +163,15 @@ async def on_message(message):
                     await play_video(bot_voice, message)
                 else:
                     reply = "enqueued."
-                await bot.send_message(message.channel, reply)
+                    await bot.send_message(message.channel, reply)
 
             # otherwise, print error message on to screen.
             else:
                 reply = ("\@" + str(author) +
                     ", please join a voice channel to play music")
                 await bot.send_message(message.channel, reply)
+        elif (url == "skip"):
+            
         else:
             reply = ("`Kouhai, dou shita no?`")
             await bot.send_message(message.channel, reply)
