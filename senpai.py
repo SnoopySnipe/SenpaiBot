@@ -21,8 +21,10 @@ for i in range(argc):
 
 # initialize bot
 bot = commands.Bot(command_prefix='!', description=description)
-
+# song queue
 queue = []
+# 
+player_list = []
 
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
@@ -76,16 +78,19 @@ async def leave_all_voice_channels(bot):
         for voice in connected_voices:
             await voice.disconnect()
 
+
 async def play_video(bot_voice, message):
     while (queue):
         url = queue.pop(0)
         player = await bot_voice.create_ytdl_player(url)
         player.start()
+        player_list.append(player)
         reply = ("`Playing: \"" + player.title + "\"`")
         await bot.send_message(message.channel, reply)
         while (player.is_playing()):
             await asyncio.sleep(3)
-        player.stop()    
+        player.stop()
+        player_list.pop()
     await leave_all_voice_channels(bot)
 
 @bot.event
@@ -140,24 +145,22 @@ async def on_message(message):
         offset = len("!play")
         url = message_content[offset+1:]
 
-        # check if it is a valid url
-        if (url.startswith("http")):
+        already_connected = False
+        bot_voice = False
+        # check if bot is already connected.
+        for voice in bot.voice_clients:
+            if (voice.is_connected()):
+                already_connected = True
+                bot_voice = voice
+                break
 
-            already_connected = False
-            bot_voice = False
-            # check if bot is already connected.
-            for voice in bot.voice_clients:
-                if (voice.is_connected()):
-                    already_connected = True
-                    bot_voice = voice
-                    break
-
-            # if bot is not already connected,
-            # then connect them to voice channel
-            if (not bot_voice):
-                bot_voice = await join_voice_channel_of_user(message)
-            # if successfully connected, play music
-            if (bot_voice):
+        # if bot is not already connected,
+        # then connect them to voice channel
+        if (not bot_voice):
+            bot_voice = await join_voice_channel_of_user(message)
+        if (bot_voice):
+            # check if it is a valid url
+            if (url.startswith("http")):
                 queue.append(url)
                 if (not already_connected):
                     await play_video(bot_voice, message)
@@ -165,13 +168,14 @@ async def on_message(message):
                     reply = "enqueued."
                     await bot.send_message(message.channel, reply)
 
-            # otherwise, print error message on to screen.
-            else:
-                reply = ("\@" + str(author) +
+            elif (url == "skip"):
+                for player in player_list:
+                    player.stop()
+
+        elif (not bot_voice):
+            reply = ("\@" + str(author) +
                     ", please join a voice channel to play music")
-                await bot.send_message(message.channel, reply)
-        elif (url == "skip"):
-            
+            await bot.send_message(message.channel, reply)
         else:
             reply = ("`Kouhai, dou shita no?`")
             await bot.send_message(message.channel, reply)
