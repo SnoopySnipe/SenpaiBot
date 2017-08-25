@@ -7,7 +7,7 @@ queue = []
 # players
 player_list = []
 
-player_volume = 45
+player_volume = 50
 
 async def join_voice_channel_of_user(message, bot):
     '''(Message) -> VoiceClient
