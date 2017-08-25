@@ -22,6 +22,8 @@ for i in range(argc):
 # initialize bot
 bot = commands.Bot(command_prefix='!', description=description)
 
+queue = []
+
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -121,13 +123,15 @@ async def on_message(message):
 
     # start playing youtube
     elif (message_content.startswith("!play")):
-        reply = ("`Kouhai, dou shita no?`")
-
         offset = len("!play")
         url = message_content[offset+1:]
 
         # check if it is a valid url
         if (url.startswith("http")):
+            queue.append(url)
+            
+            
+            
             bot_voice = False
             # check if bot is already connected.
             for voice in bot.voice_clients:
@@ -144,6 +148,7 @@ async def on_message(message):
                 player = await bot_voice.create_ytdl_player(url)
                 player.start()
                 reply = ("`Playing: \"" + player.title + "\"`")
+                await bot.send_message(message.channel, reply)
                 while (player.is_playing()):
                     await asyncio.sleep(3)
                 player.stop()
@@ -152,8 +157,10 @@ async def on_message(message):
             else:
                 reply = ("\@" + str(author) +
                     ", please join a voice channel to play music")
-
-        await bot.send_message(message.channel, reply)
+                await bot.send_message(message.channel, reply)
+        else:
+            reply = ("`Kouhai, dou shita no?`")
+            await bot.send_message(message.channel, reply)
 
 
 # @bot.command()
