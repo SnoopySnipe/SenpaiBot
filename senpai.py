@@ -30,6 +30,8 @@ def signal_handler(signal, frame):
     '''
 
     print("\nLogging out bot...")
+    while (queue):
+        queue.pop()
     # log out bot and close connection
     bot.logout()
     bot.close()
@@ -73,6 +75,18 @@ async def leave_all_voice_channels(bot):
         # disconnect bot from all connected voice channels
         for voice in connected_voices:
             await voice.disconnect()
+
+async def play_video(bot_voice, message):
+    while (queue):
+        url = queue.pop(0)
+        player = await bot_voice.create_ytdl_player(url)
+        player.start()
+        reply = ("`Playing: \"" + player.title + "\"`")
+        await bot.send_message(message.channel, reply)
+        while (player.is_playing()):
+            await asyncio.sleep(3)
+        player.stop()    
+    await leave_all_voice_channels(bot)
 
 @bot.event
 async def on_ready():
@@ -128,14 +142,13 @@ async def on_message(message):
 
         # check if it is a valid url
         if (url.startswith("http")):
-            queue.append(url)
-            
-            
-            
+
+            already_connected = False
             bot_voice = False
             # check if bot is already connected.
             for voice in bot.voice_clients:
                 if (voice.is_connected()):
+                    already_connected = True
                     bot_voice = voice
                     break
 
@@ -145,14 +158,13 @@ async def on_message(message):
                 bot_voice = await join_voice_channel_of_user(message)
             # if successfully connected, play music
             if (bot_voice):
-                player = await bot_voice.create_ytdl_player(url)
-                player.start()
-                reply = ("`Playing: \"" + player.title + "\"`")
+                queue.append(url)
+                if (not already_connected):
+                    await play_video(bot_voice, message)
+                else:
+                    reply = "enqueued."
                 await bot.send_message(message.channel, reply)
-                while (player.is_playing()):
-                    await asyncio.sleep(3)
-                player.stop()
-                await leave_all_voice_channels(bot)
+
             # otherwise, print error message on to screen.
             else:
                 reply = ("\@" + str(author) +
