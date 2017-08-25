@@ -87,6 +87,7 @@ async def on_message(message):
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
                  "!coin " + "\t" * 7 + "Flips a coin\n" +
                  "!play " + "\t" * 7 + "Plays YouTube videos\n" +
+                 "!guess <number> " + "\t" * 4 + "Guess a number between 1 and 10\n"
                  "```")
         await bot.send_message(message.channel, reply)
       
@@ -197,5 +198,18 @@ async def on_message(message):
         else:
             reply = ("`Kouhai, dou shita no?`")
             await bot.send_message(message.channel, reply)
+
+    # Guess a number between 1 - 10
+    elif (message_content.startwith("!guess")):
+        
+        offset = len("!guess")
+        guess_num = int(message_content[offset+1:])
+        rand_num = random.randint(1,10)
+        
+        if (guess_num == rand_num):
+            reply = ("Congratulations, you guessed it right!" + "`")
+        else:
+            reply = ("Sorry, the number was " + str(rand_num) + "`")
+        await bot.send_message(message.channel, reply)
 
 bot.run(token)
