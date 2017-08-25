@@ -32,8 +32,8 @@ def signal_handler(signal, frame):
     '''
 
     print("\nLogging out bot...")
-    while (queue):
-        queue.pop()
+    clear_queue()
+    player_skip()
     # log out bot and close connection
     bot.logout()
     bot.close()
@@ -43,6 +43,12 @@ def signal_handler(signal, frame):
 
 # map Ctrl+C to trigger signal_handler function
 signal.signal(signal.SIGINT, signal_handler)
+
+
+def clear_queue():
+    while (queue):
+        queue.pop()
+
 
 async def join_voice_channel_of_user(message):
     '''(Message) -> VoiceClient
@@ -93,12 +99,19 @@ async def play_video(bot_voice, message):
         player_list.pop()
     await leave_all_voice_channels(bot)
 
+
+async def player_skip():
+    for player in player_list:
+        player.stop()
+
+
 @bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
 
 @bot.event
 async def on_message(message):
@@ -169,8 +182,7 @@ async def on_message(message):
                     await bot.send_message(message.channel, reply)
 
             elif (url == "skip"):
-                for player in player_list:
-                    player.stop()
+                await player_skip()
 
         elif (not bot_voice):
             reply = ("\@" + str(author) +
