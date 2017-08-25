@@ -143,13 +143,24 @@ async def on_message(message):
                      "Answer: " + answers[random.randint(0, num_answers)] + "`")
 
         await bot.send_message(message.channel, reply)
+        
+    # Coinflip
+    elif (message_content == "!coin"):
+        flip = random.randint(0,1)
+        if flip == 0:
+            reply = "`Tails.`"
+        elif flip == 1:
+            reply = "`Heads.`"
+        await bot.send_message(message.channel, reply)
+            
 
 
     # Help menu for commands
     elif (message_content == "!help"):
         reply = ("```" +
                  "!8ball <question> " + "\t" * 4 + "Senpai knows all...\n" +
-                 "!play" + "\t" * 4 + "Plays YouTube videos\n" +
+                 "!coin " + "\t" * 7 + "Flips a coin\n" +
+                 "!play " + "\t" * 7 + "Plays YouTube videos\n" +
                  "```")
         await bot.send_message(message.channel, reply)
       
