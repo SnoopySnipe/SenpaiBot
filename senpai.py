@@ -188,6 +188,10 @@ async def on_message(message):
 
             elif (url.startswith("locally ")):
                 url = url[len("locally "):]
+
+                # tell user we are busy and not just not responsive
+                reply = ("`Downloading video...`")
+                await bot.send_message(message.channel, reply)
                 # get the song's name
                 song_title = download_youtube.download_song(url)
                 # get the file name it was saved as
@@ -207,7 +211,7 @@ async def on_message(message):
                 # if the bot was already connected, just print a message saying
                 # that the song was queued
                 else:
-                    reply = "`Enqueued.`"
+                    reply = "`Video has been enqueued`"
                     await bot.send_message(message.channel, reply)
 
             # adjust the music volume
@@ -225,10 +229,10 @@ async def on_message(message):
                         await senpai_player.player_set_volume(
                                 senpai_player.player_volume)
                         reply = ("`Volume has been adjusted to " +
-                            str(senpai_player.player_volume) + ".`")
+                            str(senpai_player.player_volume) + "`")
                     # prompt for a valid volume if invalid
                     except ValueError:
-                        reply = "`Please enter a volume between 0 and 100.`"
+                        reply = "`Please enter a volume between 0 and 100`"
                 await bot.send_message(message.channel, reply)
 
             # search for a song

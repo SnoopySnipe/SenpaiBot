@@ -83,12 +83,15 @@ async def play_local_song(bot, bot_voice, message):
     while (local_queue):
         # pop the next song off the queue
         song = local_queue[0]
+
         # retrieve song
         player = bot_voice.create_ffmpeg_player(song.file_path)
+        # set volume
+        await player_set_volume(player_volume)
         # play the song
         player.start()
+        # add player to list of playing players
         player_list.append(player)
-        await player_set_volume(player_volume)
         # print a message showing what is currently playing
         reply = ("`Playing: \"" + song.title + "\"`")
         await bot.send_message(message.channel, reply)
