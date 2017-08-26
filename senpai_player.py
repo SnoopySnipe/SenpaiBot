@@ -50,6 +50,7 @@ async def play_song(bot, bot_voice, message):
     '''(VoiceClient, Message) -> null
     Plays songs in the queue.
     '''
+    await asyncio.sleep(roundtrip_delay)
     # play songs while there are songs in the queue
     while (queue):
         # pop the next song off the queue
@@ -77,6 +78,7 @@ async def play_local_song(bot, bot_voice, message):
     '''(VoiceClient, Message) -> null
     Plays songs in the queue.
     '''
+    await asyncio.sleep(roundtrip_delay)
     # play songs while there are songs in the queue
     while (local_queue):
         # pop the next song off the queue
