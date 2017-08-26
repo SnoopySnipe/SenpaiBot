@@ -256,9 +256,9 @@ async def on_message(message):
         rand_num = random.randint(1,10)
         
         if (guess_num == rand_num):
-            reply = ("Congratulations, you guessed it right!" + "`")
+            reply = ("`Congratulations, you guessed it right!`")
         else:
-            reply = ("Sorry, the number was " + str(rand_num) + "`")
+            reply = ("`Sorry, the number was " + str(rand_num) + "`")
         await bot.send_message(message.channel, reply)
 
 bot.run(token)
