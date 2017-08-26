@@ -252,13 +252,18 @@ async def on_message(message):
     elif (message_content.startswith("!guess")):
         
         offset = len("!guess")
-        guess_num = int(message_content[offset+1:])
         rand_num = random.randint(1,10)
-        
-        if (guess_num == rand_num):
-            reply = ("`Congratulations, you guessed it right!`")
-        else:
-            reply = ("`Sorry, the number was " + str(rand_num) + "`")
+
+        try:
+            # If it's an valid input
+            guess_num = int(message_content[offset+1:])
+            if (guess_num == rand_num):
+                reply = ("`Congratulations, you guessed it right!`")
+            else:
+                reply = ("`Sorry, the number was " + str(rand_num) + "`")
+        # Prompt for a valid input
+        except ValueError:
+            reply = "Please enter a number between 1 and 10."
         await bot.send_message(message.channel, reply)
 
 bot.run(token)
