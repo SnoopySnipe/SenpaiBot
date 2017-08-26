@@ -245,7 +245,7 @@ async def on_message(message):
             await bot.send_message(message.channel, reply)
 
     # Guess a number between 1 - 10
-    elif (message_content.startwith("!guess")):
+    elif (message_content.startswith("!guess")):
         
         offset = len("!guess")
         guess_num = int(message_content[offset+1:])
