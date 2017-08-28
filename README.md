@@ -2,6 +2,21 @@
 
 Our bot for our Discord server.
 
+## Requirements
+ - python3.5 or higher
+ - pip
+ - youtube-dl for python
+ - discord.py for python (see [here](https://github.com/Rapptz/discord.py) for dependencies)
+```
+~ $ python3 -m pip install -U --user discord.py[voice]
+~ $ python3 -m pip install -U --user youtube-dl
+```
+
+## Running
+```
+~ $ python3 senpai.py -t [discord_bot_token]
+```
+
 ## Features
 
 ### Commands
