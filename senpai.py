@@ -193,7 +193,9 @@ async def on_message(message):
                 reply = ("`Downloading video...`")
                 await bot.send_message(message.channel, reply)
                 # get the song's name
-                song_title = download_youtube.download_song(url)
+                info_dict = download_youtube.download_song(url)
+                print(info_dict)
+                song_title = info_dict.get('title', None)
                 # get the file name it was saved as
                 file_title = process_song_title(song_title)
                 # concat the file path to the file

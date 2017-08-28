@@ -11,7 +11,7 @@ local_queue = []
 
 player_volume = 50.0
 
-roundtrip_delay = 4
+roundtrip_delay = 3
 
 async def join_voice_channel_of_user(message, bot):
     '''(Message) -> VoiceClient

@@ -19,10 +19,8 @@ ydl_opts = {
 def download_song(url):
 
     ydl = youtube_dl.YoutubeDL(ydl_opts)
-    info_dict = ydl.extract_info(url, download=False)
-    ydl.download([url])
-    video_title = info_dict.get('title', None)
-    return video_title
+    info_dict = ydl.extract_info(url)
+    return info_dict
 
 # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 #    ydl.download(['https://www.youtube.com/watch?v=DVHMC2B1WTo'])
