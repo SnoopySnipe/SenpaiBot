@@ -2,9 +2,11 @@
 
 Our bot for our Discord server.
 
-![Alt text](senpai_bot.png?raw=true "senpai_bot")
+<p>
+<img src="https://github.com/SnoopySnipe/SenpaiBot/blob/master/senpai_bot.png" width="350">
+Credits: art by Sen_Yomi @IG
+</p>
 
-Credit: art by Sen_Yomi @IG
 
 ## Requirements
  - python3.5 or higher
