@@ -4,8 +4,9 @@ Our bot for our Discord server.
 
 <p>
 <img src="https://github.com/SnoopySnipe/SenpaiBot/blob/master/senpai_bot.png" width="350">
-Credits: art by Sen_Yomi @IG
+Credits: art by <a href="https://www.instagram.com/sen_yomi/?hl=en">Sen_Yomi @IG</a>
 </p>
+
 
 
 ## Requirements
