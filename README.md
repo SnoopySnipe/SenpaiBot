@@ -2,6 +2,10 @@
 
 Our bot for our Discord server.
 
+![Alt text](senpai_bot.png?raw=true "senpai_bot")
+
+Credit: art by Sen_Yomi @IG
+
 ## Requirements
  - python3.5 or higher
  - pip
