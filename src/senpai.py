@@ -73,7 +73,7 @@ async def on_message(message):
 
         # check if user actually asked a question
         if len(question) > 0:
-            answer_index = random.randint(0, bot_answers.num_answers)
+            answer_index = random.randint(0, len(bot_answers.answers)-1)
             reply = ("`Question: " + question + "\n" +
                      "Answer: " + bot_answers.answers[answer_index] + "`")
 

@@ -30,4 +30,3 @@ answers = [
            "Concentrate and ask again",
            ]
 
-num_answers = len(answers) - 1
