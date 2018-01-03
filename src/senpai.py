@@ -143,10 +143,12 @@ async def daily(imageboard : str):
         json_content = senpai_imageboards.yandere_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
+
         bot_reply = "#" + str(post_id) + "\n" + file_url
         await bot.say(bot_reply)
+        return
 
-    elif (imageboard == "danbooru"):
+    if (imageboard == "danbooru"):
         json_content = senpai_imageboards.danbooru_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["file_url"]
@@ -154,7 +156,25 @@ async def daily(imageboard : str):
 
         bot_reply = "`#" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
+        return
 
+    if (imageboard == "gelbooru"):
+        json_content = senpai_imageboards.gelbooru_get_latest_post()
+        post_id = json_content["id"]
+        file_url = json_content["file_url"]
+
+        bot_reply = "`#" + str(post_id) + "`\n" + file_url
+        await bot.say(bot_reply)
+        return
+
+    if (imageboard == "konachan"):
+        json_content = senpai_imageboards.konachan_get_latest_post()
+        post_id = json_content["id"]
+        file_url = json_content["sample_url"]
+
+        bot_reply = "#" + str(post_id) + "\n" + file_url
+        await bot.say(bot_reply)
+        return
 
 @bot.command()
 async def skip():
