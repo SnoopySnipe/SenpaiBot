@@ -304,16 +304,17 @@ async def playlocal(context, url=None):
 
         # tell user we are busy and not just not responsive
         reply = ("`Downloading video...`")
-        await bot.say(reply)
+        temp_message = await bot.say(reply)
+        await bot.delete_message(temp_message)
         # get the song's name
         info_dict = download_youtube.download_song(url)
         song_title = info_dict.get('title', None)
         # get the file name it was saved as
         file_title = process_song_title(song_title)
         # concat the file path to the file
-        file_path = (download_youtube.download_dir +
+        file_path = (download_youtube.get_download_dir() +
                     file_title + "." +
-                    download_youtube.audio_format)
+                    download_youtube.get_audio_format())
         # create a SenpaiSong object and add it to the local queue
         song = senpai_song.SenpaiSong(file_path, song_title)
         # add the url to the queue
