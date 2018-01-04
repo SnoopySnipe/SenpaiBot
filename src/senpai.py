@@ -134,17 +134,29 @@ async def guess(guess_num):
         reply = "Please enter a number between 1 and 10."
     await bot.say(reply)
 
+def is_bot(message):
+    return message.author == bot.user
 
+@bot.command(pass_context=True)
+async def clean_yourself(context, lim):
+    channel = context.message.channel
+    lim = int(lim)
+
+    deleted = await bot.purge_from(channel, limit=lim, check=is_bot)
+    await bot.say("Deleted {} message(s)".format(len(deleted)))
 
 @bot.command()
 async def daily(imageboard : str):
+    '''(str) -> None
+    command that grabs the latest post/image from an image board imageboard
+    '''
     imageboard = imageboard.lower()
     if (imageboard == "yandere"):
         json_content = senpai_imageboards.yandere_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
-        bot_reply = "#" + str(post_id) + "\n" + file_url
+        bot_reply = "`#" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
 
@@ -172,9 +184,11 @@ async def daily(imageboard : str):
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
-        bot_reply = "#" + str(post_id) + "\n" + file_url
+        bot_reply = "`#" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
+
+# Commands regarding playing songs
 
 @bot.command()
 async def skip():
