@@ -22,6 +22,13 @@ def download_song(url):
     info_dict = ydl.extract_info(url)
     return info_dict
 
+
+def get_download_dir():
+    return DOWNLOAD_DIR
+
+def get_audio_format():
+    return AUDIO_FORMAT
+
 # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 #    ydl.download(['https://www.youtube.com/watch?v=DVHMC2B1WTo'])
 

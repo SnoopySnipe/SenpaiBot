@@ -14,7 +14,7 @@ class SenpaiSong:
     def delete_local(self):
         self.ref -= 1
         if (self.ref == 0):
-            os.remove(self.file_path)
+            os.remove(self.path)
 
     def __str__(self):
         return self.title
