@@ -4,8 +4,9 @@ Our bot for our Discord server.
 
 <p>
 <img src="https://github.com/SnoopySnipe/SenpaiBot/blob/master/senpai_bot.png" width="350">
-Credits: art by <a href="https://www.instagram.com/sen_yomi/?hl=en">Sen_Yomi @IG</a>
 </p>
+Credits: art by [Sen_Yomi @IG](https://www.instagram.com/sen_yomi/?hl=en)
+
 
 
 
@@ -32,7 +33,7 @@ Credits: art by <a href="https://www.instagram.com/sen_yomi/?hl=en">Sen_Yomi @IG
 - coin	: returns heads	or tails
 - guess : game where user guesses a number between 1 and 10
 - daily <imageboard> : grabs the latest post/image from a supporting image board.
-    currently supports: danbooru, yandere.
+    currently supports: danbooru, yandere, konachan and gelbooru.
 - play:
    - \<YouTube URL\> : streams the youtube video into the channel the user is currently in.<br>
   if another video is already playing, video will be added to queue.
