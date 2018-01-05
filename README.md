@@ -14,11 +14,13 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ## Requirements
  - python3.5 or higher
  - pip
- - youtube-dl for python
+ - [requests](http://docs.python-requests.org/en/master/)
+ - [youtube-dl](https://github.com/rg3/youtube-dl)
  - discord.py for python (see [here](https://github.com/Rapptz/discord.py) for dependencies)
 ```
 ~ $ python3 -m pip install -U --user discord.py[voice]
 ~ $ python3 -m pip install -U --user youtube-dl
+~ $ python3 -m pip install -U --user requests
 ```
 
 ## Running
