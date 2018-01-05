@@ -354,10 +354,10 @@ async def on_message(message : str):
         await bot.say(bot_reply)
 
     # Answers question with a yes or no
-    if (message_content.startswith("!8ball")):
+    if (message_content.startswith("!senpai 8ball")):
         reply = ("`Kouhai, dou shita no?`")
 
-        offset = len("!8ball")
+        offset = len("!senpai 8ball")
         question = message_content[offset+1:]
 
         # check if user actually asked a question
