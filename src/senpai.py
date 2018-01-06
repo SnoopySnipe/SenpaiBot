@@ -107,40 +107,51 @@ async def daily(imageboard : str):
     command that grabs the latest post/image from an image board imageboard
     '''
     imageboard = imageboard.lower()
-    if (imageboard == "yandere"):
+
+    supported_boards = ["danbooru", "gelbooru", "konachan", "yandere"]
+
+    if (imageboard == "random"):
+        rand_num = random.randint(0, len(supported_boards) - 1)
+        imageboard = supported_boards[rand_num]
+
+    # yandere
+    if (imageboard == supported_boards[3]):
         json_content = senpai_imageboards.yandere_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
-        bot_reply = "`#" + str(post_id) + "`\n" + file_url
+        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
 
-    if (imageboard == "danbooru"):
+    # danbooru
+    if (imageboard == supported_boards[0]):
         json_content = senpai_imageboards.danbooru_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["file_url"]
         file_url = "https://danbooru.donmai.us" + file_url
 
-        bot_reply = "`#" + str(post_id) + "`\n" + file_url
+        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
 
-    if (imageboard == "gelbooru"):
+    # gelbooru
+    if (imageboard == supported_boards[1]):
         json_content = senpai_imageboards.gelbooru_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["file_url"]
 
-        bot_reply = "`#" + str(post_id) + "`\n" + file_url
+        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
 
-    if (imageboard == "konachan"):
+    # konachan
+    if (imageboard == supported_boards[2]):
         json_content = senpai_imageboards.konachan_get_latest_post()
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
-        bot_reply = "`#" + str(post_id) + "`\n" + file_url
+        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
         return
 
