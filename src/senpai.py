@@ -1,16 +1,16 @@
 import sys
 import signal
 import asyncio
+import random
 
 import discord
 from discord.ext import commands
-import random
 
-import download_youtube
 import bot_answers
 import senpai_player
-import senpai_song
 import senpai_imageboards
+
+from helpers import *
 
 DESCRIPTION = '''The senpai of the server.'''
 
@@ -23,6 +23,7 @@ token = ""
 bot = commands.Bot(command_prefix="!senpai ", description=DESCRIPTION)
 
 senpaiPlayer = senpai_player.SenpaiPlayer()
+senpaiPlayerLocal = senpai_player.SenpaiPlayerLocal()
 
 # keep track of volume
 #global_volume = 1
@@ -33,20 +34,14 @@ def signal_handler(signal, frame):
     '''
 
     print("\nLogging out bot...")
-    senpaiPlayer.player_clear()
+    senpaiPlayer.clear_queue()
+    senpaiPlayerLocal.clear_queue()
     # log out bot and close connection
     bot.logout()
     bot.close()
     print("Bot has logged out.")
     # exit program
     sys.exit(0)
-
-def process_song_title(title : str):
-    new_title = title
-    new_title = new_title.replace("*", "_")
-    new_title = new_title.replace("/", "_")
-    new_title = new_title.replace(":", " -")
-    return new_title
 
 async def leave_all_voice_channels(bot):
     '''(Client) -> null
@@ -65,46 +60,6 @@ async def leave_all_voice_channels(bot):
         for voice in connected_voices:
             await voice.disconnect()
 
-def queue_to_string(queue : list):
-    reply = "`"
-    queue_size = len(queue)
-    if (queue_size == 0):
-        reply += "Queue is empty."
-    else:
-        for i in range(queue_size):
-            reply += (str(i) + "." + "\t" * 4 +
-                str(queue[i]) + "\n")
-    reply += "`"
-    return reply
-
-def get_existing_voice(bot):
-    bot_voice = None
-
-    # check if bot is already connected.
-    for voice in bot.voice_clients:
-        if (voice.is_connected()):
-            bot_voice = voice
-            break
-    return bot_voice
-
-def help_message():
-    help_msg = (
-        "!8ball <question> " + "\t" + "Senpai knows all..." + "\n" +
-        "daily <imageboard> " + "\t" +
-            "Grabs the latest anime image from an image board." + "\n" +
-            "Currently supports: yandere, danbooru" + "\n" +
-        "play <link>" + "\t" + "Play YouTube videos" + "\n" +
-            "pause/resume/stop/skip" + "\t" +
-            "does exactly that to the playlist" + "\n"
-        "playlocal <link>" + "\t" +
-            "Downloads YouTube video before playing for smooth playback"
-            + "\n" +
-        "queue/localqueue" + "\t" + "show queue/localqueue" + "\n"
-        "coin " + "\t" + "Flips a coin" + "\n"
-        "guess <number> " + "\t" + "Guess a number between 1 and 10" + "\n"
-        )
-    return help_msg
-
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -116,15 +71,16 @@ async def on_ready():
 async def coin():
     flip = random.randint(0,1)
     if (flip == 0):
-        reply = "`Tails.`"
+        reply = "`Tails`"
     elif (flip == 1):
-        reply = "`Heads.`"
+        reply = "`Heads`"
     await bot.say(reply)
 
 @bot.command()
 async def guess(guess_num):
     rand_num = random.randint(1,10)
     try:
+        guess_num = int(guess_num)
         if (guess_num == rand_num):
             reply = ("`Congratulations, you guessed it right!`")
         else:
@@ -193,47 +149,57 @@ async def daily(imageboard : str):
 @bot.command()
 async def skip():
     ''' skips the current song '''
-    await senpaiPlayer.player_skip()
+    await senpaiPlayer.skip()
+    await senpaiPlayerLocal.skip()
 
 @bot.command()
 async def stop():
     ''' clears the queue and skips player to the next song which is nothing '''
-    senpaiPlayer.player_clear()
-    await senpaiPlayer.player_skip()
+    senpaiPlayer.clear_queue()
+    await senpaiPlayer.skip()
+
+    senpaiPlayerLocal.clear_queue()
+    await senpaiPlayerLocal.skip()
 
 @bot.command()
 async def pause():
-    await senpaiPlayer.player_pause()
+    ''' pauses the current song '''
+    await senpaiPlayer.pause()
+
+    await senpaiPlayerLocal.pause()
 
 @bot.command()
 async def resume():
-    await senpaiPlayer.player_resume()
+    await senpaiPlayer.resume()
+
+    await senpaiPlayerLocal.resume()
 
 @bot.command()
 async def queue():
-    reply = queue_to_string(senpaiPlayer._queue)
+    reply = queue_to_string(senpaiPlayer.get_queue())
     await bot.say(reply)
 
 @bot.command()
 async def localqueue():
-    reply = queue_to_string(senpaiPlayer._local_queue)
+    reply = queue_to_string(senpaiPlayerLocal.get_queue())
     await bot.say(reply)
 
 @bot.command()
 async def volume(new_volume=None):
     reply = ""
     if (new_volume is None):
-        volume = senpaiPlayer.player_get_volume()
+        volume = senpaiPlayerLocal.get_volume()
         reply = "`Volume is currently at " + str(volume) + "`"
     else:
         try:
             # if valid volume, adjust it
             volume = float(new_volume)
-            senpaiPlayer.player_volume = volume
-            senpaiPlayer.player_set_volume(
-                     senpaiPlayer.player_volume)
+
+            senpaiPlayerLocal.set_volume(volume)
+
+            senpaiPlayer.set_volume(volume)
             reply = ("`Volume has been adjusted to " +
-                 str(senpaiPlayer.player_volume) + "`")
+                 str(senpaiPlayerLocal.get_volume()) + "`")
         # prompt for a valid volume if invalid
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
@@ -242,103 +208,72 @@ async def volume(new_volume=None):
 
 @bot.command(pass_context=True)
 async def play(context, url=None):
-    bot_reply = None
+    # if no url is given
     if (url is None):
         bot_reply = "`No URL given`"
         bot.say(bot_reply)
         return
 
     message = context.message
+    author_voice_channel = message.author.voice_channel
 
-    # check if bot is already in an existing voice channel
-    bot_voice = get_existing_voice(bot)
-
-    # if bot is not already connected, then connect them to
-    # voice channel
-    if (bot_voice is None):
-        try:
-            bot_voice = await senpaiPlayer.join_voice_channel_of_user(
-                                    message, bot)
-        except senpai_player.UserNotInVoiceChannelException:
-            bot_reply = ("\@" + str(message.author) +
-                ", please join a voice channel to play music")
-            await bot.say(bot_reply)
-            return
-        song = senpai_song.SenpaiSong(url)
-        # add the url to the queue
-        senpaiPlayer.add_song(song)
-        await senpaiPlayer.play_song(bot, bot_voice, message)
-    # if the bot was already connected, just print a message saying
-    # that the song was queued
+    # user is not in a voice channel
+    if (author_voice_channel is None):
+        bot_reply = ("\@" + str(message.author) +
+            ", please join a voice channel to play music")
+        bot.say(bot_reply)
     else:
-        song = senpai_song.SenpaiSong(url)
-        # add the url to the queue
-        senpaiPlayer.add_song(song)
-        bot_reply = "`Enqueued.`"
-        await bot.say(bot_reply)
+        already_connected = bot_in_voice_channel(bot, author_voice_channel)
+
+        song = senpaiPlayer.add_song(url)
+
+        # bot is already in user's voice channel
+        if (already_connected is True):
+            # notify user
+            bot_reply = "`Enqueued`"
+            await bot.say(bot_reply)
+        # otherwise, join voice channel before playing
+        else:
+            bot_voice = await bot.join_voice_channel(author_voice_channel)
+            # tell bot to start playing
+            await senpaiPlayer.play(bot, bot_voice, message)
+
 
 @bot.command(pass_context=True)
 async def playlocal(context, url=None):
-    bot_reply = None
     if (url is None):
         bot_reply = "`No URL given`"
         bot.say(bot_reply)
         return
 
     message = context.message
+    author_voice_channel = message.author.voice_channel
 
-    # check if bot is already in an existing voice channel
-    bot_voice = get_existing_voice(bot)
-
-    # if bot is not already connected, then connect them to
-    # voice channel
-    if (bot_voice is None):
-        try:
-            bot_voice = await senpaiPlayer.join_voice_channel_of_user(
-                                    message, bot)
-        except senpai_player.UserNotInVoiceChannelException:
-            bot_reply = ("\@" + str(message.author) +
-                ", please join a voice channel to play music")
-            await bot.say(reply)
-            return
-
-        # tell user we are busy and not just not responsive
-        reply = ("`Downloading video...`")
-        temp_message = await bot.say(reply)
-        await bot.delete_message(temp_message)
-        # get the song's name
-        info_dict = download_youtube.download_song(url)
-        song_title = info_dict.get('title', None)
-        # get the file name it was saved as
-        file_title = process_song_title(song_title)
-        # concat the file path to the file
-        file_path = (download_youtube.get_download_dir() +
-                    file_title + "." +
-                    download_youtube.get_audio_format())
-        # create a SenpaiSong object and add it to the local queue
-        song = senpai_song.SenpaiSong(file_path, song_title)
-        # add the url to the queue
-        senpaiPlayer.add_song_local(song)
-        await senpaiPlayer.play_song_local(bot, bot_voice, message)
+    # user is not in a voice channel
+    if (author_voice_channel is None):
+        bot_reply = ("\@" + str(message.author) +
+            ", please join a voice channel to play music")
+        bot.say(bot_reply)
     else:
+        already_connected = bot_in_voice_channel(bot, author_voice_channel)
+
         # tell user we are busy and not just not responsive
-        bot_reply = ("`Downloading video...`")
-        await bot.say(reply)
-        # get the song's name
-        info_dict = download_youtube.download_song(url)
-        song_title = info_dict.get('title', None)
-        # get the file name it was saved as
-        file_title = process_song_title(song_title)
-        # concat the file path to the file
-        file_path = (download_youtube.download_dir +
-                    file_title + "." +
-                    download_youtube.audio_format)
-        # create a SenpaiSong object and add it to the local queue
-        song = senpai_song.SenpaiSong(file_path, song_title)
-        # add the url to the queue
-        senpaiPlayer.add_song_local(song)
-        bot_reply = "`Enqueued: " + str(song) + "`"
-        await bot.say(bot_reply)
+        bot_reply = "`Downloading video...`"
+        temp_message = await bot.say(bot_reply)
+
+        song = senpaiPlayerLocal.add_song(url)
+
+        await bot.delete_message(temp_message)
+
+        # bot is already in user's voice channel
+        if (already_connected is True):
+            bot_reply = "`Enqueued: " + str(song) + "`"
+            await bot.say(bot_reply)
+        # otherwise, join voice channel before playing
+        else:
+            bot_voice = await bot.join_voice_channel(author_voice_channel)
+            await senpaiPlayerLocal.play(bot, bot_voice, message)
+
 
 @bot.command()
 async def leave():
@@ -354,7 +289,7 @@ async def on_message(message : str):
         await bot.say(bot_reply)
 
     # Answers question with a yes or no
-    if (message_content.startswith("!senpai 8ball")):
+    elif (message_content.startswith("!senpai 8ball")):
         reply = ("`Kouhai, dou shita no?`")
 
         offset = len("!senpai 8ball")
@@ -367,9 +302,11 @@ async def on_message(message : str):
                      "Answer: " + bot_answers.answers[answer_index] + "`")
 
         await bot.send_message(message.channel, reply)
-
-    await bot.process_commands(message)
-
+    else:
+        try:
+            await bot.process_commands(message)
+        except commands.errors.CommandNotFound:
+            bot.say("command not supported")
 
 if (__name__ == "__main__"):
 
