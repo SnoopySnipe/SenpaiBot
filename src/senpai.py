@@ -262,7 +262,6 @@ async def playlocal(context, url=None):
         temp_message = await bot.say(bot_reply)
 
         song = senpaiPlayerLocal.add_song(url)
-
         await bot.delete_message(temp_message)
 
         # bot is already in user's voice channel

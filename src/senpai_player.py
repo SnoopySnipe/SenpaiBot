@@ -62,7 +62,7 @@ class SenpaiPlayerLocal:
 
         # output message saying bot has left and leave
         bot_reply = "`Leaving voice channel`"
-        await bot.say(reply)
+        await bot.say(bot_reply)
         await bot_voice.disconnect()
 
     async def skip(self):
@@ -114,7 +114,7 @@ class SenpaiPlayerLocal:
             ref = self._refcount_dict[url][1]
             self._refcount_dict[url] = (song, ref+1)
         else:
-            song = make_local_song_from_url(url)
+            song = download_youtube.download_song(url)
             if (not os.path.isfile(song.path)):
                 download_youtube.download_song(url)
             self._refcount_dict[url] = (song, 1)
@@ -125,6 +125,10 @@ class SenpaiPlayerLocal:
         return self._queue[queue_num]
 
     def pop_song(self, queue_num):
+        song = None
+        if (not self._queue):
+            return song
+
         song = self._queue.pop(queue_num)
         ref = self._refcount_dict[song.url][1] - 1
         if (ref <= 0):
@@ -186,7 +190,7 @@ class SenpaiPlayer:
 
         # output message saying bot has left and leave
         bot_reply = "`Leaving voice channel`"
-        await bot.say(reply)
+        await bot.say(bot_reply)
         await bot_voice.disconnect()
 
     async def skip(self):
@@ -241,7 +245,7 @@ class SenpaiPlayer:
             ref = self._refcount_dict[url][1]
             self._refcount_dict[url] = (song, ref+1)
         else:
-            song = make_song_from_url(url)
+            song = download_youtube.get_song_info(url)
             self._refcount_dict[url] = (song, 1)
         self._queue.append(song)
 
@@ -251,6 +255,10 @@ class SenpaiPlayer:
         return self._queue[queue_num]
 
     def pop_song(self, queue_num):
+        song = None
+        if (not self._queue):
+            return song
+
         song = self._queue.pop(queue_num)
         ref = self._refcount_dict[song.url][1] - 1
         if (ref <= 0):
