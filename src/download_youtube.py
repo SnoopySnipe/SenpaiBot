@@ -4,7 +4,9 @@ import youtube_dl
 DOWNLOAD_DIR = "/tmp/"
 AUDIO_FORMAT = "wav"
 
-ydl_opts = {
+ydl_pretend_opts = { 'simulate': True }
+
+ydl_download_opts = {
     'format': 'bestaudio/best',
     'outtmpl': DOWNLOAD_DIR + "%(title)s.mp4",
     'postprocessors': [{
@@ -16,10 +18,20 @@ ydl_opts = {
     }],
 }
 
-def download_song(url):
+def get_song_info(url : str):
     ''' '''
-    ydl = youtube_dl.YoutubeDL(ydl_opts)
-    info_dict = ydl.extract_info(url)
+    info_dict = None
+    if (url is not None):
+        ydl = youtube_dl.YoutubeDL(ydl_pretend_opts)
+        info_dict = ydl.extract_info(url)
+    return info_dict
+
+def download_song(url : str):
+    ''' '''
+    info_dict = None
+    if (url is not None):
+        ydl = youtube_dl.YoutubeDL(ydl_download_opts)
+        info_dict = ydl.extract_info(url)
     return info_dict
 
 
