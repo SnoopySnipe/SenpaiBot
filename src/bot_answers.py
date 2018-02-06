@@ -20,7 +20,7 @@ answers = [
            "As I see it no",
            "Signs point to no",
            "Not likely",
-           "Very doubtful"
+           "Very doubtful",
 
            # bad answers
            "Reply hazy try again",
