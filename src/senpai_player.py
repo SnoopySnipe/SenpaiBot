@@ -153,7 +153,7 @@ class SenpaiPlayer:
 
         self._current_player = None
 
-        self._player_volume = 50.0
+        self._player_volume = 12.0
         # sleep delay for bot reponse time
         self._roundtrip_delay = delay
 
