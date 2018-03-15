@@ -9,6 +9,7 @@ from discord.ext import commands
 import bot_answers
 import senpai_player
 import senpai_imageboards
+import senpai_fortune
 
 from helpers import *
 
@@ -102,6 +103,12 @@ async def clean_yourself(context, lim):
     await bot.say("Deleted {} message(s)".format(len(deleted)))
 
 @bot.command()
+async def fortunecookie():
+    fortune = senpai_fortune.yerkee_get_fortune_cookie()
+
+    await bot.say(fortune)
+
+@bot.command()
 async def daily(imageboard : str):
     '''(str) -> None
     command that grabs the latest post/image from an image board imageboard
@@ -117,6 +124,13 @@ async def daily(imageboard : str):
     # yandere
     if (imageboard == supported_boards[3]):
         json_content = senpai_imageboards.yandere_get_latest_post()
+        if (json_conent is None):
+            await bot.say("Error: API down?")
+            return
+        if ("id" not in json_content or "sample_url" not in json_content):
+            await bot.say("Error: json parse failed")
+            return
+
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
@@ -127,9 +141,17 @@ async def daily(imageboard : str):
     # danbooru
     if (imageboard == supported_boards[0]):
         json_content = senpai_imageboards.danbooru_get_latest_post()
+        if (json_conent is None):
+            await bot.say("Error: API down?")
+            return
+        if ("id" not in json_content or "file_url" not in json_content):
+            await bot.say("Error: json parse failed")
+            return
+
         post_id = json_content["id"]
         file_url = json_content["file_url"]
-        file_url = "https://danbooru.donmai.us" + file_url
+        if ("donmai.us" not in file_url):
+            file_url = "https://danbooru.donmai.us" + file_url
 
         bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
         await bot.say(bot_reply)
@@ -138,6 +160,13 @@ async def daily(imageboard : str):
     # gelbooru
     if (imageboard == supported_boards[1]):
         json_content = senpai_imageboards.gelbooru_get_latest_post()
+        if (json_conent is None):
+            await bot.say("Error: API down?")
+            return
+        if ("id" not in json_content or "file_url" not in json_content):
+            await bot.say("Error: json parse failed")
+            return
+
         post_id = json_content["id"]
         file_url = json_content["file_url"]
 
@@ -148,6 +177,13 @@ async def daily(imageboard : str):
     # konachan
     if (imageboard == supported_boards[2]):
         json_content = senpai_imageboards.konachan_get_latest_post()
+        if (json_conent is None):
+            await bot.say("Error: API down?")
+            return
+        if ("id" not in json_content or "file_url" not in json_content):
+            await bot.say("Error: json parse failed")
+            return
+
         post_id = json_content["id"]
         file_url = json_content["sample_url"]
 
