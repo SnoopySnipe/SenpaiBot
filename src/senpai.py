@@ -104,7 +104,7 @@ async def clean_yourself(context, lim):
 
 @bot.command()
 async def fortunecookie():
-    fortune = senpai_fortune.yerkee_get_fortune_cookie()
+    fortune = senpai_fortune.helloacm_get_fortune_cookie()
 
     await bot.say(fortune)
 
