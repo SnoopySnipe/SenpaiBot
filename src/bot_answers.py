@@ -30,4 +30,24 @@ answers = [
            "Concentrate and ask again",
            ]
 
-fortnite_locations = ["Tilted Towers"]
+fortnite_locations = ["Tilted Towers",
+                      "Anarchy Acres",
+                      "Risky Reels",
+                      "Wailing Woods",
+                      "Loot Lake",
+                      "Pleasant Park",
+                      "Junk Junction",
+                      "Haunted Hills",
+                      "Snobby Shores",
+                      "Salty Springs",
+                      "Fatal Fields",
+                      "Flush Factory",
+                      "Lucky Landing",
+                      "Moisty Mire",
+                      "Lonely Lodge",
+                      "Dusty Divot",
+                      "Retail Row",
+                      "Tomato Town",
+                      "Greasy Grove",
+                      "Shifty Shafts",
+                      "Lucky Landing"]
