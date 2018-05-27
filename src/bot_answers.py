@@ -30,3 +30,4 @@ answers = [
            "Concentrate and ask again",
            ]
 
+fortnite_locations = ["Tilted Towers"]
