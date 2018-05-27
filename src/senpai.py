@@ -348,6 +348,14 @@ async def on_message(message : str):
                      "Answer: " + bot_answers.answers[answer_index] + "`")
 
         await bot.send_message(message.channel, reply)
+
+    # Fortnite dropman
+    elif (message_content.startswith("!senpai wherewedroppingbois")):
+        answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
+        reply = ("We dropping " + bot_answers.fortnite_locations[answer_index]
+                 + " bois")
+        await bot.send_message(message.channel, reply)
+
     else:
         try:
             await bot.process_commands(message)
