@@ -355,7 +355,7 @@ async def on_message(message : str):
         reply = ("We dropping " + bot_answers.fortnite_locations[answer_index]
                  + " bois")
         await bot.send_message(message.channel, reply)
-
+        await bot.send_file(message.channel, "../images/test.png")
     else:
         try:
             await bot.process_commands(message)
