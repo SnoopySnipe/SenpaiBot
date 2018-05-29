@@ -350,7 +350,8 @@ async def on_message(message : str):
         await bot.send_message(message.channel, reply)
 
     # Fortnite dropman
-    elif (message_content.startswith("!senpai wherewedroppingbois")):
+    elif (message_content.startswith("!senpai wherewedroppingbois") or
+          message_content.startswith("!senpai drop")):
         answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
         reply = ("We dropping " + bot_answers.fortnite_locations[answer_index]
                  + " bois")
