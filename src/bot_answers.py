@@ -74,5 +74,5 @@ fortnite_location_pics = {
     "Flush Factory": "images/fortnite_locations/flush_factory.png",
     "Lucky Landing": "images/fortnite_locations/lucky_landing.png",
     "Moisty Mire": "images/fortnite_locations/moisty_mire.png",
-    "A37": "images/fortnite_locations/a37.png",
+    "A37": "images/fortnite_locations/a37.jpg",
     }
