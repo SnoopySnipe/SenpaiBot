@@ -332,10 +332,7 @@ async def leave():
 async def send_fortnite_location(bot, message):
     answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
     location = bot_answers.fortnite_locations[answer_index]
-    if (location in bot_answers.fortnite_location_pics):
-        location_pic = bot_answers.fortnite_location_pics[location]
-    else:
-        location_pic = "images/test.png"
+    location_pic = bot_answers.fortnite_location_pics[location]
     reply = "We dropping " + location + " bois"
     drop_msg = await bot.send_file(message.channel, location_pic, content=reply)
 
