@@ -354,7 +354,10 @@ async def on_message(message : str):
           message_content.startswith("!senpai drop")):
         answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
         location = bot_answers.fortnite_locations[answer_index]
-        location_pic = bot_answers.fortnite_location_pics[location]
+        if(location in bot_answers.fortnite_location_pics.keys):
+            location_pic = bot_answers.fortnite_location_pics[location]
+        else:
+            location_pic = "images/test.png"
         reply = ("We dropping " + location + " bois")
         await bot.send_file(message.channel, location_pic, content=reply)
     else:
