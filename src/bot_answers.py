@@ -53,6 +53,13 @@ fortnite_locations = ["Tilted Towers",
                       "Lucky Landing"]
 
 fortnite_location_pics = {
-    "Anarchy Acres": "images/fortnite_locations/anarchy_acres",
-    "Risky Reels": "images/fortnite_locations/risky_reels"
+    "Anarchy Acres": "images/fortnite_locations/anarchy_acres.png",
+    "Risky Reels": "images/fortnite_locations/risky_reels.png",
+    "Haunted Hills": "images/fortnite_locations/haunted_hills.png",
+    "Junk Junction": "images/fortnite_locations/junk_junction.png",
+    "Loot Lake": "images/fortnite_locations/loot_lake.png",
+    "Pleasant Park": "images/fortnite_locations/pleasant_park.png",
+    "Snobby Shores": "images/fortnite_locations/snobby_shores.png",
+    "Tomato Town": "images/fortnite_locations/tomato_town.png",
+    "Wailing Woods": "images/fortnite_locations/wailing_woods.png",
     }
