@@ -354,7 +354,7 @@ async def on_message(message : str):
           message_content.startswith("!senpai drop")):
         answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
         location = bot_answers.fortnite_locations[answer_index]
-        if(location in bot_answers.fortnite_location_pics.keys):
+        if(location in bot_answers.fortnite_location_pics):
             location_pic = bot_answers.fortnite_location_pics[location]
         else:
             location_pic = "images/test.png"
