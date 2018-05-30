@@ -362,10 +362,10 @@ async def on_message(message : str):
         await bot.send_file(message.channel, location_pic, content=reply)
     elif (message_content.startswith("We dropping") 
           and message.author == bot.user):
-        await bot.add_reaction(message, ":regional_indicator_y:")
-        await bot.add_reaction(message, ":regional_indicator_o:")
-        await bot.add_reaction(message, ":regional_indicator_t:")
-        await bot.add_reaction(message, ":regional_indicator_e:")
+        await bot.add_reaction(message, get(bot.get_all_emojis(), name='regional_indicator_y'))
+        await bot.add_reaction(message, get(bot.get_all_emojis(), name='regional_indicator_o'))
+        await bot.add_reaction(message, get(bot.get_all_emojis(), name='regional_indicator_t'))
+        await bot.add_reaction(message, get(bot.get_all_emojis(), name='regional_indicator_e'))
         
     else:
         try:
