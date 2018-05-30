@@ -362,10 +362,10 @@ async def on_message(message : str):
         await bot.send_file(message.channel, location_pic, content=reply)
     elif (message_content.startswith("We dropping") 
           and message.author == bot.user):
-        add_reaction(message, ":regional_indicator_y:")
-        add_reaction(message, ":regional_indicator_o:")
-        add_reaction(message, ":regional_indicator_t:")
-        add_reaction(message, ":regional_indicator_e:")
+        bot.add_reaction(message, ":regional_indicator_y:")
+        bot.add_reaction(message, ":regional_indicator_o:")
+        bot.add_reaction(message, ":regional_indicator_t:")
+        bot.add_reaction(message, ":regional_indicator_e:")
         
     else:
         try:
