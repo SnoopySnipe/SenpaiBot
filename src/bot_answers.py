@@ -51,3 +51,8 @@ fortnite_locations = ["Tilted Towers",
                       "Greasy Grove",
                       "Shifty Shafts",
                       "Lucky Landing"]
+
+fortnite_location_pics = {
+    "Anarchy Acres": "images/fortnite_locations/anarchy_acres",
+    "Risky Reels": "images/fortnite_locations/risky_reels"
+    }

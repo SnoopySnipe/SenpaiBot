@@ -353,9 +353,10 @@ async def on_message(message : str):
     elif (message_content.startswith("!senpai wherewedroppingbois") or
           message_content.startswith("!senpai drop")):
         answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
-        reply = ("We dropping " + bot_answers.fortnite_locations[answer_index]
-                 + " bois")
-        await bot.send_file(message.channel, "images/test.png", content=reply)
+        location = bot_answers.fortnite_locations[answer_index]
+        location_pic = bot_answers.fortnite_location_pics[location]
+        reply = ("We dropping " + location + " bois")
+        await bot.send_file(message.channel, location_pic, content=reply)
     else:
         try:
             await bot.process_commands(message)
