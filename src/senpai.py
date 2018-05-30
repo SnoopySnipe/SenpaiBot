@@ -363,9 +363,9 @@ async def on_message(message : str):
     elif (message_content.startswith("We dropping") 
           and message.author == bot.user):
         y=get(bot.get_all_emojis(), name='regional_indicator_y')
-        o=get_all_emojis(), name='regional_indicator_o')
-        t=get_all_emojis(), name='regional_indicator_t')
-        e=et_all_emojis(), name='regional_indicator_e')
+        o=get(bot.get_all_emojis(), name='regional_indicator_o')
+        t=get(bot.get_all_emojis(), name='regional_indicator_t')
+        e=get(bot.get_all_emojis(), name='regional_indicator_e')
         await bot.add_reaction(message, y)
         await bot.add_reaction(message, o)
         await bot.add_reaction(message, t)
