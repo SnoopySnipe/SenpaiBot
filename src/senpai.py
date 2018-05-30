@@ -327,6 +327,30 @@ async def leave():
     await leave_all_voice_channels(bot)
     print("Left all voice channels")
 
+
+# Fortnite dropman
+async def send_fortnite_location(bot, message):
+    answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
+    location = bot_answers.fortnite_locations[answer_index]
+    if (location in bot_answers.fortnite_location_pics):
+        location_pic = bot_answers.fortnite_location_pics[location]
+    else:
+        location_pic = "images/test.png"
+    reply = "We dropping " + location + " bois"
+    drop_msg = await bot.send_file(message.channel, location_pic, content=reply)
+
+    lensflare = discord.Emoji(id=425828826027655178, server=218898501805801472) 
+    await bot.add_reaction(drop_msg, lensflare)
+
+@bot.command(pass_context=True)
+async def wherewedroppingbois(context):
+    await send_fortnite_location(bot, context.message)
+
+@bot.command(pass_context=True)
+async def drop(context):
+    await send_fortnite_location(bot, context.message)
+
+
 @bot.event
 async def on_message(message : str):
     message_content = message.content
@@ -347,25 +371,8 @@ async def on_message(message : str):
             answer_index = random.randint(0, len(bot_answers.answers)-1)
             reply = ("`Question: " + question + "\n" +
                      "Answer: " + bot_answers.answers[answer_index] + "`")
-
         await bot.send_message(message.channel, reply)
 
-    # Fortnite dropman
-    elif (message_content.startswith("!senpai wherewedroppingbois") or
-          message_content.startswith("!senpai drop")):
-        answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
-        location = bot_answers.fortnite_locations[answer_index]
-        if(location in bot_answers.fortnite_location_pics):
-            location_pic = bot_answers.fortnite_location_pics[location]
-        else:
-            location_pic = "images/test.png"
-        reply = ("We dropping " + location + " bois")
-        await bot.send_file(message.channel, location_pic, content=reply)
-    elif (message_content.startswith("We dropping") 
-          and message.author == bot.user):
-        lensflare = discord.Emoji(id=425828826027655178, server=218898501805801472) 
-        await bot.add_reaction(message, lensflare)
-        
     else:
         try:
             await bot.process_commands(message)
