@@ -360,6 +360,13 @@ async def on_message(message : str):
             location_pic = "images/test.png"
         reply = ("We dropping " + location + " bois")
         await bot.send_file(message.channel, location_pic, content=reply)
+    elif (message_content.startswith("We dropping") 
+          and message.author == bot.user):
+        add_reaction(message, ":regional_indicator_y:")
+        add_reaction(message, ":regional_indicator_o:")
+        add_reaction(message, ":regional_indicator_t:")
+        add_reaction(message, ":regional_indicator_e:")
+        
     else:
         try:
             await bot.process_commands(message)
