@@ -363,7 +363,7 @@ async def on_message(message : str):
         await bot.send_file(message.channel, location_pic, content=reply)
     elif (message_content.startswith("We dropping") 
           and message.author == bot.user):
-        lensflare = Emoji(name="nickchengface", id=425828826027655178, server=218898501805801472)
+        lensflare = discord.Emoji(id=425828826027655178, server=218898501805801472) 
         await bot.add_reaction(message, lensflare)
         
     else:
