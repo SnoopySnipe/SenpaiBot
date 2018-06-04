@@ -3,7 +3,7 @@
 Our bot for our Discord server.
 
 <p>
-<img src="https://github.com/SnoopySnipe/SenpaiBot/blob/master/senpai_bot.png" width="350">
+<img src="https://gitlab.com/Kamiyaa/SenpaiBot/raw/master/senpai_bot.png" width="350">
 </p>
 
 Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
