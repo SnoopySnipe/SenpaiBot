@@ -9,17 +9,11 @@ from discord.utils import get
 
 import bot_answers
 import senpai_player
-import senpai_imageboards
 import senpai_fortune
 
 from helpers import *
 
 DESCRIPTION = '''The senpai of the server.'''
-
-# amount of arguments
-argc = len(sys.argv)
-# bot token
-token = ""
 
 # initialize bot
 bot = commands.Bot(command_prefix="!senpai ", description=DESCRIPTION)
@@ -108,89 +102,6 @@ async def fortunecookie():
     fortune = senpai_fortune.helloacm_get_fortune_cookie()
 
     await bot.say(fortune)
-
-@bot.command()
-async def daily(imageboard : str):
-    '''(str) -> None
-    command that grabs the latest post/image from an image board imageboard
-    '''
-    imageboard = imageboard.lower()
-
-    supported_boards = ["danbooru", "gelbooru", "konachan", "yandere"]
-
-    if (imageboard == "random"):
-        rand_num = random.randint(0, len(supported_boards) - 1)
-        imageboard = supported_boards[rand_num]
-
-    # yandere
-    if (imageboard == supported_boards[3]):
-        json_content = senpai_imageboards.yandere_get_latest_post()
-        if (json_content is None):
-            await bot.say("Error: API down?")
-            return
-        if ("id" not in json_content or "sample_url" not in json_content):
-            await bot.say("Error: json parse failed")
-            return
-
-        post_id = json_content["id"]
-        file_url = json_content["sample_url"]
-
-        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
-        await bot.say(bot_reply)
-        return
-
-    # danbooru
-    if (imageboard == supported_boards[0]):
-        json_content = senpai_imageboards.danbooru_get_latest_post()
-        if (json_content is None):
-            await bot.say("Error: API down?")
-            return
-        if ("id" not in json_content or "file_url" not in json_content):
-            await bot.say("Error: json parse failed")
-            return
-
-        post_id = json_content["id"]
-        file_url = json_content["file_url"]
-        if ("donmai.us" not in file_url):
-            file_url = "https://danbooru.donmai.us" + file_url
-
-        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
-        await bot.say(bot_reply)
-        return
-
-    # gelbooru
-    if (imageboard == supported_boards[1]):
-        json_content = senpai_imageboards.gelbooru_get_latest_post()
-        if (json_content is None):
-            await bot.say("Error: API down?")
-            return
-        if ("id" not in json_content or "file_url" not in json_content):
-            await bot.say("Error: json parse failed")
-            return
-
-        post_id = json_content["id"]
-        file_url = json_content["file_url"]
-
-        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
-        await bot.say(bot_reply)
-        return
-
-    # konachan
-    if (imageboard == supported_boards[2]):
-        json_content = senpai_imageboards.konachan_get_latest_post()
-        if (json_content is None):
-            await bot.say("Error: API down?")
-            return
-        if ("id" not in json_content or "file_url" not in json_content):
-            await bot.say("Error: json parse failed")
-            return
-
-        post_id = json_content["id"]
-        file_url = json_content["sample_url"]
-
-        bot_reply = "`" + imageboard + " #" + str(post_id) + "`\n" + file_url
-        await bot.say(bot_reply)
-        return
 
 # Commands regarding playing songs
 
@@ -327,7 +238,6 @@ async def leave():
     await leave_all_voice_channels(bot)
     print("Left all voice channels")
 
-
 # Fortnite dropman
 async def send_fortnite_location(bot, message):
     answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
@@ -376,7 +286,14 @@ async def on_message(message : str):
         except commands.errors.CommandNotFound:
             bot.say("command not supported")
 
+modules = ["senpai_imageboards"]
+
 if (__name__ == "__main__"):
+
+    # amount of arguments
+    argc = len(sys.argv)
+    # bot token
+    token = None
 
     # map Ctrl+C to trigger signal_handler function
     signal.signal(signal.SIGINT, signal_handler)
@@ -387,6 +304,12 @@ if (__name__ == "__main__"):
     for i in range(argc):
         if (sys.argv[i] == "-t" and i < argc):
             token = sys.argv[i+1]
+    if (token is None):
+        print("Error: no token given")
+        exit(1)
+
+    for module in modules:
+        bot.load_extension(module)
 
     bot.run(token)
 
