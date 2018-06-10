@@ -1,4 +1,8 @@
-answers = [
+import random
+
+from discord.ext import commands
+
+_8ball_answers = [
            # yes like answers
            "Yes",
            "It is certain",
@@ -29,3 +33,31 @@ answers = [
            "Cannot predict now",
            "Concentrate and ask again",
            ]
+
+class Senpai8ball:
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    # Answers question with a yes or no
+    @commands.command(name="8ball", pass_context=True)
+    async def _8ball(self, context):
+        offset = len("!senpai 8ball")
+
+        question = context.message.content[offset+1:]
+
+        # check if user actually asked a question
+        if (len(question) == 0):
+            await self.bot.say("`Kouhai, dou shita no?`")
+            return
+        
+        answer_index = random.randint(0, len(_8ball_answers)-1)
+        reply = ("`Question: " + question + "\n" +
+                 "Answer: " + _8ball_answers[answer_index] + "`")
+
+        await self.bot.say(reply)
+
+
+def setup(bot):
+    bot.add_cog(Senpai8ball(bot))
+

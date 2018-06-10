@@ -6,9 +6,7 @@ import random
 from discord.ext import commands
 from discord.utils import get
 
-import bot_answers
 import senpai_player
-import senpai_fortune
 
 from helpers import *
 
@@ -240,27 +238,14 @@ async def on_message(message : str):
         bot_reply = help_message()
         await bot.say(bot_reply)
 
-    # Answers question with a yes or no
-    elif (message_content.startswith("!senpai 8ball")):
-        reply = ("`Kouhai, dou shita no?`")
-
-        offset = len("!senpai 8ball")
-        question = message_content[offset+1:]
-
-        # check if user actually asked a question
-        if len(question) > 0:
-            answer_index = random.randint(0, len(bot_answers.answers)-1)
-            reply = ("`Question: " + question + "\n" +
-                     "Answer: " + bot_answers.answers[answer_index] + "`")
-        await bot.send_message(message.channel, reply)
-
     else:
         try:
             await bot.process_commands(message)
         except commands.errors.CommandNotFound:
             bot.say("command not supported")
 
-modules = ["senpai_fortnite", "senpai_fortune", "senpai_imageboards"]
+modules = ["senpai_fortnite", "senpai_fortune",
+           "senpai_imageboards", "senpai_8ball"]
 
 if (__name__ == "__main__"):
 
