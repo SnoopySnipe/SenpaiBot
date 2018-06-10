@@ -3,7 +3,7 @@ import time
 
 import youtube_dl
 
-import senpai_song
+from senpai_player import SenpaiSongLocal, SenpaiSongYoutube
 
 DOWNLOAD_DIR = "/tmp/"
 AUDIO_FORMAT = "wav"
@@ -17,7 +17,7 @@ def senpai_progress_hook(progress_info):
         print("_unprocessed_file_path: " + _unprocessed_file_path)
 
 
-def get_song_info(url : str):
+def create_youtube_song(url : str, voice_channel):
     '''(str) -> dict'''
     ydl_pretend_opts = {
         'simulate': True,
@@ -35,14 +35,12 @@ def get_song_info(url : str):
         info_dict = ydl.extract_info(url)
 
         # create SenpaiSong object
-        song = senpai_song.SenpaiSong()
-        song.title = info_dict.get('title', None)
-        song.url = url
-        song.path = url
+        song = SenpaiSongYoutube(info_dict.get('title', None),
+                                 url, voice_channel)
 
     return song
 
-def download_song(url : str):
+def create_local_song(url : str, voice_channel):
     ''' '''
 
     ydl_download_opts = {
@@ -69,11 +67,6 @@ def download_song(url : str):
         # actual download
         info_dict = ydl.extract_info(url)
 
-        # create SenpaiSong object
-        song = senpai_song.SenpaiSong()
-        song.title = info_dict.get('title', None)
-        song.url = url
-
         global _unprocessed_file_path
         while (_unprocessed_file_path is None):
             print("sleeping...")
@@ -83,7 +76,9 @@ def download_song(url : str):
         if (processed_file_path.endswith(".mp4")):
             processed_file_path = processed_file_path[:-3] + AUDIO_FORMAT
         print("song file path: ", processed_file_path)
-        song.path = processed_file_path
+
+        song = SenpaiSongLocal(info_dict.get('title', None), url,
+                               processed_file_path, voice_channel)
 
     return song
 
@@ -94,7 +89,3 @@ def get_download_dir():
 def get_audio_format():
     return AUDIO_FORMAT
 
-if (__name__ == "__main__"):
-    # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    dict_ret = download_song('https://www.youtube.com/watch?v=sO_371leHlo')
-    print(dict_ret)
