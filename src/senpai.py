@@ -125,7 +125,7 @@ async def daily(imageboard : str):
     # yandere
     if (imageboard == supported_boards[3]):
         json_content = senpai_imageboards.yandere_get_latest_post()
-        if (json_conent is None):
+        if (json_content is None):
             await bot.say("Error: API down?")
             return
         if ("id" not in json_content or "sample_url" not in json_content):
@@ -142,7 +142,7 @@ async def daily(imageboard : str):
     # danbooru
     if (imageboard == supported_boards[0]):
         json_content = senpai_imageboards.danbooru_get_latest_post()
-        if (json_conent is None):
+        if (json_content is None):
             await bot.say("Error: API down?")
             return
         if ("id" not in json_content or "file_url" not in json_content):
@@ -161,7 +161,7 @@ async def daily(imageboard : str):
     # gelbooru
     if (imageboard == supported_boards[1]):
         json_content = senpai_imageboards.gelbooru_get_latest_post()
-        if (json_conent is None):
+        if (json_content is None):
             await bot.say("Error: API down?")
             return
         if ("id" not in json_content or "file_url" not in json_content):
@@ -178,7 +178,7 @@ async def daily(imageboard : str):
     # konachan
     if (imageboard == supported_boards[2]):
         json_content = senpai_imageboards.konachan_get_latest_post()
-        if (json_conent is None):
+        if (json_content is None):
             await bot.say("Error: API down?")
             return
         if ("id" not in json_content or "file_url" not in json_content):
