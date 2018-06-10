@@ -1,6 +1,23 @@
 import requests
 
-def helloacm_get_fortune_cookie():
+from discord.ext import commands
+
+
+class SenpaiFortune:
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def fortunecookie():
+        await bot.say(_helloacm_get_fortune_cookie())
+
+
+def setup(bot):
+    bot.add_cog(SenpaiFortune(bot))
+
+
+def _helloacm_get_fortune_cookie():
 
     api_url = "https://helloacm.com/api/fortune/"
 
@@ -10,5 +27,5 @@ def helloacm_get_fortune_cookie():
     return json_content
 
 if (__name__ == "__main__"):
-    fortune = yerkee_get_fortune_cookie()
+    fortune = _helloacm_get_fortune_cookie()
     print(fortune)
