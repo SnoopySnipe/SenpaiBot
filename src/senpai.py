@@ -3,7 +3,6 @@ import signal
 import asyncio
 import random
 
-import discord
 from discord.ext import commands
 from discord.utils import get
 
@@ -238,25 +237,6 @@ async def leave():
     await leave_all_voice_channels(bot)
     print("Left all voice channels")
 
-# Fortnite dropman
-async def send_fortnite_location(bot, message):
-    answer_index = random.randint(0, len(bot_answers.fortnite_locations)-1)
-    location = bot_answers.fortnite_locations[answer_index]
-    location_pic = bot_answers.fortnite_location_pics[location]
-    reply = "We dropping " + location + " bois"
-    drop_msg = await bot.send_file(message.channel, location_pic, content=reply)
-
-    lensflare = discord.Emoji(id=425828826027655178, server=218898501805801472) 
-    await bot.add_reaction(drop_msg, lensflare)
-
-@bot.command(pass_context=True)
-async def wherewedroppingbois(context):
-    await send_fortnite_location(bot, context.message)
-
-@bot.command(pass_context=True)
-async def drop(context):
-    await send_fortnite_location(bot, context.message)
-
 
 @bot.event
 async def on_message(message : str):
@@ -286,7 +266,7 @@ async def on_message(message : str):
         except commands.errors.CommandNotFound:
             bot.say("command not supported")
 
-modules = ["senpai_imageboards"]
+modules = ["senpai_fortnite", "senpai_imageboards"]
 
 if (__name__ == "__main__"):
 
