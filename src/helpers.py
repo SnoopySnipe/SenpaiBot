@@ -1,17 +1,5 @@
 import download_youtube
 
-def queue_to_string(queue : list):
-    reply = "`"
-    queue_size = len(queue)
-    if (queue_size == 0):
-        reply += "Queue is empty."
-    else:
-        for i in range(queue_size):
-            reply += (str(i) + "." + "\t" * 4 +
-                str(queue[i]) + "\n")
-    reply += "`"
-    return reply
-
 
 def get_existing_voice(bot):
     bot_voice = None
@@ -26,19 +14,19 @@ def get_existing_voice(bot):
 
 def help_message():
     help_msg = (
-        "!8ball <question> " + "\t" + "Senpai knows all..." + "\n" +
-        "daily <imageboard> " + "\t" +
-            "Grabs the latest anime image from an image board." + "\n" +
-            "Currently supports: yandere, danbooru" + "\n" +
-        "play <link>" + "\t" + "Play YouTube videos" + "\n" +
+        "8ball <question> \t Senpai knows all...\n" +
+        "daily <imageboard> \t" +
+            "Grabs the latest anime image from an image board.\n" +
+            "Currently supports: yandere, danbooru, konachan, gelbooru\n" +
+        "coin \t Flips a coin\n" +
+        "guess <number> \t Guess a number between 1 and 10\n" +
+        "drop/wherewedroppingbois" + "\t" + "Tells you where to drop for a victory royale\n" +
+        "play <link> \t Play YouTube videos\n" +
             "pause/resume/stop/skip" + "\t" +
-            "does exactly that to the playlist" + "\n"
-        "playlocal <link>" + "\t" +
-            "Downloads YouTube video before playing for smooth playback"
-            + "\n" +
-        "queue/localqueue" + "\t" + "show queue/localqueue" + "\n"
-        "coin " + "\t" + "Flips a coin" + "\n"
-        "guess <number> " + "\t" + "Guess a number between 1 and 10" + "\n"
+            "does exactly that to the playlist\n"
+        "playlocal <link>\t" +
+            "Downloads YouTube video before playing for smooth playback\n"
+        "queue \t show song queue\n"
         )
     return help_msg
 

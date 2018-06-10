@@ -17,6 +17,14 @@ class SenpaiImageboard:
             await random.choice(imageboards).invoke(context)
 
     @daily.command()
+    async def help(self):
+        reply = ("`usage:`\n" +
+                "`!senpai daily\n" + "!senpai daily yandere\n" +
+                "!senpai daily danbooru\n" + "!senpai daily konachan\n" +
+                "!senpai daily gelbooru\n`")
+        self.bot.say(reply)
+
+    @daily.command()
     async def yandere(self):
         json_content = _yandere_get_latest_post()
         if (json_content is None):

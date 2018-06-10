@@ -37,7 +37,7 @@ class SenpaiPlayer:
         self.bot = bot
         self.delay = 3
         self.client = None
-        self.queue = []
+        self.player_queue = []
         self.refcount_dict = {}
         self.current_player = None
         self.player_volume = 50.0
@@ -56,7 +56,7 @@ class SenpaiPlayer:
         '''(SenpaiPlayer) -> float
         Clears the queue and local queue of this player
         '''
-        self.queue.clear()
+        self.player_queue.clear()
         self.refcount_dict.clear()
 
     def _add_song(self, url, voice_channel):
@@ -68,7 +68,7 @@ class SenpaiPlayer:
         else:
             song = download_youtube.create_youtube_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
-        self.queue.append(song)
+        self.player_queue.append(song)
 
     def _add_song_local(self, url, voice_channel):
         song = None
@@ -81,15 +81,15 @@ class SenpaiPlayer:
         else:
             song = download_youtube.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
-        self.queue.append(song)
+        self.player_queue.append(song)
         return song
 
     def _deref_song(self, queue_num):
         song = None
-        if (not self.queue):
+        if (not self.player_queue):
             return
 
-        song = self.queue.pop(queue_num)
+        song = self.player_queue.pop(queue_num)
 
         if (song.url not in self.refcount_dict):
             return
@@ -109,9 +109,9 @@ class SenpaiPlayer:
         '''
         await asyncio.sleep(self.delay)
         # play songs while there are songs in the queue
-        while (self.queue):
+        while (self.player_queue):
             # pop the next song off the queue
-            song = self.queue[0]
+            song = self.player_queue[0]
 
             if (song.voice_channel != self.voice_channel):
                 self.voice_channel = song.voice_channel
@@ -164,10 +164,6 @@ class SenpaiPlayer:
         await self.bot.say(reply)
 
     @commands.command()
-    async def queue(self):
-        await self.bot.say(_queue_to_string(self.queue))
-
-    @commands.command()
     async def skip(self):
         if (self.current_player):
             self.current_player.stop()
@@ -186,6 +182,10 @@ class SenpaiPlayer:
     async def stop(self, context):
         self._clear_queue()
         await self.skip.invoke(context)
+
+    @commands.command()
+    async def queue(self):
+        await self.bot.say(_queue_to_string(self.player_queue))
 
     @commands.command(pass_context=True)
     async def play(self, context, url):
