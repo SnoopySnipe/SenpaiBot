@@ -96,12 +96,6 @@ async def clean_yourself(context, lim):
     deleted = await bot.purge_from(channel, limit=lim, check=is_bot)
     await bot.say("Deleted {} message(s)".format(len(deleted)))
 
-@bot.command()
-async def fortunecookie():
-    fortune = senpai_fortune.helloacm_get_fortune_cookie()
-
-    await bot.say(fortune)
-
 # Commands regarding playing songs
 
 @bot.command()
@@ -266,7 +260,7 @@ async def on_message(message : str):
         except commands.errors.CommandNotFound:
             bot.say("command not supported")
 
-modules = ["senpai_fortnite", "senpai_imageboards"]
+modules = ["senpai_fortnite", "senpai_fortune", "senpai_imageboards"]
 
 if (__name__ == "__main__"):
 
