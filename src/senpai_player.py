@@ -1,8 +1,6 @@
 import asyncio
 import os
 
-import discord
-
 import download_youtube
 
 from discord.ext import commands
@@ -44,6 +42,13 @@ class SenpaiPlayer:
         self.voice_channel = None
         self.voice = None
 
+    def _clear_queue(self):
+        '''(SenpaiPlayer) -> float
+        Clears the queue and local queue of this player
+        '''
+        self.player_queue.clear()
+        self.refcount_dict.clear()
+
     def _set_volume(self, volume):
         '''(SenpaiPlayer, float) -> None
         Sets the volume for this player in all queues
@@ -51,13 +56,6 @@ class SenpaiPlayer:
         self.player_volume = volume
         if (self.current_player):
             self.current_player.volume = self.player_volume / 50
-
-    def _clear_queue(self):
-        '''(SenpaiPlayer) -> float
-        Clears the queue and local queue of this player
-        '''
-        self.player_queue.clear()
-        self.refcount_dict.clear()
 
     def _add_song(self, url, voice_channel):
         song = None
@@ -72,9 +70,11 @@ class SenpaiPlayer:
 
     def _add_song_local(self, url, voice_channel):
         song = None
+        # song is already queued
         if (url in self.refcount_dict):
             song = self.refcount_dict[url][0]
             ref = self.refcount_dict[url][1]
+            # queued song is online, not local, so we localize it
             if (song.path == song.url):
                 song = download_youtube.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, ref+1)
@@ -113,11 +113,12 @@ class SenpaiPlayer:
             # pop the next song off the queue
             song = self.player_queue[0]
 
+            # TODO: currently bot is not moving to another channel
             if (song.voice_channel != self.voice_channel):
                 self.voice_channel = song.voice_channel
                 self.voice.move_to(self.voice_channel)
 
-            # retrieve song
+            # TODO: bad way of handling local songs and online songs
             if (isinstance(song, SenpaiSongLocal)):
                 player = self.voice.create_ffmpeg_player(song.path)
             elif (isinstance(song, SenpaiSongYoutube)):
@@ -145,28 +146,14 @@ class SenpaiPlayer:
         self.voice = None
 
     @commands.command()
-    async def volume(self, new_volume=None):
-        if (new_volume is None):
-            self.bot.say("`Volume is currently at " +
-                         str(self.player_volume) + "`")
-            return
-
-        try:
-            # if valid volume, adjust it
-            volume = float(new_volume)
-
-            self._set_volume(volume)
-            reply = ("`Volume has been adjusted to " + str(self.player_volume) + "`")
-
-        # prompt for a valid volume if invalid
-        except ValueError:
-            reply = "`Please enter a volume between 0 and 100`"
-        await self.bot.say(reply)
-
-    @commands.command()
     async def skip(self):
         if (self.current_player):
             self.current_player.stop()
+
+    @commands.command(pass_context=True)
+    async def stop(self, context):
+        self._clear_queue()
+        await self.skip.invoke(context)
 
     @commands.command()
     async def pause(self):
@@ -178,14 +165,43 @@ class SenpaiPlayer:
         if (self.current_player):
             self.current_player.resume()
 
-    @commands.command(pass_context=True)
-    async def stop(self, context):
-        self._clear_queue()
-        await self.skip.invoke(context)
-
     @commands.command()
     async def queue(self):
         await self.bot.say(_queue_to_string(self.player_queue))
+
+    @commands.command(pass_context=True)
+    async def dequeue(self, context, index):
+        try:
+            index = int(index)
+            if (index >= len(self.player_queue) or index < 0):
+                self.queue.invoke(context)
+                self.bot.say("`Invalid index`")
+                return
+            self._deref_song(index)
+            self.queue.invoke(context)
+
+        except ValueError:
+            self.queue.invoke(context)
+            self.bot.say("`Please give a valid index`")
+
+    @commands.command()
+    async def volume(self, new_volume=None):
+        if (new_volume is None):
+            await self.bot.say("`Volume is currently at " +
+                               str(self.player_volume) + "`")
+            return
+        try:
+            # if valid volume, adjust it
+            volume = float(new_volume)
+            if (volume < 0 or volume > 100):
+                raise ValueError
+
+            self._set_volume(volume)
+            reply = ("`Volume has been adjusted to " +
+                     str(self.player_volume) + "`")
+        # prompt for a valid volume if invalid
+        except ValueError:
+            reply = "`Please enter a volume between 0 and 100`"
 
     @commands.command(pass_context=True)
     async def play(self, context, url):
@@ -208,6 +224,7 @@ class SenpaiPlayer:
 
         await self.bot.delete_message(download_msg)
 
+        # TODO
         if (self.voice_channel is None):
             self.voice_channel = user_voice_channel
             self.voice = await self.bot.join_voice_channel(self.voice_channel)
