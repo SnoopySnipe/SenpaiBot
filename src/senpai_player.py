@@ -202,6 +202,7 @@ class SenpaiPlayer:
         # prompt for a valid volume if invalid
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
+        await self.bot.say(reply)
 
     @commands.command(pass_context=True)
     async def play(self, context, url):
