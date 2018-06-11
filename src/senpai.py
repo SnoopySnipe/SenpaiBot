@@ -1,7 +1,6 @@
 import sys
 import signal
 import asyncio
-import random
 
 from discord.ext import commands
 from discord.utils import get
@@ -22,6 +21,7 @@ def signal_handler(signal, frame):
     '''
 
     print("\nLogging out bot...")
+    leave_all_voice_channels(bot)
     # log out bot and close connection
     bot.logout()
     bot.close()
@@ -29,7 +29,7 @@ def signal_handler(signal, frame):
     # exit program
     sys.exit(0)
 
-async def leave_all_voice_channels(bot):
+def leave_all_voice_channels(bot):
     '''(Client) -> null
     makes the Client leave all connected voice channels
     '''
@@ -44,7 +44,7 @@ async def leave_all_voice_channels(bot):
     if (connected_voices):
         # disconnect bot from all connected voice channels
         for voice in connected_voices:
-            await voice.disconnect()
+            voice.disconnect()
 
 @bot.event
 async def on_ready():
@@ -52,29 +52,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-
-@bot.command()
-async def coin():
-    flip = random.randint(0,1)
-    if (flip == 0):
-        reply = "`Tails`"
-    elif (flip == 1):
-        reply = "`Heads`"
-    await bot.say(reply)
-
-@bot.command()
-async def guess(guess_num):
-    rand_num = random.randint(1,10)
-    try:
-        guess_num = int(guess_num)
-        if (guess_num == rand_num):
-            reply = ("`Congratulations, you guessed it right!`")
-        else:
-            reply = ("`Sorry, the number was " + str(rand_num) + "`")
-    # Prompt for a valid input
-    except ValueError:
-        reply = "Please enter a number between 1 and 10."
-    await bot.say(reply)
 
 @bot.command(pass_context=True)
 async def clean_yourself(context, lim):
@@ -90,7 +67,7 @@ async def clean_yourself(context, lim):
 
 @bot.command()
 async def leave():
-    await leave_all_voice_channels(bot)
+    leave_all_voice_channels(bot)
     print("Left all voice channels")
 
 

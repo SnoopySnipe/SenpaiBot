@@ -57,6 +57,29 @@ class Senpai8ball:
 
         await self.bot.say(reply)
 
+    @commands.command()
+    async def guess(self, guess_num):
+        rand_num = random.randint(1,10)
+        try:
+            guess_num = int(guess_num)
+            if (guess_num == rand_num):
+                reply = "`Congratulations, you guessed it right!`"
+            else:
+                reply = ("`Sorry, the number was " + str(rand_num) + "`")
+        # Prompt for a valid input
+        except ValueError:
+            reply = "Please enter a number between 1 and 10."
+        await self.bot.say(reply)
+
+    @commands.command()
+    async def coin(self):
+        flip = random.randint(0,1)
+        if (flip == 0):
+            reply = "`Tails`"
+        elif (flip == 1):
+            reply = "`Heads`"
+        await self.bot.say(reply)
+
 
 def setup(bot):
     bot.add_cog(Senpai8ball(bot))
