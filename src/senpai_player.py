@@ -43,7 +43,7 @@ class SenpaiPlayer:
         self.voice = None
 
     def _clear_queue(self):
-        '''(SenpaiPlayer) -> float
+        '''(SenpaiPlayer) -> None
         Clears the queue and local queue of this player
         '''
         self.player_queue.clear()
@@ -98,7 +98,7 @@ class SenpaiPlayer:
         if (ref <= 0):
             self.refcount_dict.pop(song.url, None)
             if (os.path.isfile(song.path)):
-                print("removing file: " + song.path)
+                print("removing file: {}".format(song.path))
                 os.remove(song.path)
         else:
             self.refcount_dict[song.url] = (song, ref)
@@ -125,8 +125,8 @@ class SenpaiPlayer:
                 player = await self.voice.create_ytdl_player(song.path)
 
             # print a message showing what is currently playing
-            bot_reply = ("`Playing: \"" + song.title + "\"\nPath: " + song.path + "`")
-            await self.bot.say(bot_reply)
+            await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
+                               song.path))
 
             self.current_player = player
             # set player volume
@@ -187,8 +187,8 @@ class SenpaiPlayer:
     @commands.command()
     async def volume(self, new_volume=None):
         if (new_volume is None):
-            await self.bot.say("`Volume is currently at " +
-                               str(self.player_volume) + "`")
+            await self.bot.say("`Volume is currently at {}`".format(
+                               str(self.player_volume)))
             return
         try:
             # if valid volume, adjust it
@@ -197,15 +197,18 @@ class SenpaiPlayer:
                 raise ValueError
 
             self._set_volume(volume)
-            reply = ("`Volume has been adjusted to " +
-                     str(self.player_volume) + "`")
+            reply = ("`Volume has been adjusted to {}`".format(
+                     str(self.player_volume)))
         # prompt for a valid volume if invalid
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
         await self.bot.say(reply)
 
     @commands.command(pass_context=True)
-    async def play(self, context, url):
+    async def play(self, context, url=None):
+        if (url is None):
+            await self.bot.say("usage: !senpai play youtube-link")
+            return
 
         # bot_voice = await bot.join_voice_channel(user_voice_channel)
         # async def _join_voice_channel(bot, voice_channel
@@ -213,9 +216,8 @@ class SenpaiPlayer:
 
         user_voice_channel = context.message.author.voice_channel
         if (user_voice_channel is None):
-            bot_reply = ("\@" + str(message.author) +
-                         ", please join a voice channel")
-            self.bot.say(bot_reply)
+            await self.bot.say("{}, please join a voice channel".format(
+                               context.message.author.mention))
             return
 
         # await self.bot.delete_message(context.message)
@@ -231,16 +233,18 @@ class SenpaiPlayer:
             self.voice = await self.bot.join_voice_channel(self.voice_channel)
             await self._play()
         else:
-            bot_reply = "`Enqueued: " + str(song) + "`"
-            await self.bot.say(bot_reply)
+            await self.bot.say("`Enqueued: {}`".format(song.title))
 
     @commands.command(pass_context=True)
     async def playlocal(self, context, url):
+        if (url is None):
+            await self.bot.say("usage: !senpai playlocal youtube-link")
+            return
+
         user_voice_channel = context.message.author.voice_channel
         if (user_voice_channel is None):
-            bot_reply = ("\@" + str(message.author) +
-                         ", please join a voice channel")
-            self.bot.say(bot_reply)
+            await self.bot.say("{}, please join a voice channel".format(
+                               context.message.author.mention))
             return
 
         # await self.bot.delete_message(context.message)
@@ -255,8 +259,7 @@ class SenpaiPlayer:
             self.voice = await self.bot.join_voice_channel(self.voice_channel)
             await self._play()
         else:
-            bot_reply = "`Enqueued: " + str(song) + "`"
-            await self.bot.say(bot_reply)
+            await self.bot.say("`Enqueued: {}`".format(song.title))
 
 
 def setup(bot):

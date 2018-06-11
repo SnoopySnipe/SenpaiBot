@@ -3,7 +3,6 @@ import signal
 import asyncio
 
 from discord.ext import commands
-from discord.utils import get
 
 from helpers import *
 
