@@ -2,7 +2,6 @@ import random
 
 import discord
 from discord.ext import commands
-SRC_PATH = "~/Documents/Git/SenpaiBot/src/"
 _fortnite_location_pics = {
     "Anarchy Acres": "images/fortnite_locations/anarchy_acres.png",
     "Dusty Divot": "images/fortnite_locations/dusty_divot.png",
@@ -50,7 +49,7 @@ def setup(bot):
 async def _send_fortnite_location(bot, message):
     answer_index = random.randint(0, len(_fortnite_locations)-1)
     location = _fortnite_locations[answer_index]
-    location_pic = SRC_PATH + _fortnite_location_pics[location]
+    location_pic = _fortnite_location_pics[location]
     reply = "We dropping " + location + " bois"
     drop_msg = await bot.send_file(message.channel, location_pic, content=reply)
 
