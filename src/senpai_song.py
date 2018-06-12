@@ -3,14 +3,34 @@ import time
 
 import youtube_dl
 
-from senpai_player import SenpaiSongLocal, SenpaiSongYoutube
-
 DOWNLOAD_DIR = "/tmp/"
 AUDIO_FORMAT = "wav"
 
 _unprocessed_file_path = None
 
-def senpai_progress_hook(progress_info):
+class SenpaiSong:
+
+    def __init__(self, title, url, path):
+        self.title = title
+        self.url = url
+        self.path = path
+
+    def __str__(self):
+        return self.title
+
+class SenpaiSongLocal(SenpaiSong):
+
+    def __init__(self, title, url, path, voice_channel):
+        SenpaiSong.__init__(self, title, url, path)
+        self.voice_channel = voice_channel
+
+class SenpaiSongYoutube(SenpaiSong):
+
+    def __init__(self, title, url, voice_channel):
+        SenpaiSong.__init__(self, title, url, url)
+        self.voice_channel = voice_channel
+
+def _senpai_progress_hook(progress_info):
     global _unprocessed_file_path
     if (progress_info["status"] == "finished"):
         _unprocessed_file_path = progress_info["filename"]
@@ -20,16 +40,17 @@ def senpai_progress_hook(progress_info):
 def create_youtube_song(url : str, voice_channel):
     '''(str) -> dict'''
     ydl_pretend_opts = {
+        'quiet': True,
         'simulate': True,
+        'skip_download': True,
         'nooverwrites': True,
         'restrictfilenames': True,
+        'noplaylist': True
         }
 
     song = None
     if (url is not None):
         ydl = youtube_dl.YoutubeDL(ydl_pretend_opts)
-
-        ydl.add_progress_hook(senpai_progress_hook)
 
         # actual download
         info_dict = ydl.extract_info(url)
@@ -44,10 +65,13 @@ def create_local_song(url : str, voice_channel):
     ''' '''
 
     ydl_download_opts = {
+        'quiet': True,
         'format': 'bestaudio/best',
         'outtmpl': DOWNLOAD_DIR + "%(title)s.mp4",
         'restrictfilenames': True,
         'nooverwrites': True,
+        'noplaylist': True,
+        'progress_hooks': [_senpai_progress_hook],
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
     # for high quality audio in exchange for audio stutters
@@ -61,8 +85,6 @@ def create_local_song(url : str, voice_channel):
     song = None
     if (url is not None):
         ydl = youtube_dl.YoutubeDL(ydl_download_opts)
-
-        ydl.add_progress_hook(senpai_progress_hook)
 
         global _unprocessed_file_path
         _unprocessed_file_path = None

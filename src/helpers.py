@@ -1,6 +1,3 @@
-import download_youtube
-
-
 def get_existing_voice(bot):
     bot_voice = None
 

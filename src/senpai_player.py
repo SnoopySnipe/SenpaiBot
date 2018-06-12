@@ -1,33 +1,10 @@
 import asyncio
 import os
 
-import download_youtube
+import senpai_song
 
 from discord.ext import commands
 from helpers import *
-
-class SenpaiSong:
-
-    def __init__(self, title, url, path):
-        self.title = title
-        self.url = url
-        self.path = path
-
-    def __str__(self):
-        return self.title
-
-class SenpaiSongLocal(SenpaiSong):
-
-    def __init__(self, title, url, path, voice_channel):
-        SenpaiSong.__init__(self, title, url, path)
-        self.voice_channel = voice_channel
-
-class SenpaiSongYoutube(SenpaiSong):
-
-    def __init__(self, title, url, voice_channel):
-        SenpaiSong.__init__(self, title, url, url)
-        self.voice_channel = voice_channel
-
 
 class SenpaiPlayer:
 
@@ -38,7 +15,7 @@ class SenpaiPlayer:
         self.player_queue = []
         self.refcount_dict = {}
         self.current_player = None
-        self.player_volume = 50.0
+        self.player_volume = 25.0
         self.voice_channel = None
         self.voice = None
 
@@ -64,7 +41,7 @@ class SenpaiPlayer:
             ref = self.refcount_dict[url][1]
             self.refcount_dict[url] = (song, ref+1)
         else:
-            song = download_youtube.create_youtube_song(url, voice_channel)
+            song = senpai_song.create_youtube_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
         self.player_queue.append(song)
 
@@ -76,10 +53,10 @@ class SenpaiPlayer:
             ref = self.refcount_dict[url][1]
             # queued song is online, not local, so we localize it
             if (song.path == song.url):
-                song = download_youtube.create_local_song(url, voice_channel)
+                song = senpai_song.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, ref+1)
         else:
-            song = download_youtube.create_local_song(url, voice_channel)
+            song = senpai_song.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
         self.player_queue.append(song)
         return song
@@ -119,9 +96,9 @@ class SenpaiPlayer:
                 self.voice.move_to(self.voice_channel)
 
             # TODO: bad way of handling local songs and online songs
-            if (isinstance(song, SenpaiSongLocal)):
+            if (isinstance(song, senpai_song.SenpaiSongLocal)):
                 player = self.voice.create_ffmpeg_player(song.path)
-            elif (isinstance(song, SenpaiSongYoutube)):
+            elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
                 player = await self.voice.create_ytdl_player(song.path)
 
             # print a message showing what is currently playing
@@ -184,10 +161,9 @@ class SenpaiPlayer:
             self.queue.invoke(context)
             self.bot.say("`Please give a valid index`")
 
-    @commands.command()
-    async def volume(self, new_volume=None):
+    async def _vol_command(new_volume):
         if (new_volume is None):
-            await self.bot.say("`Volume is currently at {}`".format(
+            await self.bot.say("`Volume is currently at {}%`".format(
                                str(self.player_volume)))
             return
         try:
@@ -203,6 +179,14 @@ class SenpaiPlayer:
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
         await self.bot.say(reply)
+
+    @commands.command()
+    async def volume(self, new_volume=None):
+        await self._vol_command(new_volume)
+
+    @commands.command()
+    async def vol(self, new_volume=None):
+        await self._vol_command(new_volume)
 
     @commands.command(pass_context=True)
     async def play(self, context, url=None):
