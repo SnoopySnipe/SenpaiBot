@@ -22,7 +22,7 @@ class SenpaiImageboard:
                 "`!senpai daily\n" + "!senpai daily yandere\n" +
                 "!senpai daily danbooru\n" + "!senpai daily konachan\n" +
                 "!senpai daily gelbooru\n`")
-        self.bot.say(reply)
+        await self.bot.say(reply)
 
     @daily.command()
     async def yandere(self):

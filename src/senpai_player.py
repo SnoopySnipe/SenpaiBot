@@ -161,7 +161,7 @@ class SenpaiPlayer:
             self.queue.invoke(context)
             self.bot.say("`Please give a valid index`")
 
-    async def _vol_command(new_volume):
+    async def _vol_command(self, new_volume):
         if (new_volume is None):
             await self.bot.say("`Volume is currently at {}%`".format(
                                str(self.player_volume)))
