@@ -44,6 +44,7 @@ class SenpaiPlayer:
             song = senpai_song.create_youtube_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
         self.player_queue.append(song)
+        return song
 
     def _add_song_local(self, url, voice_channel):
         song = None
