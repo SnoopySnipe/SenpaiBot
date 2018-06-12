@@ -2,7 +2,7 @@ import random
 
 import discord
 from discord.ext import commands
-
+SRC_PATH = "~/Documents/Git/SenpaiBot/src"
 _fortnite_location_pics = {
     "Anarchy Acres": "images/fortnite_locations/anarchy_acres.png",
     "Dusty Divot": "images/fortnite_locations/dusty_divot.png",
