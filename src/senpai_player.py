@@ -11,7 +11,6 @@ class SenpaiPlayer:
     def __init__(self, bot):
         self.bot = bot
         self.delay = 3
-        self.client = None
         self.player_queue = []
         self.refcount_dict = {}
         self.current_player = None
@@ -53,7 +52,7 @@ class SenpaiPlayer:
             song = self.refcount_dict[url][0]
             ref = self.refcount_dict[url][1]
             # queued song is online, not local, so we localize it
-            if (song.path == song.url):
+            if (isinstance(song, senpai_song.SenpaiSongYoutube)):
                 song = senpai_song.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, ref+1)
         else:
@@ -111,7 +110,9 @@ class SenpaiPlayer:
             self._set_volume(self.player_volume)
             # play the song
             player.start()
-            # if the bot is no longer playing anything, stop the player and leave
+            # TODO: Fix busy waiting by making use of
+            # create_ffmpeg_player(after=) and create_ytdl_player(after=)
+            # or yield from (?)
             while (not player.is_done()):
                 await asyncio.sleep(self.delay)
             player.stop()
@@ -155,6 +156,7 @@ class SenpaiPlayer:
                 self.queue.invoke(context)
                 self.bot.say("`Invalid index`")
                 return
+
             self._deref_song(index)
             self.queue.invoke(context)
 
@@ -221,7 +223,7 @@ class SenpaiPlayer:
             await self.bot.say("`Enqueued: {}`".format(song.title))
 
     @commands.command(pass_context=True)
-    async def playlocal(self, context, url):
+    async def playlocal(self, context, url=None):
         if (url is None):
             await self.bot.say("usage: !senpai playlocal youtube-link")
             return
