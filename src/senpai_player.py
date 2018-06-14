@@ -11,7 +11,7 @@ class SenpaiPlayer:
     def __init__(self, bot):
         self.bot = bot
         self.delay = 3
-        self.player_queue = []
+        self.song_queue = []
         self.refcount_dict = {}
         self.current_player = None
         self.player_volume = 25.0
@@ -22,7 +22,7 @@ class SenpaiPlayer:
         '''(SenpaiPlayer) -> None
         Clears the queue and local queue of this player
         '''
-        self.player_queue.clear()
+        self.song_queue.clear()
         self.refcount_dict.clear()
 
     def _set_volume(self, volume):
@@ -42,7 +42,7 @@ class SenpaiPlayer:
         else:
             song = senpai_song.create_youtube_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
-        self.player_queue.append(song)
+        self.song_queue.append(song)
         return song
 
     def _add_song_local(self, url, voice_channel):
@@ -58,15 +58,14 @@ class SenpaiPlayer:
         else:
             song = senpai_song.create_local_song(url, voice_channel)
             self.refcount_dict[url] = (song, 1)
-        self.player_queue.append(song)
+        self.song_queue.append(song)
         return song
 
     def _deref_song(self, queue_num):
-        song = None
-        if (not self.player_queue):
+        if (not self.song_queue):
             return
 
-        song = self.player_queue.pop(queue_num)
+        song = self.song_queue.pop(queue_num)
 
         if (song.url not in self.refcount_dict):
             return
@@ -86,9 +85,9 @@ class SenpaiPlayer:
         '''
         await asyncio.sleep(self.delay)
         # play songs while there are songs in the queue
-        while (self.player_queue):
+        while (self.song_queue):
             # pop the next song off the queue
-            song = self.player_queue[0]
+            song = self.song_queue[0]
 
             # TODO: currently bot is not moving to another channel
             if (song.voice_channel != self.voice_channel):
@@ -146,23 +145,27 @@ class SenpaiPlayer:
 
     @commands.command()
     async def queue(self):
-        await self.bot.say(_queue_to_string(self.player_queue))
+        await self.bot.say(_queue_to_string(self.song_queue))
 
     @commands.command(pass_context=True)
-    async def dequeue(self, context, index):
+    async def dequeue(self, context, index=None):
+        if (not self.song_queue):
+            await self.bot.say("`queue is empty`")
+            return
+
         try:
             index = int(index)
-            if (index >= len(self.player_queue) or index < 0):
-                self.queue.invoke(context)
-                self.bot.say("`Invalid index`")
-                return
+            queue_size = len(self.song_queue)
+            if (index >= queue_size or index < 0):
+                raise ValueError
 
+            song = self.song_queue[index]
             self._deref_song(index)
-            self.queue.invoke(context)
+            await self.bot.say("`removed: [{}] {}".format(index, song.title))
 
         except ValueError:
-            self.queue.invoke(context)
-            self.bot.say("`Please give a valid index`")
+            reply = "`Please give an integer between 0 and {}`"
+            await self.bot.say(reply.format(queue_size))
 
     async def _vol_command(self, new_volume):
         if (new_volume is None):
@@ -193,7 +196,7 @@ class SenpaiPlayer:
 
     @commands.command(pass_context=True)
     async def play(self, context, url=None):
-        if (url is None):
+        if (not url):
             await self.bot.say("usage: !senpai play youtube-link")
             return
 
@@ -224,7 +227,7 @@ class SenpaiPlayer:
 
     @commands.command(pass_context=True)
     async def playlocal(self, context, url=None):
-        if (url is None):
+        if (not url):
             await self.bot.say("usage: !senpai playlocal youtube-link")
             return
 
