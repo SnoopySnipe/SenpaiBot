@@ -4,7 +4,6 @@ import os
 import senpai_song
 
 from discord.ext import commands
-from helpers import *
 
 class SenpaiPlayer:
 
@@ -83,7 +82,7 @@ class SenpaiPlayer:
         '''(SenpaiPlayer, Client, VoiceClient, Message) -> None
         Plays songs in the local queue.
         '''
-        await asyncio.sleep(self.delay)
+
         # play songs while there are songs in the queue
         while (self.song_queue):
             # pop the next song off the queue
@@ -100,15 +99,15 @@ class SenpaiPlayer:
             elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
                 player = await self.voice.create_ytdl_player(song.path)
 
+            self.current_player = player
+            self._set_volume(self.player_volume)
+
             # print a message showing what is currently playing
             await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
                                song.path))
 
-            self.current_player = player
-            # set player volume
-            self._set_volume(self.player_volume)
-            # play the song
             player.start()
+
             # TODO: Fix busy waiting by making use of
             # create_ffmpeg_player(after=) and create_ytdl_player(after=)
             # or yield from (?)
@@ -172,6 +171,7 @@ class SenpaiPlayer:
             await self.bot.say("`Volume is currently at {}%`".format(
                                str(self.player_volume)))
             return
+
         try:
             # if valid volume, adjust it
             volume = float(new_volume)
@@ -179,8 +179,8 @@ class SenpaiPlayer:
                 raise ValueError
 
             self._set_volume(volume)
-            reply = ("`Volume has been adjusted to {}`".format(
-                     str(self.player_volume)))
+            reply = "`Volume has been adjusted to {}%`".format(
+                     str(self.player_volume))
         # prompt for a valid volume if invalid
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
