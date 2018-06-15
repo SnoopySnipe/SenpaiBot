@@ -26,14 +26,14 @@ class SenpaiWarframe:
         try:
             f = urllib.request.urlopen("http://warframe.wikia.com/wiki/{}".format(mod_name))
         except urllib.error.HTTPError:
-            await self.bot.say("Operator, my codex does not seem to have an entry for this")
+            await self.bot.say("`Operator, my codex does not seem to have an entry for this`")
             return
 
         web_content = f.read().decode("utf-8")
 
         index = web_content.find('<meta property="og:image" content="')
         if (index == -1):
-            await self.bot.say("Operator, my codex does not seem to have an entry for this")
+            await self.bot.say("`Operator, my codex does not seem to have an entry for this`")
             return
         
         web_content = web_content[index + len('<meta property="og:image" content="'):]
