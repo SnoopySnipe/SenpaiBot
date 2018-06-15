@@ -8,7 +8,7 @@ class SenpaiWarframe:
 
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(pass_context=True)
     async def mod(self, context):
         offset = len("!senpai mod")
@@ -35,11 +35,11 @@ class SenpaiWarframe:
         if (index == -1):
             await self.bot.say("`Operator, my codex does not seem to have an entry for this`")
             return
-        
+
         web_content = web_content[index + len('<meta property="og:image" content="'):]
         index = web_content.find('"')
         mod_url = web_content[:index]
         await self.bot.say(mod_url.format(context))
-        
+
 def setup(bot):
     bot.add_cog(SenpaiWarframe(bot))
