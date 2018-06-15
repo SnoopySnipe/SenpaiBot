@@ -50,7 +50,7 @@ class Senpai8ball:
         if (len(question) == 0):
             await self.bot.say("`Kouhai, dou shita no?`")
             return
-        
+
         answer_index = random.randint(0, len(_8ball_answers)-1)
         reply = ("`Question: " + question + "\n" +
                  "Answer: " + _8ball_answers[answer_index] + "`")

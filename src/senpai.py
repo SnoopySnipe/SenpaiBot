@@ -72,20 +72,14 @@ async def leave():
 
 @bot.event
 async def on_message(message : str):
-    message_content = message.content
-
-    if (message_content.startswith("!help")):
-        bot_reply = help_message()
-        await bot.say(bot_reply)
-
-    else:
-        try:
-            await bot.process_commands(message)
-        except commands.errors.CommandNotFound:
-            bot.say("command not supported")
+    try:
+        await bot.process_commands(message)
+    except commands.errors.CommandNotFound:
+        await bot.say("command not supported")
 
 modules = ["senpai_fortnite", "senpai_fortune",
-           "senpai_imageboards", "senpai_player", "senpai_8ball"]
+           "senpai_imageboards", "senpai_player", "senpai_warframe",
+           "senpai_8ball"]
 
 if (__name__ == "__main__"):
 
