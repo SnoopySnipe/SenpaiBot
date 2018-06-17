@@ -10,8 +10,8 @@ class SenpaiWarframe:
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def mod(self, context):
-        offset = len("!senpai mod")
+    async def codex(self, context):
+        offset = len("!senpai codex")
 
         mod_name = context.message.content[offset+1:]
 
