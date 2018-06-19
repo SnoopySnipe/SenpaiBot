@@ -78,11 +78,44 @@ class SenpaiPlayer:
         else:
             self.refcount_dict[song.url] = (song, ref)
 
-    async def _play(self):
-        '''(SenpaiPlayer, Client, VoiceClient, Message) -> None
-        Plays songs in the local queue.
-        '''
+    def after_func(self):
+        player.stop()
+        self._deref_song(0)
 
+    async def _play2(self):
+        if (self.song_queue):
+            song = self.song_queue[0]
+
+            # TODO: currently bot is not moving to another channel
+            if (song.voice_channel != self.voice_channel):
+                self.voice_channel = song.voice_channel
+                self.voice.move_to(self.voice_channel)
+
+            # TODO: bad way of handling local songs and online songs
+            if (isinstance(song, senpai_song.SenpaiSongLocal)):
+                player = self.voice.create_ffmpeg_player(song.path,
+                                after=self.after_func)
+            elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
+                player = await self.voice.create_ytdl_player(song.path,
+                                after=self.after_func)
+
+            self.current_player = player
+            self._set_volume(self.player_volume)
+
+            # print a message showing what is currently playing
+            await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
+                               song.path))
+            player.start()
+
+        else:
+            # output message saying bot has left and leave
+            await self.bot.say("`Leaving voice channel`")
+            self.voice_channel = None
+            await self.voice.disconnect()
+            self.voice = None
+
+
+    async def _play(self):
         # play songs while there are songs in the queue
         while (self.song_queue):
             # pop the next song off the queue
@@ -106,7 +139,7 @@ class SenpaiPlayer:
             await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
                                song.path))
 
-            player.start()
+            await player.start()
 
             # TODO: Fix busy waiting by making use of
             # create_ffmpeg_player(after=) and create_ytdl_player(after=)
@@ -213,7 +246,12 @@ class SenpaiPlayer:
         # await self.bot.delete_message(context.message)
         download_msg = await self.bot.say("`Adding song...`")
 
-        song = self._add_song(url, user_voice_channel)
+        try:
+            song = self._add_song(url, user_voice_channel)
+        except:
+            await self.bot.delete_message(download_msg)
+            await self.bot.say("`Please provide a valid link`")
+            return
 
         await self.bot.delete_message(download_msg)
 
@@ -240,7 +278,12 @@ class SenpaiPlayer:
         # await self.bot.delete_message(context.message)
         download_msg = await self.bot.say("`Downloading video...`")
 
-        song = self._add_song_local(url, user_voice_channel)
+        try:
+            song = self._add_song_local(url, user_voice_channel)
+        except:
+            await self.bot.delete_message(download_msg)
+            await self.bot.say("`Please provide a valid link`")
+            return
 
         await self.bot.delete_message(download_msg)
 
