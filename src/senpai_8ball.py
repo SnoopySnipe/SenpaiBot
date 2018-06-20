@@ -1,5 +1,7 @@
 import random
 
+import discord
+
 from discord.ext import commands
 
 _8ball_answers = [
@@ -52,10 +54,13 @@ class Senpai8ball:
             return
 
         answer_index = random.randint(0, len(_8ball_answers)-1)
-        reply = ("`Question: " + question + "\n" +
-                 "Answer: " + _8ball_answers[answer_index] + "`")
 
-        await self.bot.say(reply)
+        embed_msg = discord.Embed(color=0xff93ac)
+        embed_msg.add_field(name="`Question:`", value=question, inline=False)
+        embed_msg.add_field(name="`Answer:`", value=_8ball_answers[answer_index],
+                        inline=False)
+
+        await self.bot.say(embed=embed_msg)
 
     @commands.command()
     async def guess(self, guess_num):
