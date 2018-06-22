@@ -38,11 +38,8 @@ _8ball_answers = [
 
 class Senpai8ball:
 
-    def __init__(self, bot):
-        self.bot = bot
-
     # Answers question with a yes or no
-    @commands.command(name="8ball", pass_context=True)
+    @commands.command(name="8ball")
     async def _8ball(self, context):
         offset = len("!senpai 8ball")
 
@@ -50,7 +47,7 @@ class Senpai8ball:
 
         # check if user actually asked a question
         if (len(question) == 0):
-            await self.bot.say("`Kouhai, dou shita no?`")
+            await context.send("`Kouhai, dou shita no?`")
             return
 
         answer_index = random.randint(0, len(_8ball_answers)-1)
@@ -60,32 +57,32 @@ class Senpai8ball:
         embed_msg.add_field(name="`Answer:`", value=_8ball_answers[answer_index],
                         inline=False)
 
-        await self.bot.say(embed=embed_msg)
+        await context.send(embed=embed_msg)
 
     @commands.command()
-    async def guess(self, guess_num):
+    async def guess(self, context, guess_num):
         rand_num = random.randint(1,10)
         try:
             guess_num = int(guess_num)
             if (guess_num == rand_num):
                 reply = "`Congratulations, you guessed it right!`"
             else:
-                reply = ("`Sorry, the number was " + str(rand_num) + "`")
+                reply = "`Sorry, the number was {}`".format(rand_num)
         # Prompt for a valid input
         except ValueError:
             reply = "Please enter a number between 1 and 10."
-        await self.bot.say(reply)
+        await context.send(reply)
 
     @commands.command()
-    async def coin(self):
+    async def coin(self, context):
         flip = random.randint(0,1)
         if (flip == 0):
             reply = "`Tails`"
         elif (flip == 1):
             reply = "`Heads`"
-        await self.bot.say(reply)
+        await context.send(reply)
 
 
 def setup(bot):
-    bot.add_cog(Senpai8ball(bot))
+    bot.add_cog(Senpai8ball())
 
