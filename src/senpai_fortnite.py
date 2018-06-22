@@ -30,28 +30,25 @@ _fortnite_locations = list(_fortnite_location_pics.keys())
 
 class SenpaiFortnite:
 
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(pass_context=True)
+    @commands.command()
     async def wherewedroppingbois(self, context):
-        await _send_fortnite_location(self.bot, context.message)
+        await _send_fortnite_location(context)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def drop(self, context):
-        await _send_fortnite_location(self.bot, context.message)
+        await _send_fortnite_location(context)
 
 
 def setup(bot):
-    bot.add_cog(SenpaiFortnite(bot))
+    bot.add_cog(SenpaiFortnite())
 
 # Fortnite dropman
-async def _send_fortnite_location(bot, message):
+async def _send_fortnite_location(context):
     answer_index = random.randint(0, len(_fortnite_locations)-1)
     location = _fortnite_locations[answer_index]
     location_pic = _fortnite_location_pics[location]
-    reply = "We dropping " + location + " bois"
-    drop_msg = await bot.send_file(message.channel, location_pic, content=reply)
+    reply = "We dropping {} bois".format(location)
+    drop_msg = await context.send(reply, file=discord.File(location_pic))
 
-    lensflare = discord.Emoji(id=425828826027655178, server=218898501805801472) 
-    await bot.add_reaction(drop_msg, lensflare)
+    lensflare = ':nickchengface:425828826027655178'
+    await drop_msg.add_reaction(lensflare)
