@@ -11,9 +11,6 @@ DESCRIPTION = '''The senpai of the server.'''
 # initialize bot
 bot = commands.Bot(command_prefix="!senpai ", description=DESCRIPTION)
 
-# keep track of volume
-#global_volume = 1
-
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -51,18 +48,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-
-@bot.command(pass_context=True)
-async def clean_yourself(context, lim):
-
-    def is_bot(message):
-        return message.author == bot.user
-
-    channel = context.message.channel
-    lim = int(lim)
-
-    deleted = await bot.purge_from(channel, limit=lim, check=is_bot)
-    await bot.say("Deleted {} message(s)".format(len(deleted)))
 
 @bot.command()
 async def leave():
