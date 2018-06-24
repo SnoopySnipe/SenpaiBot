@@ -29,6 +29,9 @@ class SenpaiPlayer:
         Sets the volume for this player in all queues
         '''
         self.player_volume = volume / 100
+
+        # TODO
+        return
         if (self.voice_client and self.voice_client.source):
             self.voice_client.source.volume = self.player_volume
 
@@ -99,7 +102,7 @@ class SenpaiPlayer:
             if (isinstance(song, senpai_song.SenpaiSongLocal)):
                 audio_src = discord.FFmpegPCMAudio(song.path)
             elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
-                audio_src = await self.voice.create_ytdl_player(song.path)
+                audio_src = discord.FFmpegPCMAudio(song.path)
 
             # print a message showing what is currently playing
             embed_msg = discord.Embed(title="SenpaiPlayer", color=0xff93ac)
@@ -200,9 +203,9 @@ class SenpaiPlayer:
         await self._vol_command(new_volume)
 
     @commands.command()
-    async def play(self, context, url=None):
+    async def playstream(self, context, url=None):
         if (not url):
-            await context.send("`usage: !senpai play youtube-link`")
+            await context.send("`usage: !senpai playstream youtube-link`")
             return
 
         if (not context.message.author.voice):
@@ -229,7 +232,7 @@ class SenpaiPlayer:
             await self._play(context)
 
 
-    @commands.command()
+    @commands.command(name="play")
     async def playlocal(self, context, url=None):
         if (not url):
             await context.send("`usage: !senpai play youtube-link`")
