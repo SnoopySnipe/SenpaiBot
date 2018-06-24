@@ -1,21 +1,21 @@
 import asyncio
 import os
 
+import discord
+
 import senpai_song
 
 from discord.ext import commands
 
 class SenpaiPlayer:
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.delay = 3
         self.song_queue = []
         self.refcount_dict = {}
-        self.current_player = None
-        self.player_volume = 25.0
+        self.player_volume = 0.12
         self.voice_channel = None
-        self.voice = None
+        self.voice_client = None
 
     def _clear_queue(self):
         '''(SenpaiPlayer) -> None
@@ -28,11 +28,11 @@ class SenpaiPlayer:
         '''(SenpaiPlayer, float) -> None
         Sets the volume for this player in all queues
         '''
-        self.player_volume = volume
-        if (self.current_player):
-            self.current_player.volume = self.player_volume / 50
+        self.player_volume = volume / 100
+        if (self.voice_client and self.voice_client.source):
+            self.voice_client.source.volume = self.player_volume
 
-    def _add_song(self, url, voice_channel):
+    def _add_song(self, url, voice_channel : discord.VoiceChannel):
         song = None
         if (url in self.refcount_dict):
             song = self.refcount_dict[url][0]
@@ -44,7 +44,7 @@ class SenpaiPlayer:
         self.song_queue.append(song)
         return song
 
-    def _add_song_local(self, url, voice_channel):
+    def _add_song_local(self, url, voice_channel : discord.VoiceChannel):
         song = None
         # song is already queued
         if (url in self.refcount_dict):
@@ -79,110 +79,82 @@ class SenpaiPlayer:
             self.refcount_dict[song.url] = (song, ref)
 
     def after_func(self):
-        player.stop()
         self._deref_song(0)
 
-    async def _play2(self):
-        if (self.song_queue):
-            song = self.song_queue[0]
-
-            # TODO: currently bot is not moving to another channel
-            if (song.voice_channel != self.voice_channel):
-                self.voice_channel = song.voice_channel
-                self.voice.move_to(self.voice_channel)
-
-            # TODO: bad way of handling local songs and online songs
-            if (isinstance(song, senpai_song.SenpaiSongLocal)):
-                player = self.voice.create_ffmpeg_player(song.path,
-                                after=self.after_func)
-            elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
-                player = await self.voice.create_ytdl_player(song.path,
-                                after=self.after_func)
-
-            self.current_player = player
-            self._set_volume(self.player_volume)
-
-            # print a message showing what is currently playing
-            await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
-                               song.path))
-            player.start()
-
-        else:
-            # output message saying bot has left and leave
-            await self.bot.say("`Leaving voice channel`")
-            self.voice_channel = None
-            await self.voice.disconnect()
-            self.voice = None
-
-
-    async def _play(self):
+    async def _play(self, context):
         # play songs while there are songs in the queue
         while (self.song_queue):
             # pop the next song off the queue
             song = self.song_queue[0]
 
-            # TODO: currently bot is not moving to another channel
-            if (song.voice_channel != self.voice_channel):
+            if (not self.voice_channel):
                 self.voice_channel = song.voice_channel
-                self.voice.move_to(self.voice_channel)
+                self.voice_client = await self.voice_channel.connect()
+            elif (self.voice_channel != song.voice_channel):
+                await self.voice_client.disconnect()
+                self.voice_channel = song.voice_channel
+                self.voice_client = await self.voice_channel.connect()
 
             # TODO: bad way of handling local songs and online songs
             if (isinstance(song, senpai_song.SenpaiSongLocal)):
-                player = self.voice.create_ffmpeg_player(song.path)
+                audio_src = discord.FFmpegPCMAudio(song.path)
             elif (isinstance(song, senpai_song.SenpaiSongYoutube)):
-                player = await self.voice.create_ytdl_player(song.path)
-
-            self.current_player = player
-            self._set_volume(self.player_volume)
+                audio_src = await self.voice.create_ytdl_player(song.path)
 
             # print a message showing what is currently playing
-            await self.bot.say("`Playing: \"{}\nPath: {}`".format(song.title,
-                               song.path))
+            embed_msg = discord.Embed(title="SenpaiPlayer", color=0xff93ac)
+            embed_msg.add_field(name="`Playing:`", value=song.title, inline=False)
+            embed_msg.add_field(name="`Path:`", value=song.path, inline=False)
+            await context.send(embed=embed_msg)
 
-            await player.start()
+            self.voice_client.play(audio_src)
+
+            # TODO: volume does not work for testing environment
+            # self.voice_client.source = discord.PCMVolumeTransformer(
+            #                     self.voice_client.source, self.player_volume)
 
             # TODO: Fix busy waiting by making use of
             # create_ffmpeg_player(after=) and create_ytdl_player(after=)
             # or yield from (?)
-            while (not player.is_done()):
+            while (self.voice_client.is_playing()):
                 await asyncio.sleep(self.delay)
-            player.stop()
+            self.voice_client.stop()
             self._deref_song(0)
 
         # output message saying bot has left and leave
-        await self.bot.say("`Leaving voice channel`")
+        await context.send("`Leaving voice channel`")
+        await self.voice_client.disconnect()
         self.voice_channel = None
-        await self.voice.disconnect()
-        self.voice = None
+        self.voice_client = None
 
     @commands.command()
-    async def skip(self):
-        if (self.current_player):
-            self.current_player.stop()
+    async def skip(self, context):
+        if (self.voice_client):
+            self.voice_client.stop()
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def stop(self, context):
         self._clear_queue()
-        await self.skip.invoke(context)
+        await self.skip.reinvoke(context)
 
     @commands.command()
     async def pause(self):
-        if (self.current_player):
-            self.current_player.pause()
+        if (self.voice_client):
+            self.voice_client.pause()
 
     @commands.command()
     async def resume(self):
-        if (self.current_player):
-            self.current_player.resume()
+        if (self.voice_client):
+            self.voice_client.resume()
 
     @commands.command()
     async def queue(self):
-        await self.bot.say(_queue_to_string(self.song_queue))
+        await context.send(_queue_to_string(self.song_queue))
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def dequeue(self, context, index=None):
         if (not self.song_queue):
-            await self.bot.say("`queue is empty`")
+            await context.send("`queue is empty`")
             return
 
         try:
@@ -193,15 +165,15 @@ class SenpaiPlayer:
 
             song = self.song_queue[index]
             self._deref_song(index)
-            await self.bot.say("`removed: [{}] {}".format(index, song.title))
+            await context.send("`removed: [{}] {}".format(index, song.title))
 
         except ValueError:
             reply = "`Please give an integer between 0 and {}`"
-            await self.bot.say(reply.format(queue_size))
+            await context.send(reply.format(queue_size))
 
     async def _vol_command(self, new_volume):
         if (new_volume is None):
-            await self.bot.say("`Volume is currently at {}%`".format(
+            await context.send("`Volume is currently at {}%`".format(
                                str(self.player_volume)))
             return
 
@@ -217,86 +189,77 @@ class SenpaiPlayer:
         # prompt for a valid volume if invalid
         except ValueError:
             reply = "`Please enter a volume between 0 and 100`"
-        await self.bot.say(reply)
+        await context.send(reply)
 
     @commands.command()
-    async def volume(self, new_volume=None):
+    async def volume(self, context, new_volume=None):
         await self._vol_command(new_volume)
 
     @commands.command()
-    async def vol(self, new_volume=None):
+    async def vol(self, context, new_volume=None):
         await self._vol_command(new_volume)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def play(self, context, url=None):
         if (not url):
-            await self.bot.say("usage: !senpai play youtube-link")
+            await context.send("`usage: !senpai play youtube-link`")
             return
 
-        # bot_voice = await bot.join_voice_channel(user_voice_channel)
-        # async def _join_voice_channel(bot, voice_channel
-        # bot_voice = await bot.join_voice_channel(author_voice_channel)
-
-        user_voice_channel = context.message.author.voice_channel
-        if (user_voice_channel is None):
-            await self.bot.say("{}, please join a voice channel".format(
+        if (not context.message.author.voice):
+            await context.send("{}, please join a voice channel".format(
                                context.message.author.mention))
             return
 
-        # await self.bot.delete_message(context.message)
-        download_msg = await self.bot.say("`Adding song...`")
+        download_msg = await context.send("`Adding song...`")
+
+        user_voice_channel = context.message.author.voice.channel
 
         try:
-            song = self._add_song(url, user_voice_channel)
+            song = self._add_song(url, context.message.author.voice.channel)
         except:
-            await self.bot.delete_message(download_msg)
-            await self.bot.say("`Please provide a valid link`")
+            await download_msg.delete()
+            await context.send("`Please provide a valid link`")
             return
 
-        await self.bot.delete_message(download_msg)
+        await download_msg.delete()
 
-        # TODO
-        if (self.voice_channel is None):
-            self.voice_channel = user_voice_channel
-            self.voice = await self.bot.join_voice_channel(self.voice_channel)
-            await self._play()
+        if (self.voice_client):
+            await context.send("`Enqueued: {}`".format(song.title))
         else:
-            await self.bot.say("`Enqueued: {}`".format(song.title))
+            await self._play(context)
 
-    @commands.command(pass_context=True)
+
+    @commands.command()
     async def playlocal(self, context, url=None):
         if (not url):
-            await self.bot.say("usage: !senpai playlocal youtube-link")
+            await context.send("`usage: !senpai play youtube-link`")
             return
 
-        user_voice_channel = context.message.author.voice_channel
-        if (user_voice_channel is None):
-            await self.bot.say("{}, please join a voice channel".format(
+        if (not context.message.author.voice):
+            await context.send("{}, please join a voice channel".format(
                                context.message.author.mention))
             return
 
-        # await self.bot.delete_message(context.message)
-        download_msg = await self.bot.say("`Downloading video...`")
+        download_msg = await context.send("`Downloading song...`")
 
         try:
-            song = self._add_song_local(url, user_voice_channel)
+            song = self._add_song_local(url, context.message.author.voice.channel)
         except:
-            await self.bot.delete_message(download_msg)
-            await self.bot.say("`Please provide a valid link`")
+            await download_msg.delete()
+            await context.send("`Please provide a valid link`")
             return
 
-        await self.bot.delete_message(download_msg)
+        await download_msg.delete()
 
-        if (self.voice_channel is None):
-            self.voice_channel = user_voice_channel
-            self.voice = await self.bot.join_voice_channel(self.voice_channel)
-            await self._play()
+        if (self.voice_client):
+            await context.send("`Enqueued: {}`".format(song.title))
         else:
-            await self.bot.say("`Enqueued: {}`".format(song.title))
+            await self._play(context)
+
 
 
 def setup(bot):
-    bot.add_cog(SenpaiPlayer(bot))
+    bot.add_cog(SenpaiPlayer())
 
 
 def _queue_to_string(queue : list):

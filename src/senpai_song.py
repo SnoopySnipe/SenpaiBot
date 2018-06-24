@@ -24,11 +24,13 @@ class SenpaiSongLocal(SenpaiSong):
         SenpaiSong.__init__(self, title, url, path)
         self.voice_channel = voice_channel
 
+
 class SenpaiSongYoutube(SenpaiSong):
 
     def __init__(self, title, url, voice_channel):
         SenpaiSong.__init__(self, title, url, url)
         self.voice_channel = voice_channel
+
 
 def _senpai_progress_hook(progress_info):
     global _unprocessed_file_path
@@ -62,7 +64,6 @@ def create_youtube_song(url : str, voice_channel):
     return song
 
 def create_local_song(url : str, voice_channel):
-    ''' '''
 
     ydl_download_opts = {
         'quiet': True,
