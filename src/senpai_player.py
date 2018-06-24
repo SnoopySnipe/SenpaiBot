@@ -16,6 +16,7 @@ class SenpaiPlayer:
         self.player_volume = 0.12
         self.voice_channel = None
         self.voice_client = None
+        self.repeat = False
 
     def _clear_queue(self):
         '''(SenpaiPlayer) -> None
@@ -122,7 +123,8 @@ class SenpaiPlayer:
             while (self.voice_client.is_playing()):
                 await asyncio.sleep(self.delay)
             self.voice_client.stop()
-            self._deref_song(0)
+            if (not self.repeat):
+                self._deref_song(0)
 
         # output message saying bot has left and leave
         await context.send("`Leaving voice channel`")
@@ -174,10 +176,29 @@ class SenpaiPlayer:
             reply = "`Please give an integer between 0 and {}`"
             await context.send(reply.format(queue_size))
 
-    async def _vol_command(self, new_volume):
+    @commands.command(name="repeat")
+    async def _repeat(self, context, state=None):
+        if (not state):
+            if (self.repeat):
+                await context.send("`repeat is on`")
+            else:
+                await context.send("`repeat is off`")
+            return
+
+        if (state in ("on", "yes")):
+            self.repeat = True
+            await context.send("`repeat has been turned on`")
+        elif (state in ("off", "no")):
+            self.repeat = False
+            await context.send("`repeat has been turned off`")
+        else:
+            await context.send("`usage: !senpai repeat on/off`")
+
+
+    async def _vol_command(self, context, new_volume):
         if (new_volume is None):
             await context.send("`Volume is currently at {}%`".format(
-                               str(self.player_volume)))
+                               self.player_volume * 100))
             return
 
         try:
@@ -196,11 +217,11 @@ class SenpaiPlayer:
 
     @commands.command()
     async def volume(self, context, new_volume=None):
-        await self._vol_command(new_volume)
+        await self._vol_command(context, new_volume)
 
     @commands.command()
     async def vol(self, context, new_volume=None):
-        await self._vol_command(new_volume)
+        await self._vol_command(context, new_volume)
 
     @commands.command()
     async def playstream(self, context, url=None):

@@ -4,8 +4,6 @@ import asyncio
 
 from discord.ext import commands
 
-from helpers import *
-
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
