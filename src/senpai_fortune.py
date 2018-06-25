@@ -1,20 +1,18 @@
 import requests
 
-from discord.ext import commands
+import discord
 
+from discord.ext import commands
 
 class SenpaiFortune:
 
-    def __init__(self, bot):
-        self.bot = bot
-
     @commands.command()
-    async def fortunecookie():
-        await bot.say(_helloacm_get_fortune_cookie())
+    async def fortune(self, context):
+        await context.send(_helloacm_get_fortune_cookie())
 
 
 def setup(bot):
-    bot.add_cog(SenpaiFortune(bot))
+    bot.add_cog(SenpaiFortune())
 
 
 def _helloacm_get_fortune_cookie():
