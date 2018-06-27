@@ -31,19 +31,30 @@ class SenpaiWarframe:
 
         web_content = f.read().decode("utf-8")
 
-        index = web_content.find('<meta property="og:image" content="')
+        OG_IMAGE_TAG = '<meta property="og:image" content="'
+
+        index = web_content.find(OG_IMAGE_TAG)
         if (index == -1):
             await context.send("`Operator, my codex does not seem to have an entry for this`")
             return
 
-        web_content = web_content[index + len('<meta property="og:image" content="'):]
-        index = web_content.find('"')
-        mod_img_url = web_content[:index]
+        og_img_url = web_content[index + len(OG_IMAGE_TAG):]
+        index = og_img_url.find('"')
+        og_img_url = og_img_url[:index]
 
         embed_msg = discord.Embed(title=mod_name,
                             url=mod_url,
                             color=0xff93ac)
-        embed_msg.set_image(url=mod_img_url)
+        embed_msg.set_image(url=og_img_url)
+
+        TWITTER_DESC_TAG = '<meta name="twitter:description" content="'
+
+        index = web_content.find(TWITTER_DESC_TAG)
+        if (index != -1):
+            twitter_desc = web_content[index + len(TWITTER_DESC_TAG):]
+            index = twitter_desc.find('"')
+            twitter_desc = twitter_desc[:index]
+            embed_msg.add_field(name="Description", value=twitter_desc, inline=True)
 
         await context.send(embed=embed_msg)
 
