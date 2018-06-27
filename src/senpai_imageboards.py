@@ -11,9 +11,16 @@ class SenpaiImageboard:
     @commands.group()
     async def daily(self, context):
         if (context.invoked_subcommand is None):
-            imageboards = [self.yandere, self.danbooru,
-                           self.konachan, self.gelbooru, self.safebooru]
+            imageboards = [self.yandere, self.danbooru, self.konachan,
+                           self.gelbooru, self.safebooru]
             await random.choice(imageboards).reinvoke(context)
+
+    @daily.command()
+    async def all(self, context):
+        imageboards = [self.yandere, self.danbooru, self.konachan,
+                       self.gelbooru, self.safebooru]
+        for func in imageboards:
+            await func.reinvoke(context)
 
     @daily.command()
     async def yandere(self, context):
