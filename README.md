@@ -36,27 +36,27 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ** all commands must prefix with !senpai **
 ```
 !senpai
-  8ball \<question\> : answers a yes/no question
+  8ball <question> : answers a yes/no question
   coin	: returns heads	or tails
   guess : game where user guesses a number between 1 and 10
   fortune : shows a fortune
 
-  play \<Youtube URL\>: download and play a YouTube video into the user's voice channel
+  play <Youtube URL>: download and play a YouTube video into the user's voice channel
      if another video is already playing, it will be added to queue
   pause : pause video
   queue: shows the queue of videos
-  repeat \<on\off\> : turn repeat on or off
+  repeat <on\off> : turn repeat on or off
   resume : resume video
   skip : skip to next video
   stop : clears the queue, and leaves the voice channel
 
-  playstream \<YouTube URL\> : stream and play a YouTube video into the user's voice channel
+  playstream <YouTube URL> : stream and play a YouTube video into the user's voice channel
 
   drop/wherewedroppingbois : shows the next location to drop on Fortnite
 
-  codex \<entry\> : shows the description of a entry in the Warframe wikia codex as well as an visual image of it
+  codex <entry> : shows the description of a entry in the Warframe wikia codex as well as an visual image of it
 
-  daily \<imageboard\> : grabs the latest post/image from a supported image board
+  daily <imageboard> : grabs the latest post/image from a supported image board
     <no arguments> : grabs the latest image from a random supported image board
     all : grabs the latest image from all supported image boards
     danbooru : grabs the latest image from danbooru
