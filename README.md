@@ -8,25 +8,33 @@ Our bot for our Discord server.
 
 Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 
-
-
-
 ## Requirements
  - python3.5.2 or higher
  - pip
   - [requests](http://docs.python-requests.org/en/master/)
   - [youtube-dl](https://github.com/rg3/youtube-dl)
-  - discord.py rewrite for python (see [here](https://github.com/Rapptz/discord.py/tree/rewrite) for dependencies)
+  - discord.py rewrite for python (see [here](https://github.com/Rapptz/discord.py/tree/rewrite) for dependencies) (installation instructions under install the development version)
  - ffmpeg
-  - must be in class path
+  - must be in class path ($PATH)
 ```
-~ $ python3 -m pip install -U discord.py[voice]
+# installing discord.py rewrite
+# (may be outdated, please check their webpage for up to date installation instructions
+~ $ git clone https://github.com/Rapptz/discord.py
+~ $ cd discord.py
+~ $ git checkout rewrite
+~ $ python3 -m pip install -U .[voice]
+# installing youtube-dl
 ~ $ python3 -m pip install -U youtube-dl
+# installing requests
 ~ $ python3 -m pip install -U requests
+# Checking if ffmpeg is in PATH
+~ $ ffmpeg -version
 ```
 
 ## Running
 ```
+~ $ cd SenpaiBot/src
+~ $ git checkout rewrite
 ~ $ python3 senpai.py -t [discord_bot_token]
 ```
 
