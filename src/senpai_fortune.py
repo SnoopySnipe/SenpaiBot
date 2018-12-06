@@ -10,7 +10,7 @@ class SenpaiFortune:
 
     @commands.command()
     async def fortunecookie():
-        await bot.say(_helloacm_get_fortune_cookie())
+        await self.bot.say(_helloacm_get_fortune_cookie())
 
 
 def setup(bot):
