@@ -23,7 +23,7 @@ class SenpaiEvents:
             else:
                 res = "Usage: !senpai event create \"event name\" \"event time\""
         elif (arg[0] == "remove"):
-            if(len(arg) == 3):
+            if(len(arg) == 2):
                 res = self.event_list.remove_event(arg[1])
             else:
                 res = "Usage: !senpai event remove [event number]"
