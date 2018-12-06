@@ -8,7 +8,7 @@ class SenpaiEvents:
 
     # Manages events
     @commands.command()
-    async def event(self, context, *, arg):
+    async def event(self, context, *arg):
         offset = len("!senpai event")
 
         question = context.message.content[offset+1:]
