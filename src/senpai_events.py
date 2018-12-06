@@ -5,7 +5,7 @@ from helpers import *
 class SenpaiEvents:
     event_list = Event_List()
     def __init__(self, bot):
-        self.bot = bot()
+        self.bot = bot
 
     # Manages events
     @commands.command(pass_context=True)
