@@ -1,5 +1,5 @@
 import discord
-import events
+from events import *
 from discord.ext import commands
 
 class SenpaiEvents:
