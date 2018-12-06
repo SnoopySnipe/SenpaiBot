@@ -4,6 +4,12 @@ class Event_List:
     def add_event(self, event_name, event_start_time):
         self.event_list.append(Event(event_name, event_start_time))
         return "Added event: " + event_name + " with date: " + event_start_time 
+    def remove_event(self, eventIndex):
+        if(eventIndex < len(self.event_list)):
+            self.event_list.pop(eventIndex);
+            return "Removed event: " + event_name + " with date: " + event_start_time 
+        else:
+            return "Invalid event number"
     def list_events(self):
         res = ""
         for i in range(len(self.event_list)):
@@ -17,9 +23,13 @@ class Event_List:
     def add_attendee(self, eventIndex, name):
         if(eventIndex < len(self.event_list)):
             return self.event_list[eventIndex].add_attendee(name)
+        else:
+            return "Invalid event number"
     def remove_attendee(self, eventIndex, name):
         if(eventIndex < len(self.event_list)):
             return self.event_list[eventIndex].remove_attendee(name)
+        else:
+            return "Invalid event number"
 class Event:
     def __init__(self, event_name, event_start_time):
         self.event_name = event_name
