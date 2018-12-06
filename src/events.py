@@ -15,10 +15,10 @@ class Event_List:
             return self.event_list[eventIndex].view_attendees()
     def add_attendee(self, eventIndex, name):
         if(eventIndex < len(self.event_list)):
-            return self.event_list[eventIndex].add_attendee()
+            return self.event_list[eventIndex].add_attendee(name)
     def remove_attendee(self, eventIndex, name):
         if(eventIndex < len(self.event_list)):
-            return self.event_list[eventIndex].remove_attendee()
+            return self.event_list[eventIndex].remove_attendee(name)
 class Event:
     def __init__(self, event_name, event_start_time):
         self.event_name = event_name
