@@ -3,10 +3,11 @@ class Event_List:
         self.event_list = []
     def add_event(self, event_name, event_start_time):
         self.event_list.append(Event(event_name, event_start_time))
+        return "Added event: " + event_name + " with date: " + event_start_time 
     def list_events(self):
         res = ""
         for i in range(len(self.event_list)):
-            res += "#" + str(i) + ". " + self.event_list[i].event_name + "  (Date: " + self.event_list[i].event_start_time + "]" + "\n"
+            res += "#" + str(i) + ". " + self.event_list[i].event_name + "  (Date: " + self.event_list[i].event_start_time + ")" + "\n"
             attendees = self.view_attendees(i)
             res += "\t" + ''.join(e for e in attendees) + "\n"
         return res
