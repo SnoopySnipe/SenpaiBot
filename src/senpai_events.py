@@ -2,9 +2,8 @@ import discord
 
 from discord.ext import commands
 from helpers import *
-event_list = Event_List()
 class SenpaiEvents:
-
+    event_list = Event_List()
     def __init__(self, bot):
         self.bot = bot()
 
