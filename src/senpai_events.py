@@ -2,15 +2,14 @@ import discord
 
 from discord.ext import commands
 from helpers import *
-
+event_list = Event_List()
 class SenpaiEvents:
 
     def __init__(self, bot):
-        self.bot = bot
-        self.event_list = Event_List()
+        self.bot = bot()
 
     # Manages events
-    @commands.command(name="event", pass_context=True)
+    @commands.command(pass_context=True)
     async def event(self, context):
         offset = len("!senpai event")
 
@@ -22,13 +21,13 @@ class SenpaiEvents:
         args = question.split();
         res = ""
         if(args[0] == "create"):
-            res = self.event_list.add_event(args[1], args[2])
+            res = event_list.add_event(args[1], args[2])
         elif (args[0] == "join"):
-            res = self.event_list.add_attendee(args[1], context.message.author.mention)
+            res = event_list.add_attendee(args[1], context.message.author.mention)
         elif(args[0] == "leave"):
-            res = self.event_list.remove_attendee(args[1], context.message.author.mention)
+            res = event_list.remove_attendee(args[1], context.message.author.mention)
         elif(args[0] == "list"):
-            res = self.event_list.list_events()
+            res = event_list.list_events()
         else:
             res = "Command not found!"
 
