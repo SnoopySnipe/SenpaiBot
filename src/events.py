@@ -7,7 +7,7 @@ class Event_List:
         res = ""
         for i in range(len(self.event_list)):
             res += "#" + str(i) + ". " + self.event_list[i].event_name + "\n"
-            attendees = view_attendees(i)
+            attendees = self.view_attendees(i)
             res += "\t" + attendees + "\n"
         return res
     def view_attendees(self, eventIndex):
