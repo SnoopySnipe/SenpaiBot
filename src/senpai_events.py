@@ -7,7 +7,7 @@ class SenpaiEvents:
 
     # Manages events
     @commands.command()
-    async def event(self, context):
+    async def event(self, context, *args):
         offset = len("!senpai event")
 
         question = context.message.content[offset+1:]
@@ -15,7 +15,6 @@ class SenpaiEvents:
         if (len(question) == 0):
             await context.send("`Use !senpai event list, !senpai event create [event name] [event time], !senpai event join [event number], or !senpai event leave [event number]`")
             return
-        args = question.split()
         res = ""
         if(args[0] == "create"):
             res = event_list.add_event(args[1], args[2])
@@ -29,7 +28,6 @@ class SenpaiEvents:
             res = "Command not found!"
 
         await context.send(res)
-
 
 def setup(bot):
     bot.add_cog(SenpaiEvents())
