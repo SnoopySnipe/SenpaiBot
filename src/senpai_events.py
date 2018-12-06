@@ -17,13 +17,21 @@ class SenpaiEvents:
             await context.send("`Use !senpai event list, !senpai event create [event name] [event time], !senpai event join [event number], or !senpai event leave [event number]`")
             return
         res = "Something went wrong"
-        await context.send(arg)
         if(arg[0] == "create"):
-            res = self.event_list.add_event(arg[1], arg[2])
+            if(len(arg) == 3):
+                res = self.event_list.add_event(arg[1], arg[2])
+            else:
+                res = "Usage: !senpai create [event name] [event time]"
         elif (arg[0] == "join"):
-            res = self.event_list.add_attendee(arg[1], context.message.author.mention)
+            if(len(arg) == 2):
+                res = self.event_list.add_attendee(arg[1], context.message.author.mention)
+            else:
+                res = "Usage: !senpai join [event number]"
         elif(arg[0] == "leave"):
-            res = self.event_list.remove_attendee(arg[1], context.message.author.mention)
+            if(len(arg) == 2):
+                res = self.event_list.remove_attendee(arg[1], context.message.author.mention)
+            else:
+                res = "Usage: !senpai leave [event number]"
         elif(arg[0] == "list"):
             res = self.event_list.list_events()
         else:
