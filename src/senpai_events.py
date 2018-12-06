@@ -24,12 +24,12 @@ class SenpaiEvents:
                 res = "Usage: !senpai create [event name] [event time]"
         elif (arg[0] == "join"):
             if(len(arg) == 2):
-                res = self.event_list.add_attendee(int(arg[1]), context.message.author.mention)
+                res = self.event_list.add_attendee(int(arg[1]), context.message.author)
             else:
                 res = "Usage: !senpai join [event number]"
         elif(arg[0] == "leave"):
             if(len(arg) == 2):
-                res = self.event_list.remove_attendee(int(arg[1]), context.message.author.mention)
+                res = self.event_list.remove_attendee(int(arg[1]), context.message.author)
             else:
                 res = "Usage: !senpai leave [event number]"
         elif(arg[0] == "list"):
