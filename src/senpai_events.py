@@ -15,7 +15,7 @@ class SenpaiEvents:
             return res
         def view_attendees(self, eventIndex):
             if(eventIndex < len(self.event_list)):
-            return self.event_list[eventIndex].view_attendees()
+                return self.event_list[eventIndex].view_attendees()
         def add_attendee(self, eventIndex, name):
             if(eventIndex < len(self.event_list)):
                 return self.event_list[eventIndex].add_attendee()
