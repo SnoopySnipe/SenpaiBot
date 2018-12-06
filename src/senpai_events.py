@@ -15,13 +15,13 @@ class Event_List:
             res += "#" + str(i) + ". " + self.event_list[i].event_name
         return res
     def view_attendees(self, eventIndex):
-        if(eventIndex < len(self.event_list):
+        if(eventIndex < len(self.event_list)):
             return self.event_list[eventIndex].view_attendees()
     def add_attendee(self, eventIndex, name):
-        if(eventIndex < len(self.event_list):
+        if(eventIndex < len(self.event_list)):
             return self.event_list[eventIndex].add_attendee()
     def remove_attendee(self, eventIndex, name):
-        if(eventIndex < len(self.event_list):
+        if(eventIndex < len(self.event_list)):
             return self.event_list[eventIndex].remove_attendee()
 class Event:
     def __init__(self, event_name, event_start_time):
