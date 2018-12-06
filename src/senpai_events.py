@@ -57,7 +57,7 @@ class SenpaiEventManager:
         question = context.message.content[offset+1:]
         # check for action arguments
         if (len(question) == 0):
-            await self.bot.say("`Use !senpai event list, !senpai event create [event name] [event time], !senpai event join [event number], or !senpai event leave [event number]`")
+            await message.channel.send("`Use !senpai event list, !senpai event create [event name] [event time], !senpai event join [event number], or !senpai event leave [event number]`")
             return
         args = question.split();
         res = ""
@@ -72,7 +72,7 @@ class SenpaiEventManager:
         else:
             res = "Command not found!"
 
-        await self.bot.say(res)
+        await message.channel.send(res)
 
 
 def setup(bot):
