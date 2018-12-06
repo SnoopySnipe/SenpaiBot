@@ -6,7 +6,7 @@ class Event_List:
     def list_events(self):
         res = ""
         for i in range(len(self.event_list)):
-            res += "#" + str(i) + ". " + self.event_list[i].event_name + "\n"
+            res += "#" + str(i) + ". " + self.event_list[i].event_name + "[Date:" + self.event_list[i].event_start_time + "]" + "\n"
             attendees = self.view_attendees(i)
             res += "\t" + ''.join(e for e in attendees) + "\n"
         return res
