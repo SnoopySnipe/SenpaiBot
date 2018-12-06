@@ -22,6 +22,11 @@ class SenpaiEvents:
                 res = self.event_list.add_event(arg[1], arg[2])
             else:
                 res = "Usage: !senpai event create \"event name\" \"event time\""
+        elif (arg[0] == "remove"):
+            if(len(arg) == 3):
+                res = self.event_list.remove_event(arg[1])
+            else:
+                res = "Usage: !senpai event remove [event number]"
         elif (arg[0] == "join"):
             if(len(arg) == 2):
                 res = self.event_list.add_attendee(int(arg[1]), context.message.author)
