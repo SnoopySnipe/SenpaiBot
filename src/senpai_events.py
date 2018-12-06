@@ -21,15 +21,15 @@ class SenpaiEvents:
             if(len(arg) == 3):
                 res = self.event_list.add_event(arg[1], arg[2])
             else:
-                res = "Usage: !senpai event create [event name] [event time]"
+                res = "Usage: !senpai event create "event name" "event time"
         elif (arg[0] == "join"):
             if(len(arg) == 2):
-                res = self.event_list.add_attendee(int(arg[1]), context.message.author.mention)
+                res = self.event_list.add_attendee(int(arg[1]), context.message.author)
             else:
                 res = "Usage: !senpai event join [event number]"
         elif(arg[0] == "leave"):
             if(len(arg) == 2):
-                res = self.event_list.remove_attendee(int(arg[1]), context.message.author.mention)
+                res = self.event_list.remove_attendee(int(arg[1]), context.message.author)
             else:
                 res = "Usage: !senpai event leave [event number]"
         elif(arg[0] == "list"):
