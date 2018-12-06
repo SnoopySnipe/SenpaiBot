@@ -36,4 +36,4 @@ class SenpaiEvents:
 
 
 def setup(bot):
-    bot.add_cog(SenpaiEventManager(bot))
+    bot.add_cog(SenpaiEvents(bot))
