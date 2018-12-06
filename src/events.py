@@ -7,7 +7,7 @@ class Event_List:
     def remove_event(self, eventIndex):
         if(eventIndex < len(self.event_list)):
             self.event_list.pop(eventIndex);
-            return "Removed event: " + event_name + " with date: " + event_start_time 
+            return "Removed event with event number " + eventIndex 
         else:
             return "Invalid event number"
     def list_events(self):
