@@ -17,7 +17,7 @@ class SenpaiEvents:
             return
         res = ""
         args = arg.split()
-        context.send(args)
+        await context.send(args)
         if(args[0] == "create"):
             res = event_list.add_event(args[1], args[2])
         elif (args[0] == "join"):
