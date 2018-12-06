@@ -16,6 +16,7 @@ class SenpaiEvents:
             await context.send("`Use !senpai event list, !senpai event create [event name] [event time], !senpai event join [event number], or !senpai event leave [event number]`")
             return
         res = ""
+        print(args)
         if(args[0] == "create"):
             res = event_list.add_event(args[1], args[2])
         elif (args[0] == "join"):
