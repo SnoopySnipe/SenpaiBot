@@ -8,7 +8,7 @@ class Event_List:
         for i in range(len(self.event_list)):
             res += "#" + str(i) + ". " + self.event_list[i].event_name + "\n"
             attendees = self.view_attendees(i)
-            res += "\t" + attendees + "\n"
+            res += "\t" + ''.join(e for e in attendees) + "\n"
         return res
     def view_attendees(self, eventIndex):
         if(eventIndex < len(self.event_list)):
