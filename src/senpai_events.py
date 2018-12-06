@@ -63,11 +63,11 @@ class SenpaiEventManager:
         res = ""
         if(args[0] == "create"):
             res = self.event_list.add_event(args[1], args[2])
-        else if (args[0] == "join"):
+        elif (args[0] == "join"):
             res = self.event_list.add_attendee(args[1], context.message.author.mention)
-        else if(args[0] == "leave"):
+        elif(args[0] == "leave"):
             res = self.event_list.remove_attendee(args[1], context.message.author.mention)
-        else if(args[0] == "list"):
+        elif(args[0] == "list"):
             res = self.event_list.list_events()
         else:
             res = "Command not found!"
