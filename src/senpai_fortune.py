@@ -10,7 +10,6 @@ class SenpaiFortune:
     async def fortune(self, context):
         await context.send(_helloacm_get_fortune_cookie())
 
-
 def setup(bot):
     bot.add_cog(SenpaiFortune())
 

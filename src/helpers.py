@@ -34,3 +34,4 @@ def bot_in_voice_channel(bot, voice_channel):
             break
 
     return already_connected
+
