@@ -13,7 +13,7 @@ class Event_List:
     def remove_event(self, eventIndex):
         if(eventIndex < len(self.event_list)):
             self.event_list.pop(eventIndex);
-            return "Removed event with event number " + eventIndex 
+            Return "Removed event with event number {}".format(eventIndex)
         else:
             return "Invalid event number"
     def list_events(self):
