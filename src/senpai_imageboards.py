@@ -5,15 +5,22 @@ import discord
 
 from discord.ext import commands
 
+async def _send_embed_imageboard_msg(context, title, post_url, file_url):
+        embed_msg = discord.Embed(title=title,
+                            url=post_url,
+                            color=0xff93ac)
+        embed_msg.set_image(url=file_url)
+
+        await context.send(embed=embed_msg)
 
 class SenpaiImageboard:
+    def __init__(self):
+        self.imageboards = [self.yandere, self.danbooru, self.konachan,
+                                   self.gelbooru, self.safebooru]
 
-    @commands.group()
+    @commands.group(invoke_without_command=True)
     async def daily(self, context):
-        if (context.invoked_subcommand is None):
-            imageboards = [self.yandere, self.danbooru, self.konachan,
-                           self.gelbooru, self.safebooru]
-            await random.choice(imageboards).reinvoke(context)
+        await random.choice(self.imageboards).reinvoke(context)
 
     @daily.command()
     async def all(self, context):
@@ -154,16 +161,6 @@ class SenpaiImageboard:
                                    title="konachan: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
-
-
-async def _send_embed_imageboard_msg(context, title, post_url, file_url):
-        embed_msg = discord.Embed(title=title,
-                            url=post_url,
-                            color=0xff93ac)
-        embed_msg.set_image(url=file_url)
-
-        await context.send(embed=embed_msg)
-
 
 def setup(bot):
     bot.add_cog(SenpaiImageboard())
