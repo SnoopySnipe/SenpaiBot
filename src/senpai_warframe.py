@@ -1,9 +1,11 @@
 import asyncio
-import urllib.request
 
 import discord
+import webpreview
 
 from discord.ext import commands
+
+COLOR=0xff93ac
 
 class SenpaiWarframe:
 
@@ -11,11 +13,11 @@ class SenpaiWarframe:
     async def codex(self, context):
         offset = len("!senpai codex")
 
-        mod_name = context.message.content[offset+1:]
+        mod_name = context.message.content[offset+1:].strip()
 
         # check if user actually asked a question
         if (len(mod_name) == 0):
-            await context.send("`Operator, would you like to tell me what you are looking for?`")
+            await context.send("`Operator, what codex entry are looking for?`")
             return
 
         tmp_list = [elem.capitalize() for elem in mod_name.split()]
@@ -24,39 +26,16 @@ class SenpaiWarframe:
         mod_url = "http://warframe.wikia.com/wiki/{}".format(mod_name)
 
         try:
-            f = urllib.request.urlopen(mod_url)
-        except urllib.error.HTTPError:
-            await context.send("`Operator, my codex does not seem to have an entry for this`")
-            return
-
-        web_content = f.read().decode("utf-8")
-
-        OG_IMAGE_TAG = '<meta property="og:image" content="'
-
-        index = web_content.find(OG_IMAGE_TAG)
-        if (index == -1):
-            await context.send("`Operator, my codex does not seem to have an entry for this`")
-            return
-
-        og_img_url = web_content[index + len(OG_IMAGE_TAG):]
-        index = og_img_url.find('"')
-        og_img_url = og_img_url[:index]
-
-        embed_msg = discord.Embed(title=mod_name,
+            title, description, image_url = webpreview.web_preview(mod_url)
+            embed_msg = discord.Embed(title=title,
                             url=mod_url,
-                            color=0xff93ac)
-        embed_msg.set_image(url=og_img_url)
-
-        TWITTER_DESC_TAG = '<meta name="twitter:description" content="'
-
-        index = web_content.find(TWITTER_DESC_TAG)
-        if (index != -1):
-            twitter_desc = web_content[index + len(TWITTER_DESC_TAG):]
-            index = twitter_desc.find('"')
-            twitter_desc = twitter_desc[:index]
-            embed_msg.add_field(name="Description", value=twitter_desc, inline=True)
-
-        await context.send(embed=embed_msg)
+                            color=COLOR)
+            embed_msg.add_field(name="Description", value=description, inline=True)
+            embed_msg.set_image(url=image_url)
+            await context.send(embed=embed_msg)
+        except Exception as e:
+            print(repr(e))
+            await context.send("`Operator, my codex does not seem to have an entry for this`")
 
 def setup(bot):
     bot.add_cog(SenpaiWarframe())

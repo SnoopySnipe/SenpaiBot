@@ -11,9 +11,9 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ## Requirements
  - python3.5.2 or higher
  - pip
-  - [requests](http://docs.python-requests.org/en/master/)
-  - [youtube-dl](https://github.com/rg3/youtube-dl)
   - discord.py rewrite for python (see [here](https://github.com/Rapptz/discord.py/tree/rewrite) for dependencies) (installation instructions under install the development version)
+  - [youtube-dl](https://github.com/rg3/youtube-dl)
+  - [webpreview](https://github.com/ludbek/webpreview)
  - ffmpeg
   - must be in class path ($PATH)
  - see Makefile for more details

@@ -11,7 +11,7 @@ class Event_List:
         return (len(self.event_list) - 1, new_event)
 
     def remove_event(self, eventIndex):
-        if(eventIndex < len(self.event_list)):
+        if (eventIndex < len(self.event_list)):
             self.event_list.pop(eventIndex);
             return ("Removed event with event number {}".format(eventIndex))
         else:
