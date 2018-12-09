@@ -8,15 +8,7 @@ import logging
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
-
-import logging
-
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
@@ -78,7 +70,7 @@ async def on_message(message : str):
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
-           "senpai_8ball", "senpai_events"]
+           "senpai_8ball", "senpai_events", "senpai_yugioh"]
 
 if (__name__ == "__main__"):
 

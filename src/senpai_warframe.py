@@ -7,6 +7,8 @@ from discord.ext import commands
 
 COLOR=0xff93ac
 
+_WARFRAME_WIKIA_URL = "http://warframe.wikia.com/wiki/{}"
+
 class SenpaiWarframe:
 
     @commands.command()
@@ -23,7 +25,7 @@ class SenpaiWarframe:
         tmp_list = [elem.capitalize() for elem in mod_name.split()]
         mod_name = "_".join(elem for elem in tmp_list)
 
-        mod_url = "http://warframe.wikia.com/wiki/{}".format(mod_name)
+        mod_url = _WARFRAME_WIKIA_URL.format(mod_name)
 
         try:
             title, description, image_url = webpreview.web_preview(mod_url)
