@@ -73,6 +73,7 @@ async def track_voice():
     counter = 0
     channel = bot.get_channel(282336977418715146)
     while not bot.is_closed:
+        print("test")
         counter += 1
         await bot.send_message(channel, counter)
         await asyncio.sleep(60) # task runs every 60 seconds
