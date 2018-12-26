@@ -105,7 +105,7 @@ if (__name__ == "__main__"):
     for module in modules:
         bot.load_extension(module)
     client.loop.create_task(my_background_task())
-    client.run('token')
+    client.run(token)
     bot.run(token)
 
 
