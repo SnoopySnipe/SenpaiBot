@@ -67,15 +67,14 @@ async def on_message(message : str):
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
-
-async def track_voice():
-    await bot.wait_until_ready()
+client = discord.Client()
+async def my_background_task():
+    await client.wait_until_ready()
     counter = 0
-    channel = bot.get_channel(282336977418715146)
-    while not bot.is_closed:
-        print("test")
+    channel = discord.Object(id='channel_id_here')
+    while not client.is_closed:
         counter += 1
-        await bot.send_message(channel, counter)
+        await client.send_message(channel, counter)
         await asyncio.sleep(60) # task runs every 60 seconds
 
 modules = ["senpai_fortnite", "senpai_fortune",
@@ -104,7 +103,8 @@ if (__name__ == "__main__"):
 
     for module in modules:
         bot.load_extension(module)
-    bot.loop.create_task(track_voice())
+    client.loop.create_task(my_background_task())
+    client.run('token')
     bot.run(token)
 
 
