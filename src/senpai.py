@@ -71,7 +71,7 @@ async def on_message(message : str):
 async def track_voice():
     await bot.wait_until_ready()
     counter = 0
-    channel = discord.Object(id='282336977418715146')
+    channel = bot.get_channel(282336977418715146)
     while not bot.is_closed:
         counter += 1
         await bot.send_message(channel, counter)
