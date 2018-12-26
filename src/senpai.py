@@ -68,6 +68,15 @@ async def on_message(message : str):
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
 
+async def track_voice():
+    await client.wait_until_ready()
+    counter = 0
+    channel = discord.Object(id='282336977418715146')
+    while not client.is_closed:
+        counter += 1
+        await client.send_message(channel, counter)
+        await asyncio.sleep(60) # task runs every 60 seconds
+
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
            "senpai_8ball", "senpai_events", "senpai_yugioh"]
@@ -94,7 +103,7 @@ if (__name__ == "__main__"):
 
     for module in modules:
         bot.load_extension(module)
-
+    bot.loop.create_task(track_voice())
     bot.run(token)
 
 
