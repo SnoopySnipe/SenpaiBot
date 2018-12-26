@@ -69,12 +69,12 @@ async def on_message(message : str):
         await bot.say("command not supported")
 
 async def track_voice():
-    await client.wait_until_ready()
+    await bot.wait_until_ready()
     counter = 0
     channel = discord.Object(id='282336977418715146')
-    while not client.is_closed:
+    while not bot.is_closed:
         counter += 1
-        await client.send_message(channel, counter)
+        await bot.send_message(channel, counter)
         await asyncio.sleep(60) # task runs every 60 seconds
 
 modules = ["senpai_fortnite", "senpai_fortune",
