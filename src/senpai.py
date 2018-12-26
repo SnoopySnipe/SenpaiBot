@@ -1,6 +1,5 @@
 import sys
 import signal
-import discord
 import asyncio
 
 from discord.ext import commands
@@ -68,15 +67,6 @@ async def on_message(message : str):
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
-client = discord.Client()
-async def my_background_task():
-    await client.wait_until_ready()
-    counter = 0
-    channel = discord.Object(id='channel_id_here')
-    while not client.is_closed:
-        counter += 1
-        await client.send_message(channel, counter)
-        await asyncio.sleep(60) # task runs every 60 seconds
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
@@ -104,8 +94,6 @@ if (__name__ == "__main__"):
 
     for module in modules:
         bot.load_extension(module)
-    client.loop.create_task(my_background_task())
-    client.run(token)
     bot.run(token)
 
 
