@@ -70,10 +70,9 @@ async def on_voice_state_update(member, before, after):
         voice_list.remove(member.name)
         channel = bot.get_channel(COMMANDS_CHANNEL_ID)
         if(channel is not None):
-            print("Channel found")
-            await channel.send('Someone left a voice channel')
+            await channel.send("`" + member.name + " was in voice channel for " + "XXX" + " seconds" + "`")
         else:
-            print("Channel not found")
+            pass
         
 
 
