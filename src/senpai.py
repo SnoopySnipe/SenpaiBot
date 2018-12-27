@@ -1,6 +1,6 @@
 import sys
 import signal
-discord
+import discord
 import asyncio
 import time
 from discord.ext import commands
