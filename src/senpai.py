@@ -71,7 +71,10 @@ async def on_voice_state_update(member, before, after):
     elif(after.channel == None and member.name in voice_list):
         voice_list.remove(member.name)
         channel = client.get_channel(COMMANDS_CHANNEL_ID)
-        await channel.send('Someone left a voice channel')
+        if(channel is not None):
+            await channel.send('Someone left a voice channel')
+        else:
+            print("Channel not found")
         
 
 
