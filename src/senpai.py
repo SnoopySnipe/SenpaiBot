@@ -1,12 +1,10 @@
 import sys
 import signal
-import discord
 import asyncio
 import time
 from discord.ext import commands
 
 import logging
-client = discord.Client()
 start = time.time()
 voice_list = []
 logger = logging.getLogger('discord')
@@ -70,7 +68,7 @@ async def on_voice_state_update(member, before, after):
         voice_list.append(member.name)
     elif(after.channel == None and member.name in voice_list):
         voice_list.remove(member.name)
-        channel = client.get_channel(COMMANDS_CHANNEL_ID)
+        channel = bot.get_channel(COMMANDS_CHANNEL_ID)
         if(channel is not None):
             print("Channel found")
             await channel.send('Someone left a voice channel')
