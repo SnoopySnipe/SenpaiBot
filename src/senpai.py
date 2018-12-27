@@ -6,7 +6,7 @@ from discord.ext import commands
 
 import logging
 start = time.time()
-voice_list = []
+voice_times = {}
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
@@ -64,13 +64,14 @@ async def leave():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if(after.channel != None and member.name not in voice_list):
-        voice_list.append(member.name)
-    elif(after.channel == None and member.name in voice_list):
-        voice_list.remove(member.name)
+    if(after.channel != None and member.name not in voice_times):
+        voice_times[member.name] = time.time()
+    elif(after.channel == None and member.name in voice_times):
+        start_time = voice_times[member.name]
+        voice_times.pop(member.name)
         channel = bot.get_channel(COMMANDS_CHANNEL_ID)
         if(channel is not None):
-            await channel.send("`" + member.name + " was in voice channel for " + "XXX" + " seconds" + "`")
+            await channel.send("`" + member.name + " was in voice channel for " + str(time.time()-start_time) + " seconds" + "`")
         else:
             pass
         
