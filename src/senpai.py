@@ -1,17 +1,21 @@
 import sys
 import signal
+discord
 import asyncio
-
+import time
 from discord.ext import commands
 
 import logging
-
+client = discord.Client()
+start = time.time()
+voice_list = []
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+COMMANDS_CHANNEL_ID = 282336977418715146
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
@@ -62,7 +66,13 @@ async def leave():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    print("test")
+    if(after.channel != None and member.name not in voice_list):
+        voice_list.append(member.name)
+    elif(after.channel == None and member.name in voice_list):
+        voice_list.remove(member.name)
+        channel = client.get_channel(COMMANDS_CHANNEL_ID)
+        await channel.send('Someone left a voice channel')
+        
 
 
 @bot.event
