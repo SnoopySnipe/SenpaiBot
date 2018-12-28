@@ -3,7 +3,7 @@ import signal
 import asyncio
 import time
 from discord.ext import commands
-
+import database_helper
 import logging
 start = time.time()
 voice_times = {}
@@ -64,17 +64,18 @@ async def leave():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if(after.channel != None and member.name not in voice_times):
-        voice_times[member.name] = time.time()
-    elif(after.channel == None and member.name in voice_times):
-        start_time = voice_times[member.name]
-        voice_times.pop(member.name)
+    if(after.channel != None and member.id not in voice_times):
+        voice_times[member.id] = round(time.time())
+    elif(after.channel == None and member.id in voice_times):
+        start_time = voice_times[member.id]
+        voice_times.pop(member.id)
         channel = bot.get_channel(COMMANDS_CHANNEL_ID)
         if(channel is not None):
-            await channel.send("`" + member.name + " was in voice channel for " + str(time.time()-start_time) + " seconds" + "`")
+            elapsed_time = round(time.time())-start_time
+            database_helper.add_pikapoints(member.id, elapsed_time)
+            await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " seconds" + "`")
         else:
             pass
-        
 
 
 @bot.event
@@ -111,5 +112,3 @@ if (__name__ == "__main__"):
     for module in modules:
         bot.load_extension(module)
     bot.run(token)
-
-
