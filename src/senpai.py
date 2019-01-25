@@ -87,7 +87,7 @@ async def on_message(message : str):
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
-           "senpai_8ball", "senpai_events", "senpai_yugioh"]
+           "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls"]
 
 if (__name__ == "__main__"):
 
