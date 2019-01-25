@@ -17,8 +17,8 @@ class SenpaiPolls:
                                "!senpai poll create [description]\n" +
                                "!senpai poll create [description] [option1] [option2] ...\n" +
                                "!senpai poll remove [poll_number]\n" +
-                               "!senpai poll add [poll_number] [option]\n" +
                                "!senpai poll remove [poll_number] [option_number]\n" +
+                               "!senpai poll add [poll_number] [option]\n" +
                                "!senpai poll view\n" +
                                "!senpai poll view [poll_number]\n" +
                                "!senpai poll vote [poll_number] [option_number]`")
@@ -57,7 +57,7 @@ class SenpaiPolls:
             try:
                 poll_i = int(index1)
                 option_i = int(index2)
-                await context.send(self.poll_list[poll_i].remove_option(option_i))
+                await context.send(self.poll_list[poll_i].remove_option(option_i), embed=self.poll_list[poll_i].view(poll_i))
             except:
                 await context.send("`Invalid poll or option`")
 

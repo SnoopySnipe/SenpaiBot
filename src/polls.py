@@ -28,8 +28,8 @@ class Poll:
 
     def remove_option(self, index):
         if index < len(self.options):
-            del self.options[index]
-            return "Removed option {}".format(index)
+            option = self.options.pop(index)
+            return "Removed option {} - {}: ".format(index, option.name)
         else:
             return "Option does not exist"
 
