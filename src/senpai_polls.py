@@ -96,7 +96,7 @@ class SenpaiPolls:
             except:
                 await context.send("`Invalid poll`")
         else:
-            for i in range(len(self.poll_list)):
+            for i in range(len(self.poll_list.poll_list)):
                 await context.send(embed=self.poll_list[i].view(i))
 
 def setup(bot):
