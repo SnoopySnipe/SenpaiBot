@@ -1,6 +1,6 @@
 import discord
 
-from discrod.ext import commands
+from discord.ext import commands
 from helpers import *
 from polls import *
 
