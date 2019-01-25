@@ -33,7 +33,7 @@ class Poll:
         else:
             return "Option does not exist"
 
-    def vote(self, name, index):
+    def vote(self, index, name):
         self.options[index].vote(name)
 
     def view(self, index):
