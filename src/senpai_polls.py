@@ -110,7 +110,7 @@ class SenpaiPolls:
             await context.send("`Usage: !senpai poll votekick [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Kick ' + name + '?'))
-        await msg.add_reaction(self.check)
+        await msg.add_reaction("❌")
         await msg.add_reaction(self.cross)
 
     @poll.command()
