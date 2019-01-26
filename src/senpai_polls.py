@@ -28,8 +28,8 @@ class SenpaiPolls:
         if arg[0] == "create":
             if len(arg) == 2:
                 msg = await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1]))
-                    await msg.add_reaction("✅")
-					await msg.add_reaction("❌")
+                await msg.add_reaction("✅")
+				await msg.add_reaction("❌")
             elif len(arg) > 2:
                 options = []
                 for i in range(2, len(arg)):
