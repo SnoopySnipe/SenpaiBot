@@ -123,4 +123,4 @@ class SenpaiPolls:
         await msg.add_reaction(self.cross)
 
 def setup(bot):
-    bot.add_cog(SenpaiPolls(bot.get_emoji(538583586257895424), bot.get_emoji(538583560874098689)))
+    bot.add_cog(SenpaiPolls(bot.get_emoji('538583586257895424'), bot.get_emoji('538583560874098689')))
