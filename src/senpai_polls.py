@@ -77,7 +77,7 @@ class SenpaiPolls:
     @poll.command()
     async def vote(self, context, poll=None, option=None):
         if poll is None or option is None:
-            await context.send("`!senpai poll vote [poll_number] [option_number]`")
+            await context.send("`Usage: !senpai poll vote [poll_number] [option_number]`")
             return
         try:
             poll_i = int(poll)
