@@ -106,14 +106,18 @@ class SenpaiPolls:
         if name is None:
             await context.send("`Usage: !senpai poll votekick [name]`")
             return
-        self.poll(self, context, 'create', 'Kick ' + name + '?')
+        msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Kick ' + name + '?'))
+        await msg.add_reaction(':white_check_mark:')
+        await msg.add_reaction(':x:')
 
     @poll.command()
     async def votegay(self, context, name=None):
         if name is None:
             await context.send("`Usage: !senpai poll votegay [name]`")
             return
-        self.poll(self, context, 'create', 'Is ' + name + ' gay?')
+        msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Is ' + name + 'gay?'))
+        await msg.add_reaction(':white_check_mark:')
+        await msg.add_reaction(':x:')
 
 def setup(bot):
     bot.add_cog(SenpaiPolls())
