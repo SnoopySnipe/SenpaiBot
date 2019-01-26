@@ -6,8 +6,10 @@ from helpers import *
 from polls import *
 
 class SenpaiPolls:
-    def __init__(self):
+    def __init__(self, check, cross):
         self.poll_list = Poll_List()
+        self.check = check
+        self.cross = cross
 
     @commands.group(invoke_without_command=True)
     async def poll(self, context, *arg):
@@ -28,8 +30,8 @@ class SenpaiPolls:
         if arg[0] == "create":
             if len(arg) == 2:
                 msg = await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1]))
-                await msg.add_reaction(bot.get_emoji(538583586257895424))
-                await msg.add_reaction(bot.get_emoji(538583560874098689))
+                await msg.add_reaction(self.check)
+                await msg.add_reaction(self.cross)
             elif len(arg) > 2:
                 options = []
                 for i in range(2, len(arg)):
@@ -108,8 +110,8 @@ class SenpaiPolls:
             await context.send("`Usage: !senpai poll votekick [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Kick ' + name + '?'))
-        await msg.add_reaction(bot.get_emoji(538583586257895424))
-        await msg.add_reaction(bot.get_emoji(538583560874098689))
+        await msg.add_reaction(self.check)
+        await msg.add_reaction(self.cross)
 
     @poll.command()
     async def votegay(self, context, name=None):
@@ -117,8 +119,8 @@ class SenpaiPolls:
             await context.send("`Usage: !senpai poll votegay [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Is ' + name + ' gay?'))
-        await msg.add_reaction(bot.get_emoji(538583586257895424))
-        await msg.add_reaction(bot.get_emoji(538583560874098689))
+        await msg.add_reaction(self.check)
+        await msg.add_reaction(self.cross)
 
 def setup(bot):
-    bot.add_cog(SenpaiPolls())
+    bot.add_cog(SenpaiPolls(bot.get_emoji(538583586257895424), bot.get_emoji(538583560874098689)))
