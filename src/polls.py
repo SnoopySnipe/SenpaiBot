@@ -18,6 +18,7 @@ class Poll:
     def __init__(self, description, options=None):
         self.description = description
         if options:
+            elf.options = []
             for option in options:
                 self.options.append(Option(option))
         else:

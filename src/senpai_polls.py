@@ -57,7 +57,7 @@ class SenpaiPolls:
             try:
                 poll_i = int(index1)
                 option_i = int(index2)
-                await context.send(self.poll_list[poll_i].remove_option(option_i), embed=self.poll_list[poll_i].view(poll_i))
+                await context.send(self.poll_list.poll_list[poll_i].remove_option(option_i), embed=self.poll_list.poll_list[poll_i].view(poll_i))
             except:
                 await context.send("`Invalid poll or option`")
 
@@ -69,8 +69,8 @@ class SenpaiPolls:
 
         try:
             i = int(index)
-            self.poll_list[i].add_option(option)
-            await context.send("New option added: ", embed=self.poll_list[i].view(i))
+            self.poll_list.poll_list[i].add_option(option)
+            await context.send("New option added: ", embed=self.poll_list.poll_list[i].view(i))
         except:
             await context.send("`Invalid poll`")
 
@@ -82,8 +82,8 @@ class SenpaiPolls:
         try:
             poll_i = int(poll)
             option_i = int(option)
-            self.poll_list[poll_i].vote(option_i, context.message.author)
-            await context.send("Vote sent: ", embed=self.poll_list[poll_i].view(poll_i))
+            self.poll_list.poll_list[poll_i].vote(option_i, context.message.author)
+            await context.send("Vote sent: ", embed=self.poll_list.poll_list[poll_i].view(poll_i))
         except:
             await context.send("`Invalid poll or option`")
 
@@ -92,12 +92,12 @@ class SenpaiPolls:
         if poll:
             try:
                 poll_i = int(poll)
-                await context.send(embed=self.poll_list[poll_i].view(poll_i))
+                await context.send(embed=self.poll_list.poll_list[poll_i].view(poll_i))
             except:
                 await context.send("`Invalid poll`")
         else:
             for i in range(len(self.poll_list.poll_list)):
-                await context.send(embed=self.poll_list[i].view(i))
+                await context.send(embed=self.poll_list.poll_list[i].view(i))
 
 def setup(bot):
     bot.add_cog(SenpaiPolls())
