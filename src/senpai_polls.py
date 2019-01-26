@@ -27,8 +27,8 @@ class SenpaiPolls:
         if arg[0] == "create":
             if len(arg) == 2:
                 msg = await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1]))
-                await msg.add_reaction(':white_check_mark:')
-                await msg.add_reaction(':x:')
+                await msg.add_reaction(':white_check_mark:538580297932079133')
+                await msg.add_reaction(':x:538580323370532864')
             elif len(arg) > 2:
                 options = []
                 for i in range(2, len(arg)):
@@ -107,17 +107,17 @@ class SenpaiPolls:
             await context.send("`Usage: !senpai poll votekick [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Kick ' + name + '?'))
-        await msg.add_reaction(':white_check_mark:')
-        await msg.add_reaction(':x:')
+        await msg.add_reaction(':white_check_mark:538580297932079133')
+        await msg.add_reaction(':x:538580323370532864')
 
     @poll.command()
     async def votegay(self, context, name=None):
         if name is None:
             await context.send("`Usage: !senpai poll votegay [name]`")
             return
-        msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Is ' + name + 'gay?'))
-        await msg.add_reaction(':white_check_mark:')
-        await msg.add_reaction(':x:')
+        msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Is ' + name + ' gay?'))
+        await msg.add_reaction(':white_check_mark:538580297932079133')
+        await msg.add_reaction(':x:538580323370532864')
 
 def setup(bot):
     bot.add_cog(SenpaiPolls())
