@@ -1,4 +1,5 @@
 import discord
+import senpai
 
 from discord.ext import commands
 from helpers import *
