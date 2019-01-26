@@ -26,7 +26,9 @@ class SenpaiPolls:
 
         if arg[0] == "create":
             if len(arg) == 2:
-                await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1]))
+                msg = await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1]))
+                await msg.add_reaction(':white_check_mark:')
+                await msg.add_reaction(':x:')
             elif len(arg) > 2:
                 options = []
                 for i in range(2, len(arg)):
@@ -98,6 +100,20 @@ class SenpaiPolls:
         else:
             for i in range(len(self.poll_list.poll_list)):
                 await context.send(embed=self.poll_list.poll_list[i].view(i))
+
+    @poll.command()
+    async def votekick(self, context, name=None):
+        if name is None:
+            await context.send("`Usage: !senpai poll votekick [name]`")
+            return
+        self.poll(self, context, 'create', 'Kick ' + name + '?')
+
+    @poll.command()
+    async def votegay(self, context, name=None):
+        if name is None:
+            await context.send("`Usage: !senpai poll votegay [name]`")
+            return
+        self.poll(self, context, 'create', 'Is ' + name + ' gay?')
 
 def setup(bot):
     bot.add_cog(SenpaiPolls())

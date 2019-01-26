@@ -38,13 +38,13 @@ class Poll:
         self.options[index].vote(name)
 
     def view(self, index):
-        title = "Poll #{}: {}".format(index, self.description)
+        title = "Poll #{}: {}\n".format(index, self.description)
         description = ""
         for i in range(len(self.options)):
             option = self.options[i]
             description = description + "Option #{} - **{} votes**: {}\n".format(i, option.votes, option.name)
             for people in option.people:
-                description = description + "\t" + people.name + "\n"
+                description = description + "    " + people.name + "\n"
             else:
                 description = description + "\n"
 
