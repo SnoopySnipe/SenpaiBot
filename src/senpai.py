@@ -90,6 +90,10 @@ async def on_message(message : str):
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
 
+@bot.event
+async def on_message_delete(message):
+    await message.channel.send(message.content, embed=message.embed, file=message.file)
+
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
            "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls"]
