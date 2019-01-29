@@ -81,6 +81,8 @@ async def on_voice_state_update(member, before, after):
 @bot.event
 async def on_message(message : str):
     try:
+        if ":electrocution:" in message:
+            await message.channel.send('https://tenor.com/xWBO.gif')
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")

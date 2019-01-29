@@ -120,5 +120,14 @@ class SenpaiPolls:
         await msg.add_reaction("✅")
         await msg.add_reaction("❌")
 
+    @poll.command()
+    async def votereport(self, context, name=None):
+        if name is None:
+            await context.send("`Usage: !senpai poll votereport [name]`")
+            return
+        msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Report ' + name + '?'))
+        await msg.add_reaction("✅")
+        await msg.add_reaction("❌")
+x
 def setup(bot):
     bot.add_cog(SenpaiPolls())

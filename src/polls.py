@@ -30,7 +30,7 @@ class Poll:
     def remove_option(self, index):
         if index < len(self.options):
             option = self.options.pop(index)
-            return "Removed option {} - {}: ".format(index, option.name)
+            return "`Removed option {} - {}: `".format(index, option.name)
         else:
             return "`Option does not exist`"
 
@@ -62,6 +62,6 @@ class Poll_List:
     def remove_poll(self, index):
         if index < len(self.poll_list):
             poll = self.poll_list.pop(index)
-            return "Removed poll {} - {}".format(index, poll.description)
+            return "`Removed poll {} - {}`".format(index, poll.description)
         else:
             return "`Poll does not exist`"
