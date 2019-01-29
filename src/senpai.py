@@ -5,6 +5,7 @@ import time
 from discord.ext import commands
 import database_helper
 import logging
+import random
 start = time.time()
 voice_times = {}
 logger = logging.getLogger('discord')
@@ -81,8 +82,10 @@ async def on_voice_state_update(member, before, after):
 @bot.event
 async def on_message(message : str):
     try:
-        # if ":electrocution:" in message.content:
-        #    await message.channel.send('https://tenor.com/xWBO.gif')
+        if ":electrocution:" in message.content:
+            r = random.randint(1, 420)
+            if 1 <= r <= 69:
+                await message.channel.send('https://tenor.com/xWBO.gif')
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
