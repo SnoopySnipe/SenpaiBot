@@ -15,6 +15,7 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 COMMANDS_CHANNEL_ID = 282336977418715146
+LOGS_CHANNEL_ID = 540189209898647554
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
@@ -92,7 +93,14 @@ async def on_message(message : str):
 
 @bot.event
 async def on_message_delete(message):
-    await message.channel.send("`" + message.author + "deleted: `" + message.content)#, embed=message.embeds, file=message.attachments)
+    channel = bot.get_channel(LOGS_CHANNEL_ID)
+    await channel.send("`" + message.author.name + "deleted: `" + message.content, files=message.attachments)
+
+@bot.event
+async def on_message_edit(before, after):
+    channel = bot.get_channel(LOGS_CHANNEL_ID)
+    await channel.send("`" + before.author.name + "edited: `" + before.content, files=before.attachments)
+    await channel.send("`to: `" + after.content, files=after.attachments)
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
