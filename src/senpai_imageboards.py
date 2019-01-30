@@ -5,22 +5,30 @@ import discord
 
 from discord.ext import commands
 
-async def _send_embed_imageboard_msg(context, title, post_url, file_url):
+async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
         embed_msg = discord.Embed(title=title,
                             url=post_url,
                             color=0xff93ac)
         embed_msg.set_image(url=file_url)
 
-        await context.send(embed=embed_msg)
+        msg = await context.send(embed=embed_msg)
+        board.messages.append(msg)
 
 class SenpaiImageboard:
     def __init__(self):
         self.imageboards = [self.yandere, self.danbooru, self.konachan,
                                    self.gelbooru, self.safebooru]
+        self.messages = []
 
     @commands.group(invoke_without_command=True)
     async def daily(self, context):
         await random.choice(self.imageboards).reinvoke(context)
+
+    @daily.command()
+    async def purge(self, context):
+        for message in self.messages:
+            message.delete()
+        await context.send("Successfully purged hentai.")
 
     @daily.command()
     async def all(self, context):
@@ -50,7 +58,7 @@ class SenpaiImageboard:
         file_url = json_content["sample_url"]
         post_url = "https://yande.re/post/show/{}".format(post_id)
 
-        await _send_embed_imageboard_msg(context,
+        await _send_embed_imageboard_msg(context, self,
                                    title="yandere: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
@@ -78,7 +86,7 @@ class SenpaiImageboard:
         if ("donmai.us" not in file_url):
             file_url = "https://danbooru.donmai.us" + file_url
 
-        await _send_embed_imageboard_msg(context,
+        await _send_embed_imageboard_msg(context, self,
                                    title="danbooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
@@ -103,7 +111,7 @@ class SenpaiImageboard:
         file_url = json_content["file_url"]
         post_url = "https://gelbooru.com/index.php?page=post&s=view&id={}".format(post_id)
 
-        await _send_embed_imageboard_msg(context,
+        await _send_embed_imageboard_msg(context, self,
                                    title="gelbooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
@@ -131,7 +139,7 @@ class SenpaiImageboard:
         post_url = "https://safebooru.org/index.php?page=post&s=view&id={}".format(post_id)
 
 
-        await _send_embed_imageboard_msg(context,
+        await _send_embed_imageboard_msg(context, self,
                                    title="safebooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
@@ -157,7 +165,7 @@ class SenpaiImageboard:
         file_url = json_content["sample_url"]
         post_url = "http://konachan.com/post/show/{}".format(post_id)
 
-        await _send_embed_imageboard_msg(context,
+        await _send_embed_imageboard_msg(context, self,
                                    title="konachan: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
