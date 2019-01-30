@@ -94,12 +94,15 @@ async def on_message(message : str):
 @bot.event
 async def on_message_delete(message):
     channel = bot.get_channel(LOGS_CHANNEL_ID)
-    await channel.send("`" + message.author.name + "deleted: `" + message.content, files=message.attachments)
+    msg = "`" + message.author.name + " deleted: `\n" + message.content + "\n`urls: `"
+    for attachment in message.attachments:
+        msg = msg + "\n" + attachment.url + "\n" + attachment.proxy_url
+    await channel.send(msg)
 
 @bot.event
 async def on_message_edit(before, after):
     channel = bot.get_channel(LOGS_CHANNEL_ID)
-    await channel.send("`" + before.author.name + "edited: `" + before.content, files=before.attachments)
+    await channel.send("`" + before.author.name + " edited: `" + before.content, files=before.attachments)
     await channel.send("`to: `" + after.content, files=after.attachments)
 
 modules = ["senpai_fortnite", "senpai_fortune",
