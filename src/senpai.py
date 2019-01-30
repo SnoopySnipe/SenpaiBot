@@ -102,8 +102,14 @@ async def on_message_delete(message):
 @bot.event
 async def on_message_edit(before, after):
     channel = bot.get_channel(LOGS_CHANNEL_ID)
-    await channel.send("`" + before.author.name + " edited: `" + before.content, files=before.attachments)
-    await channel.send("`to: `" + after.content, files=after.attachments)
+    b_msg = "`" + before.author.name + " edited: `\n" + before.content + "\n`urls: `"
+    for b_attachment in before.attachments:
+        b_msg = b_msg + "\n" + b_attachment.url + "\n" + b_attachment.proxy_url
+    await channel.send(b_msg)
+    a_msg = "`to: `\n" + after.content + "\n`urls: `"
+    for a_attachment in after.attachments:
+        a_msg = a_msg + "\n" + a_attachment.url + "\n" + a_attachment.proxy_url
+    await channel.send(a_msg)
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
