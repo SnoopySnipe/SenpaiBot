@@ -92,7 +92,7 @@ async def on_message(message : str):
 
 @bot.event
 async def on_message_delete(message):
-    await message.channel.send(message.content, embed=message.embed, file=message.file)
+    await message.channel.send("`" + message.author + "deleted: `" + message.content)#, embed=message.embeds, file=message.attachments)
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
