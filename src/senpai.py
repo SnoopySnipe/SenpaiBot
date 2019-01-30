@@ -94,20 +94,22 @@ async def on_message(message : str):
 @bot.event
 async def on_message_delete(message):
     channel = bot.get_channel(LOGS_CHANNEL_ID)
-    msg = "`In " + message.channel.name + ", " + message.author.name + " deleted: `" + message.content
-    for attachment in message.attachments:
-        msg = msg + "\n`url: `" + attachment.url + "\n`proxy url: `" + attachment.proxy_url
+    if message.channel.name != "logs" and message.author.name != "SenpaiBot":
+        msg = "`In " + message.channel.name + ", " + message.author.name + " deleted: `" + message.content
+        for attachment in message.attachments:
+            msg = msg + "\n`proxy url: `" + attachment.proxy_url
     await channel.send(msg)
 
 @bot.event
 async def on_message_edit(before, after):
     channel = bot.get_channel(LOGS_CHANNEL_ID)
-    msg = "`In " + before.channel.name + ", " + before.author.name + " edited: `" + before.content
-    for b_attachment in before.attachments:
-        msg = msg + "\n`url: `" + b_attachment.url + "\n`proxy url: `" + b_attachment.proxy_url
-    msg = msg + "\n`to: `" + after.content
-    for a_attachment in after.attachments:
-        msg = msg + "\n`url: `" + a_attachment.url + "\n`proxy url: `" + a_attachment.proxy_url
+    if before.channel.name != "logs" and before.author.name != "SenpaiBot":
+        msg = "`In " + before.channel.name + ", " + before.author.name + " edited: `" + before.content
+        for b_attachment in before.attachments:
+            msg = msg + "\n`proxy url: `" + b_attachment.proxy_url
+        msg = msg + "\n`to: `" + after.content
+        for a_attachment in after.attachments:
+            msg = msg + "\n`proxy url: `" + a_attachment.proxy_url
     await channel.send(msg)
 
 modules = ["senpai_fortnite", "senpai_fortune",
