@@ -62,4 +62,3 @@ def initialize(conn):
         }
     for key in pikalogue:
         setup_pikalogue(conn, key, pikalogue[key][0], pikalogue[key][1], pikalogue[key][2])
-
