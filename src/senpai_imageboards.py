@@ -28,6 +28,7 @@ class SenpaiImageboard:
     async def purge(self, context):
         for message in self.messages:
             await message.delete()
+            self.messages.remove(message)
         await context.send("Successfully purged hentai.")
 
     @daily.command()
