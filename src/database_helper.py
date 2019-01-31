@@ -1,7 +1,7 @@
 import database
 import sqlite3
-db = 'foo.db'
 def initialize(server_name):
+    global db
     db = server_name + '.db'
     conn = sqlite3.connect(db)
     database.initialize(conn)
