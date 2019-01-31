@@ -62,6 +62,6 @@ pikalogue = {
     0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
 }
 for item in pikalogue:
-    setup_pikalogue(item, pikalogue[item][0], pikalogue[item][1], pikalogue[item][2])
+    setup_pikalogue(conn, item, pikalogue[item][0], pikalogue[item][1], pikalogue[item][2])
 
 conn.close()
