@@ -7,6 +7,9 @@ class SenpaiShop:
     async def balance(self, context):
         user_id = context.message.author.id
         balance = database_helper.get_pikapoints(user_id)
-        await context.send("You have " + str(balance) + " pikapoints")
+        if(balance is None):
+            await context.send("You have no pikapoints! Join voice and start earning!")
+        else:
+            await context.send("You have " + str(balance) + " pikapoints")
 def setup(bot):
     bot.add_cog(SenpaiShop())
