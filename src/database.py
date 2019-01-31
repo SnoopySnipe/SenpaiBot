@@ -19,6 +19,15 @@ def add_pikapoints_query(conn, user_id, points):
     except Error as e:
         print(e)
 
+def get_pikapoints_query(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql_select_balance = """SELECT points FROM pikapoints WHERE id=$user_id"""
+        placeholders = {"user_id":user_id}
+        c.execute(sql_select_balance, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
