@@ -19,7 +19,7 @@ class SenpaiShop:
         pikalogue = database_helper.get_pikalogue()
         for item in pikalogue:
             title = "Item #{}: {}\n".format(item[0], item[1])
-            description = "Description: {}\n\nPrice: {} pikapoints"
+            description = "Description: {}\n\nPrice: {} pikapoints".format(item[2], item[3])
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
 
