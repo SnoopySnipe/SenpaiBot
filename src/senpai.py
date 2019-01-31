@@ -99,7 +99,7 @@ async def on_message_delete(message):
         msg = msg + "`In " + message.channel.name + ", " + message.author.name + " deleted: `" + message.content
         for attachment in message.attachments:
             msg = msg + "\n`proxy url: `" + attachment.proxy_url
-    await channel.send(msg)
+        await channel.send(msg)
 
 @bot.event
 async def on_message_edit(before, after):
@@ -112,7 +112,7 @@ async def on_message_edit(before, after):
         msg = msg + "\n`to: `" + after.content
         for a_attachment in after.attachments:
             msg = msg + "\n`proxy url: `" + a_attachment.proxy_url
-    await channel.send(msg)
+        await channel.send(msg)
 
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
