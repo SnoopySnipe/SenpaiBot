@@ -19,7 +19,6 @@ DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
 bot = commands.Bot(command_prefix="!senpai ", description=DESCRIPTION)
-
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -57,6 +56,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    database_helper.initialize(str(bot.guilds[0].id))
 
 @bot.command()
 async def leave():

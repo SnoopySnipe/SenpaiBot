@@ -1,5 +1,9 @@
 import database
 import sqlite3
+def initialize(server_name):
+    conn = sqlite3.connect(server_name + '.db')
+    database.initialize(conn)
+    conn.close()
 def add_pikapoints(user_id, points):
     conn = sqlite3.connect('pikapoints.db')
     if(conn is not None):

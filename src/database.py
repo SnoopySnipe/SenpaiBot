@@ -53,16 +53,13 @@ sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     points integer DEFAULT 0)"""
 sql_create_pikalogue_table = """CREATE TABLE IF NOT EXISTS pikalogue (id integer PRIMARY KEY, name text NOT NULL UNIQUE, description text NOT NULL, price integer NOT NULL)"""
 
-conn = sqlite3.connect('pikapoints.db')
+def initialize(conn):
+    create_table(conn, sql_create_pikapoints_table)
+    create_table(conn, sql_create_pikalogue_table)
 
-create_table(conn, sql_create_pikapoints_table)
-create_table(conn, sql_create_pikalogue_table)
+    pikalogue = {
+        0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
+        }
+    for key in pikalogue:
+        setup_pikalogue(conn, key, pikalogue[key][0], pikalogue[key][1], pikalogue[key][2])
 
-pikalogue = {
-    0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
-}
-for key in pikalogue:
-    setup_pikalogue(conn, key, pikalogue[key][0], pikalogue[key][1], pikalogue[key][2])
-
-
-conn.close()
