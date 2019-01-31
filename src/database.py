@@ -61,7 +61,7 @@ create_table(conn, sql_create_pikalogue_table)
 pikalogue = {
     0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
 }
-for key, value in pikalogue:
-    setup_pikalogue(key, value[0], value[1], value[2])
+for key in pikalogue:
+    setup_pikalogue(conn, key, pikalogue[key][0], pikalogue[key][1], pikalogue[key][2])
 
 conn.close()
