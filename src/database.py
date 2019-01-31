@@ -61,12 +61,8 @@ create_table(conn, sql_create_pikalogue_table)
 pikalogue = {
     0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
 }
-<<<<<<< HEAD
 for key in pikalogue:
     setup_pikalogue(conn, key, pikalogue[key][0], pikalogue[key][1], pikalogue[key][2])
-=======
-for item in pikalogue:
-    setup_pikalogue(conn, item, pikalogue[item][0], pikalogue[item][1], pikalogue[item][2])
->>>>>>> 0d4e158576f148388eff2aa28ed9ce1fdd81a90a
+
 
 conn.close()
