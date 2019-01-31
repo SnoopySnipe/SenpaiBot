@@ -1,5 +1,6 @@
 import random
 import requests
+import time
 
 import discord
 
@@ -15,10 +16,12 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
         board.messages.append(message)
 
 class SenpaiImageboard:
-    def __init__(self):
+    def __init__(self, bot):
         self.imageboards = [self.yandere, self.danbooru, self.konachan,
                                    self.gelbooru, self.safebooru]
         self.messages = []
+        self.weeb_id = 285559955891683339
+        self.weeb_channel = bot.get_channel(self.weeb_id)
 
     @commands.group(invoke_without_command=True)
     async def daily(self, context):
@@ -29,6 +32,7 @@ class SenpaiImageboard:
         for message in self.messages:
             await message.delete()
             self.messages.remove(message)
+            time.sleep(1)
         await context.send("Successfully purged hentai.")
 
     @daily.command()
@@ -40,6 +44,8 @@ class SenpaiImageboard:
 
     @daily.command()
     async def yandere(self, context):
+        if context.message.channel.id != self.weeb_id:
+            await context.send("#weeb")
         # link for yande.re's json api
         api_url = "https://yande.re/post.json?limit=1"
 
@@ -59,13 +65,15 @@ class SenpaiImageboard:
         file_url = json_content["sample_url"]
         post_url = "https://yande.re/post/show/{}".format(post_id)
 
-        await _send_embed_imageboard_msg(context, self,
+        await _send_embed_imageboard_msg(self.weeb_channel, self,
                                    title="yandere: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
 
     @daily.command()
     async def danbooru(self, context):
+        if context.message.channel.id != self.weeb_id:
+            await context.send("#weeb")
         api_url = "http://danbooru.donmai.us/posts.json?limit=1"
 
         # get json contents
@@ -87,13 +95,15 @@ class SenpaiImageboard:
         if ("donmai.us" not in file_url):
             file_url = "https://danbooru.donmai.us" + file_url
 
-        await _send_embed_imageboard_msg(context, self,
+        await _send_embed_imageboard_msg(self.weeb_channel, self,
                                    title="danbooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
 
     @daily.command()
     async def gelbooru(self, context):
+        if context.message.channel.id != self.weeb_id:
+            await context.send("#weeb")
         api_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1"
 
         # get json contents
@@ -112,13 +122,15 @@ class SenpaiImageboard:
         file_url = json_content["file_url"]
         post_url = "https://gelbooru.com/index.php?page=post&s=view&id={}".format(post_id)
 
-        await _send_embed_imageboard_msg(context, self,
+        await _send_embed_imageboard_msg(self.weeb_channel, self,
                                    title="gelbooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
 
     @daily.command()
     async def safebooru(self, context):
+        if context.message.channel.id != self.weeb_id:
+            await context.send("#weeb")
         api_url = "https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&limit=1"
 
         # get json contents
@@ -140,13 +152,15 @@ class SenpaiImageboard:
         post_url = "https://safebooru.org/index.php?page=post&s=view&id={}".format(post_id)
 
 
-        await _send_embed_imageboard_msg(context, self,
+        await _send_embed_imageboard_msg(self.weeb_channel, self,
                                    title="safebooru: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
 
     @daily.command()
     async def konachan(self, context):
+        if context.message.channel.id != self.weeb_id:
+            await context.send("#weeb")
         # link for konachan.com's json api
         api_url = "https://konachan.com/post.json?limit=1"
 
@@ -166,10 +180,10 @@ class SenpaiImageboard:
         file_url = json_content["sample_url"]
         post_url = "http://konachan.com/post/show/{}".format(post_id)
 
-        await _send_embed_imageboard_msg(context, self,
+        await _send_embed_imageboard_msg(self.weeb_channel, self,
                                    title="konachan: #{}".format(post_id),
                                    post_url=post_url,
                                    file_url=file_url)
 
 def setup(bot):
-    bot.add_cog(SenpaiImageboard())
+    bot.add_cog(SenpaiImageboard(bot))
