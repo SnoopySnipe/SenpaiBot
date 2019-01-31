@@ -60,6 +60,7 @@ create_table(conn, sql_create_pikalogue_table)
 
 pikalogue = {
     0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
+    1: ("N-Word Pass", "Use it wisely my ni🅱🅱a", 100000)
 }
 for item in pikalogue:
     setup_pikalogue(conn, item, pikalogue[item][0], pikalogue[item][1], pikalogue[item][2])
