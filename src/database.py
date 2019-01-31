@@ -29,9 +29,39 @@ def get_pikapoints_query(conn, user_id):
     except Error as e:
         print(e)
 
+def setup_pikalogue(conn, id, name, description, price):
+    try:
+        c = conn.cursor()
+        sql_setup_pikalogue = """REPLACE INTO pikalogue(id, name, description, price) VALUES($id, $name, $description, $price)"""
+        placeholders = {"id": id, "name": name, "description": description, "price": price}
+        c.execute(sql_setup_pikalogue, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def get_pikalogue(conn):
+    try:
+        c = conn.cursor()
+        sql_get_pikalogue = """SELECT * FROM pikalogue"""
+        c.execute(sql_get_pikalogue)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
                                     points integer DEFAULT 0)"""
+sql_create_pikalogue_table = """CREATE TABLE IF NOT EXISTS pikalogue (id integer PRIMARY KEY, name text NOT NULL UNIQUE, description text NOT NULL, price integer NOT NULL)"""
+
 conn = sqlite3.connect('pikapoints.db')
+
 create_table(conn, sql_create_pikapoints_table)
+create_table(conn, sql_create_pikalogue_table)
+
+pikalogue = {
+    0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
+}
+for key, value in pikalogue:
+    setup_pikalogue(key, value[0], value[1], value[2])
+
 conn.close()
