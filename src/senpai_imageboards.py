@@ -11,8 +11,8 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
                             color=0xff93ac)
         embed_msg.set_image(url=file_url)
 
-        msg = await context.send(embed=embed_msg)
-        board.messages.append(msg)
+        message = await context.send(embed=embed_msg)
+        board.messages.append(message)
 
 class SenpaiImageboard:
     def __init__(self):
@@ -27,7 +27,7 @@ class SenpaiImageboard:
     @daily.command()
     async def purge(self, context):
         for message in self.messages:
-            message.delete()
+            await message.delete()
         await context.send("Successfully purged hentai.")
 
     @daily.command()
