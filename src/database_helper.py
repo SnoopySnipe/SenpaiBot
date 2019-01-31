@@ -14,4 +14,11 @@ def get_pikapoints(user_id):
         if(result is not None):
             result = result[0]
         conn.close()
-    return result
+        return result
+
+def get_pikalogue():
+    conn = sqlite3.connect('pikapoints.db')
+    if(conn is not None):
+        result = database.get_pikalogue(conn)
+        conn.close()
+        return result
