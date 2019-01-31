@@ -1,12 +1,11 @@
 import sys
 import signal
 import asyncio
-import time
+import datetime
 from discord.ext import commands
 import database_helper
 import logging
 import random
-start = time.time()
 voice_times = {}
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -67,14 +66,15 @@ async def leave():
 @bot.event
 async def on_voice_state_update(member, before, after):
     if(after.channel != None and member.id not in voice_times):
-        voice_times[member.id] = round(time.time())
+        voice_times[member.id] = datetime.datetime.now()
     elif(after.channel == None and member.id in voice_times):
         start_time = voice_times[member.id]
         voice_times.pop(member.id)
         channel = bot.get_channel(COMMANDS_CHANNEL_ID)
+        elapsed_time = round((datetime.datetime.now()-start_time).total_seconds()/60)
+        print(elapsed_time)
+        database_helper.add_pikapoints(member.id, elapsed_time)
         if(channel is not None):
-            elapsed_time = round(time.time())-start_time
-            database_helper.add_pikapoints(member.id, elapsed_time)
             await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " seconds" + "`")
         else:
             pass

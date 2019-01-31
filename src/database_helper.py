@@ -8,6 +8,7 @@ def add_pikapoints(user_id, points):
 
 def get_pikapoints(user_id):
     conn = sqlite3.connect('pikapoints.db')
+    result = None
     if(conn is not None):
         result = database.get_pikapoints_query(conn, user_id)[0]
         conn.close()
