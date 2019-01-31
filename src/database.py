@@ -59,7 +59,7 @@ create_table(conn, sql_create_pikapoints_table)
 create_table(conn, sql_create_pikalogue_table)
 
 pikalogue = {
-    0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000)
+    0: ("Pikakicket", "You're going to use this on Wesley aren't you?", 500000),
     1: ("N-Word Pass", "Use it wisely my ni🅱🅱a", 100000)
 }
 
