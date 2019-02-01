@@ -66,7 +66,7 @@ def get_focus(conn):
         c = conn.cursor()
         sql_get_focus = """SELECT name FROM pikagacha WHERE focus=1"""
         c.execute(sql_get_focus)
-        return c.fetchall
+        return c.fetchall()
     except Error as e:
         print(e)
 
