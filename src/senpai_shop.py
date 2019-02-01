@@ -90,16 +90,16 @@ class SenpaiGacha:
     async def release(self, context, name):
         pokemon = database_helper.get_pokemon(name)
         if pokemon is not None:
-            database_helper.remove_inventory(context.message.author.id, pokemon[0][0])
-            if pokemon[0][1] == 3:
+            database_helper.remove_inventory(context.message.author.id, pokemon[0])
+            if pokemon[1] == 3:
                 gain = 5
-            elif pokemon[0][1] == 4:
+            elif pokemon[1] == 4:
                 gain = 10
-            elif pokemon[0][1] == 5:
+            elif pokemon[1] == 5:
                 gain = 15
-            elif pokemon[0][1] == 6:
+            elif pokemon[1] == 6:
                 gain = 30
-            elif pokemon[0][1] == 7:
+            elif pokemon[1] == 7:
                 gain = 60
             database_helper.adjust_points(context.message.author.id, gain)
             await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
