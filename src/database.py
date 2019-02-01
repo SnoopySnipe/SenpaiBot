@@ -89,4 +89,4 @@ def initialize(conn):
         4: ("Charizard", 5, 0)
     }
     for key in pokemon:
-        setup_pikagacha(conn, key, pikagacha[key][0], pikalogue[key][1], pikalogue[key][2])
+        setup_pikagacha(conn, key, pokemon[key][0], pokemon[key][1], pokemon[key][2])
