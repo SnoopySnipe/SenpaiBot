@@ -103,7 +103,6 @@ class SenpaiGacha:
                 gain = 60
             database_helper.adjust_points(context.message.author.id, gain)
             await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
-            await self.inventory(self, context)
         else:
             await context.send("Invalid Pokemon name!")
 
