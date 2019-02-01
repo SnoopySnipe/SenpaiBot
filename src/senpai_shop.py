@@ -22,7 +22,7 @@ class SenpaiShop:
         if pity is None:
             description = "3⭐: 40%\n4⭐: 50%\n5⭐: 4%\nFocus: 6%"
         else:
-            description = "3⭐: {}\n4⭐: {}\n5⭐: {}\nFocus: {}".format(pity[0], pity[1], pity[2], pity[3])
+            description = "3⭐: {}%\n4⭐: {}%\n5⭐: {}%\nFocus: {}%".format(pity[0]/10, pity[1]/10, pity[2]/10, pity[3]/10)
             
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
