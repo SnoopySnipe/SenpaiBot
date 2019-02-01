@@ -161,11 +161,11 @@ def initialize(conn):
     create_table(conn, sql_create_pikapity_table)
     create_table(conn, sql_create_inventory)
 
-    c = conn.cursor()
-    c.execute("UPDATE pikapoints SET points = 150")
-    c.execute("UPDATE pikapity SET focus = 30, five = 10, four = 420, three = 540")
-    c.execute("DELETE FROM inventory")
-    conn.commit()
+    #c = conn.cursor()
+    #c.execute("UPDATE pikapoints SET points = 150")
+    #c.execute("UPDATE pikapity SET focus = 30, five = 10, four = 420, three = 540")
+    #c.execute("DELETE FROM inventory")
+    #conn.commit()
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
