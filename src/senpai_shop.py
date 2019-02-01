@@ -35,10 +35,10 @@ class SenpaiGacha:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
             r = random.randint(0, 1003)
-            if r == 0:
+            if 0 <= r <= 500:
                 options = database_helper.get_roll(7)
                 database_helper.adjust_pity(context.message.author.id, True)
-            elif 1001 <= r <= 1003:
+            elif 501 <= r <= 1003:
                 options = database_helper.get_roll(6)
                 database_helper.adjust_pity(context.message.author.id, True)
             if 1 <= r <= details[1]:
