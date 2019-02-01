@@ -159,6 +159,17 @@ def remove_inventory(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def get_from_inventory(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM inventory WHERE user_id = $user_id AND poke_id = $poke_id"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
