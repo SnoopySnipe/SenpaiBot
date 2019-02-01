@@ -86,8 +86,7 @@ def get_from_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
     result = False
     if(conn is not None):
-        print(database.get_from_inventory(conn, user_id, poke_id))
-        if database.get_from_inventory(conn, user_id, poke_id) is not None:
+        if len(database.get_from_inventory(conn, user_id, poke_id)) > 0:
             result = True
         conn.close()
     return result
