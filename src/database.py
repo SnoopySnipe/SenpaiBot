@@ -77,7 +77,7 @@ def get_user_details(conn, user_id):
     try:
         c = conn.cursor()
         sql_get_user_details = """SELECT points, three, four, five, focus FROM pikapoints INNER JOIN pikapity ON pikapoints.id = pikapity.id WHERE pikapoints.id = $user_id"""
-        placeholdeers = {"user_id": user_id}
+        placeholders = {"user_id": user_id}
         c.execute(sql_get_user_details, placeholders)
         return c.fetchone()
     except Error as e:
