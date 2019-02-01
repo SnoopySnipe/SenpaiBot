@@ -34,7 +34,7 @@ class SenpaiShop:
         title = "Focus Units: "
         description = ''
         for unit in focus:
-            description = description + "\n" + unit
+            description = description + "\n" + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         
 
