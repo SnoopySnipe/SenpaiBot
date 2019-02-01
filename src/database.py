@@ -90,7 +90,7 @@ def get_user_details(conn, user_id):
 def adjust_points(conn, user_id):
     try:
         c = conn.cursor()
-        sql_update_points = """UPDATE pikapoints SET points = points - 1 WHERE id = $user_id"""
+        sql_update_points = """UPDATE pikapoints SET points = points + 1 WHERE id = $user_id"""
         placeholders = {"user_id": user_id}
         c.execute(sql_update_points, placeholders)
         conn.commit()
