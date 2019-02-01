@@ -29,11 +29,14 @@ def get_pikapoints_query(conn, user_id):
     except Error as e:
         print(e)
 
-def adjust_pikapity(conn, user_id):
+def adjust_pikapity(conn, user_id, got_five):
     try:
         c = conn.cursor()
         sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 400, 500, 40, 60);"""
-        sql_update_pikapity = """UPDATE pikapity SET focus = focus + 10, five = five + 5, four = four - 5, three = three - 10 WHERE id=$user_id;"""
+        if (got_five):
+            sql_update_pikapity = """UPDATE pikapity SET focus = 60, five = 40, four = 500, three = 400 WHERE id=$user_id;"""
+        else:
+            sql_update_pikapity = """UPDATE pikapity SET focus = focus + 10, five = five + 5, four = four - 5, three = three - 10 WHERE id=$user_id;"""
         placeholders = {"user_id": user_id}
         c.execute(sql_setup_pikapity, placeholders)
         c.execute(sql_update_pikapity, placeholders)
@@ -56,7 +59,7 @@ def get_pity(conn, user_id):
         c = conn.cursor()
         sql_get_pity = """SELECT three, four, five, focus FROM pikapity WHERE id=$user_id"""
         placeholders = {"user_id": user_id}
-        c.execute(sql_get_pity)
+        c.execute(sql_get_pity, placeholders)
         return c.fetchone()
     except Error as e:
         print(e)
@@ -66,6 +69,39 @@ def get_focus(conn):
         c = conn.cursor()
         sql_get_focus = """SELECT name FROM pikagacha WHERE focus=1"""
         c.execute(sql_get_focus)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
+def get_user_details(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql_get_user_details = """SELECT points, three, four, five, focus FROM pikapoints INNER JOIN pikapity ON pikapoints.id = pikapity.id WHERE pikapoints.id = $user_id"""
+        placeholdeers = {"user_id": user_id}
+        c.execute(sql_get_user_details, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def adjust_points(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql_update_points = """UPDATE pikapoints SET points = points - 1 WHERE id = $user_id"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql_update_points, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def get_roll(conn, roll):
+    try:
+        c = conn.cursor()
+        if roll == 1:
+            sql = """SELECT name FROM pikagacha WHERE focus = 1"""
+        else:
+            sql = """SELECT name FROM pikagacha WHERE rarity = $roll"""
+        placeholders = {"roll": roll}
+        c.execute(sql, placeholders)
         return c.fetchall()
     except Error as e:
         print(e)
