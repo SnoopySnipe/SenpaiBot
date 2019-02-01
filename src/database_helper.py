@@ -54,6 +54,14 @@ def get_roll(roll):
         conn.close()
         return result
 
+def get_units():
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_units(conn)
+        conn.close()
+        return result
+
 def adjust_pity(user_id, got_five=None):
     conn = sqlite3.connect(db)
     if(conn is not None):

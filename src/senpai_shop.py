@@ -54,6 +54,47 @@ class SenpaiShop:
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 
+    @commands.command(name="units")
+    async def units(self, context):
+        units = database_helper.get_units()
+        focus = []
+        five = []
+        four = []
+        three = []
+        for unit in units:
+            if unit[2] == 1:
+                focus.append(unit[0])
+            elif unit[1] == 5:
+                five.append(unit[0])
+            elif unit[1] == 4:
+                four.append(unit[0])
+            elif unit[1] == 3:
+                three.append(unit[0])
+        title = "Focus Units: \n"
+        description = ''
+        for unit in focus:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+        title = "5⭐ Units: \n"
+        description = ''
+        for unit in five:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+        title = "4⭐ Units: \n"
+        description = ''
+        for unit in four:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+
+        title = "3⭐ Units: \n"
+        description = ''
+        for unit in three:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
 
     @commands.command(name="focus")
     async def focus(self, context):

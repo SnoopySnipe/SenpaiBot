@@ -110,6 +110,15 @@ def get_roll(conn, roll):
     except Error as e:
         print(e)
 
+def get_units(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT name, rarity, focus FROM pikagacha"""
+        c.execute(sql)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
                                     points integer DEFAULT 0)"""
