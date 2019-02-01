@@ -163,7 +163,7 @@ def initialize(conn):
 
     c = conn.cursor()
     c.execute("UPDATE pikapoints SET points = 150")
-    c.execute("UPDATE pikapity SET SET focus = 30, five = 10, four = 420, three = 540")
+    c.execute("UPDATE pikapity SET focus = 30, five = 10, four = 420, three = 540")
     c.execute("DELETE FROM inventory")
     conn.commit()
 
