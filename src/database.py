@@ -125,17 +125,19 @@ sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
 sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 
+def load_pikadata(path):
+    data = {}
+    with open(path, mode='r') as file:
+        for line in file:
+            line_data = line.split("\t")
+            data[int(line_data[0])] = (line_data[1], int(line_data[2]), int(line_data[3]))
+    return data
+
 def initialize(conn):
     create_table(conn, sql_create_pikapoints_table)
     create_table(conn, sql_create_pikagacha_table)
     create_table(conn, sql_create_pikapity_table)
 
-    pokemon = {
-        0: ("Magikarp", 3, 0),
-        1: ("Eevee", 4, 0),
-        2: ("Pikachu", 5, 1),
-        3: ("Dragonite", 5, 1),
-        4: ("Charizard", 5, 0)
-    }
+    pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
         setup_pikagacha(conn, key, pokemon[key][0], pokemon[key][1], pokemon[key][2])
