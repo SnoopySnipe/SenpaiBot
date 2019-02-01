@@ -90,7 +90,7 @@ def get_user_details(conn, user_id):
 def adjust_points(conn, user_id):
     try:
         c = conn.cursor()
-        sql_update_points = """UPDATE pikapoints SET points = points + 1 WHERE id = $user_id"""
+        sql_update_points = """UPDATE pikapoints SET points = points - 30 WHERE id = $user_id"""
         placeholders = {"user_id": user_id}
         c.execute(sql_update_points, placeholders)
         conn.commit()
@@ -160,6 +160,12 @@ def initialize(conn):
     create_table(conn, sql_create_pikagacha_table)
     create_table(conn, sql_create_pikapity_table)
     create_table(conn, sql_create_inventory)
+
+    c = conn.cursor()
+    c.execute("UPDATE pikapoints SET points = 150")
+    c.execute("UPDATE pikapity SET SET focus = 30, five = 10, four = 420, three = 540")
+    c.execute("DELETE FROM inventory")
+    conn.commit()
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:

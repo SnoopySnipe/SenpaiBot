@@ -28,7 +28,7 @@ class SenpaiGacha:
 
     @commands.command(name="roll")
     async def roll(self, context):
-        PRICE = 1
+        PRICE = 30
         database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
         if details is None:

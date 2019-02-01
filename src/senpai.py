@@ -75,7 +75,7 @@ async def on_voice_state_update(member, before, after):
         print(elapsed_time)
         database_helper.add_pikapoints(member.id, elapsed_time)
         if(channel is not None):
-            await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " seconds" + "`")
+            await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
         else:
             pass
 
