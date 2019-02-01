@@ -87,11 +87,11 @@ def get_user_details(conn, user_id):
     except Error as e:
         print(e)
 
-def adjust_points(conn, user_id):
+def adjust_points(conn, user_id, points):
     try:
         c = conn.cursor()
-        sql_update_points = """UPDATE pikapoints SET points = points - 30 WHERE id = $user_id"""
-        placeholders = {"user_id": user_id}
+        sql_update_points = """UPDATE pikapoints SET points = points + $points WHERE id = $user_id"""
+        placeholders = {"user_id": user_id, "points": points}
         c.execute(sql_update_points, placeholders)
         conn.commit()
     except Error as e:
@@ -133,6 +133,26 @@ def add_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()
         sql = """INSERT INTO inventory(user_id, poke_id) VALUES($user_id, $poke_id)"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def get_pokemon(conn, name):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id, rarity FROM pikagacha WHERE name = $name"""
+        placeholders = {"name": name}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def remove_inventory(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """DELETE FROM inventory WHERE user_id = $user_id AND poke_id = $poke_id LIMIT 1"""
         placeholders = {"user_id": user_id, "poke_id": poke_id}
         c.execute(sql, placeholders)
         conn.commit()

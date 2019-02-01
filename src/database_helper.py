@@ -68,10 +68,10 @@ def adjust_pity(user_id, got_five=None):
         database.adjust_pikapity(conn, user_id, got_five)
         conn.close()
 
-def adjust_points(user_id):
+def adjust_points(user_id, points):
     conn = sqlite3.connect(db)
     if(conn is not None):
-        database.adjust_points(conn, user_id)
+        database.adjust_points(conn, user_id, points)
         conn.close()
 
 def get_inventory(user_id):
@@ -86,4 +86,18 @@ def add_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
     if(conn is not None):
         database.add_inventory(conn, user_id, poke_id)
+        conn.close()
+
+def get_pokemon(name):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_pokemon(conn, name)
+        conn.close()
+        return result
+
+def remove_inventory(user_id, poke_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.remove_inventory(conn, user_id, poke_id)
         conn.close()

@@ -61,7 +61,7 @@ class SenpaiGacha:
                 description = gacha[0] + "\nRarity: Legendary"
             elif gacha[2] == 7:
                 description = gacha[0] + "\nRarity: Mythic"
-            database_helper.adjust_points(context.message.author.id)
+            database_helper.adjust_points(context.message.author.id, -PRICE)
             balance = database_helper.get_pikapoints(context.message.author.id)
             database_helper.add_inventory(context.message.author.id, gacha[1])
             await context.send("You now have " + str(balance) + " pikapoints", embed=discord.Embed(title=title, description=description, color=0x9370db))
@@ -86,6 +86,26 @@ class SenpaiGacha:
                     description = description + "\n{} {} - Legendary".format(poke[4], poke[2])
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
+    @commands.command(name="release")
+    async def release(self, context, name):
+        pokemon = database_helper.get_pokemon(name)
+        if pokemon is not None:
+            database_helper.remove_inventory(context.message.author.id, pokemon[0][0])
+            if pokemon[0][1] == 3:
+                gain = 5
+            elif pokemon[0][1] == 4:
+                gain = 10
+            elif pokemon[0][1] == 5:
+                gain = 15
+            elif pokemon[0][1] == 6:
+                gain = 30
+            elif pokemon[0][1] == 7:
+                gain = 60
+            database_helper.adjust_points(context.message.author.id, gain)
+            await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
+            self.inventory(context)
+        else:
+            await context.send("Invalid Pokemon name!")
 
 
     @commands.command(name="units")
