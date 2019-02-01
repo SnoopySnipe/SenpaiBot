@@ -29,11 +29,12 @@ def get_pikapoints_query(conn, user_id):
     except Error as e:
         print(e)
 
-def adjust_pikapity(conn, user_id, got_five):
+def adjust_pikapity(conn, user_id, got_five=None):
     try:
         c = conn.cursor()
-        sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 400, 500, 40, 60);"""
-        if (got_five):
+        if got_five is None:
+            sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 400, 500, 40, 60);"""
+        elif (got_five == True):
             sql_update_pikapity = """UPDATE pikapity SET focus = 60, five = 40, four = 500, three = 400 WHERE id=$user_id;"""
         else:
             sql_update_pikapity = """UPDATE pikapity SET focus = focus + 10, five = five + 5, four = four - 5, three = three - 10 WHERE id=$user_id;"""

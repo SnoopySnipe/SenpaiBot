@@ -54,7 +54,7 @@ def get_roll(roll):
         conn.close()
         return result
 
-def adjust_pity(user_id, got_five):
+def adjust_pity(user_id, got_five=None):
     conn = sqlite3.connect(db)
     if(conn is not None):
         database.adjust_pikapity(conn, user_id, got_five)

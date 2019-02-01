@@ -29,6 +29,7 @@ class SenpaiShop:
     @commands.command(name="roll")
     async def roll(self, context):
         PRICE = 1
+        database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
         if PRICE < details[0]:
             r = random.randint(1, 1000)
