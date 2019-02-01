@@ -9,7 +9,7 @@ class SenpaiSpoiler:
         msg = context.message.content[offset+1:]
 
         # check if there is a message
-        if (len(msg) == 0):
+        if (len(msg) == 0 or len(arg) == 1):
             await context.send("`NO MESSAGE BAKA!!`")
             await context.send("`Usage:\n" + "!senpai spoiler [title] [msg]`")
             return
