@@ -14,13 +14,14 @@ class SenpaiShop:
         else:
             await context.send("You have " + str(balance) + " pikapoints")
 
-    @commands.command(name="pikalogue")
-    async def pikalogue(self, context):
-        pikalogue = database_helper.get_pikalogue()
-        for item in pikalogue:
-            title = "Item #{}: {}\n".format(item[0], item[1])
-            description = "Description: {}\n\nPrice: {} pikapoints".format(item[2], item[3])
-            await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+    @commands.command(name="pity")
+    async def pity(self, context):
+        pity = database_helper.get_pity(context.message.author.id)
+        
+        title = "{}'s Pity Rates: \n".format(context.message.author.name)
+        description = "3*: {}\n4*: {}\n5*: {}\nFocus: {}".format(pity[0], pity[1], pity[2], pity[3])
+            
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
 
 def setup(bot):

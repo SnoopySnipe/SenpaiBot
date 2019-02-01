@@ -22,9 +22,10 @@ def get_pikapoints(user_id):
         conn.close()
         return result
 
-def get_pikalogue():
+def get_pity(user_id):
     conn = sqlite3.connect(db)
+    result = None
     if(conn is not None):
-        result = database.get_pikalogue(conn)
+        result = database.get_pity(conn, user_id)
         conn.close()
         return result
