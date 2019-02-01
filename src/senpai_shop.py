@@ -26,7 +26,7 @@ class SenpaiShop:
             
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-    @commands.command(name="roll"
+    @commands.command(name="roll")
     async def roll(self, context):
         PRICE = 1
         details = database_helper.get_user_details(context.message.author.id)
