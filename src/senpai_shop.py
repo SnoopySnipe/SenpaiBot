@@ -45,7 +45,7 @@ class SenpaiShop:
             elif details[1] + details[2] + details[3] < r <= 1000:
                 options = database_helper.get_roll(1)
                 database_helper.adjust_pity(context.message.author.id, True)
-            gacha = options[random.randint(0, len(options) - 1)]
+            gacha = options[random.randint(0, len(options) - 1)][0]
             title = "{} Summoned: \n".format(context.message.author.name)
             description = gacha
             database_helper.adjust_points(context.message.author.id)
