@@ -33,8 +33,10 @@ class SenpaiShop:
         focus = database_helper.get_focus()
         title = "Focus Units: "
         description = ''
-        description = description + "\n" + focus[0]
+        for unit in focus:
+            description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+        
 
 
 def setup(bot):
