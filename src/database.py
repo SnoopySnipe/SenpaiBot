@@ -82,10 +82,11 @@ def initialize(conn):
     create_table(conn, sql_create_pikapity_table)
 
     pokemon = {
-        0: ("Magikarp", 3, 0)
-        1: ("Eevee", 4, 0)
-        2: ("Pikachu", 5, 1)
-        3: ("Dragonite", 5, 1)
+        0: ("Magikarp", 3, 0),
+        1: ("Eevee", 4, 0),
+        2: ("Pikachu", 5, 1),
+        3: ("Dragonite", 5, 1),
         4: ("Charizard", 5, 0)
+    }
     for key in pokemon:
         setup_pikagacha(conn, key, pikagacha[key][0], pikalogue[key][1], pikalogue[key][2])
