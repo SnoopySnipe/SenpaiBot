@@ -31,7 +31,9 @@ class SenpaiGacha:
         PRICE = 1
         database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
-        if PRICE <= details[0]:
+        if details is None:
+            await context.send("You have no pikapoints! Join voice and start earning!")
+        elif PRICE <= details[0]:
             r = random.randint(1, 1000)
             if 1 <= r <= details[1]:
                 options = database_helper.get_roll(3)
@@ -45,12 +47,17 @@ class SenpaiGacha:
             elif details[1] + details[2] + details[3] < r <= 1000:
                 options = database_helper.get_roll(1)
                 database_helper.adjust_pity(context.message.author.id, True)
-            gacha = options[random.randint(0, len(options) - 1)][0]
+            gacha = options[random.randint(0, len(options) - 1)]
             title = "{} Summoned: \n".format(context.message.author.name)
-            description = gacha
+            if gacha[2] <= 5:
+                description = gacha[0] + "\nRarity: {}".format(gacha[2])
+            elif gacha[2] == 6:
+                description = gacha[0] + "\nRarity: Legendary"
+            elif gacha[2] == 7:
+                description = gacha[0] + "\nRarity: Mythic"
             database_helper.adjust_points(context.message.author.id)
             balance = database_helper.get_pikapoints(context.message.author.id)
-            await context.send("You now have " + str(balance) + " pikapoints", embed=discord.Embed(title=title, description=description, color=0x9370db))
+            await context.send("You now have " + str(balance) + " pikapoints\nhttps://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(gacha[0]), embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 

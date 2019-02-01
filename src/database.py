@@ -101,9 +101,9 @@ def get_roll(conn, roll):
     try:
         c = conn.cursor()
         if roll == 1:
-            sql = """SELECT name FROM pikagacha WHERE focus = 1"""
+            sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1"""
         else:
-            sql = """SELECT name FROM pikagacha WHERE rarity = $roll AND focus = 0"""
+            sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0"""
         placeholders = {"roll": roll}
         c.execute(sql, placeholders)
         return c.fetchall()
