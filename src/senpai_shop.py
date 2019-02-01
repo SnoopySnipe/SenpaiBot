@@ -64,7 +64,7 @@ class SenpaiGacha:
             database_helper.adjust_points(context.message.author.id)
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have " + str(balance) + " pikapoints", embed=discord.Embed(title=title, description=description, color=0x9370db))
-            await context.send("https://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(gacha[0]))
+            await context.send("https://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(gacha[0].replace(" ", "_")))
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 
