@@ -31,7 +31,7 @@ class SenpaiShop:
         PRICE = 1
         database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
-        if PRICE < details[0]:
+        if PRICE <= details[0]:
             r = random.randint(1, 1000)
             if 1 <= r <= details[1]:
                 options = database_helper.get_roll(3)
@@ -52,7 +52,7 @@ class SenpaiShop:
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have " + str(balance) + " pikapoints", embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
-            await context.send("`You don't have enough pikapoints to summon!")
+            await context.send("`You don't have enough pikapoints to summon!`")
 
 
     @commands.command(name="focus")
