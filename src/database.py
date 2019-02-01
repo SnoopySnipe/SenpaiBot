@@ -64,7 +64,7 @@ def get_pity(conn, user_id):
 def get_focus(conn):
     try:
         c = conn.cursor()
-        sql_get_focus = """SELECT id, name FROM pikagacha WHERE focus=1"""
+        sql_get_focus = """SELECT name FROM pikagacha WHERE focus=1"""
         c.execute(sql_get_focus)
         conn.commit()
     except Error as e:

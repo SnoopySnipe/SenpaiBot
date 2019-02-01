@@ -29,3 +29,11 @@ def get_pity(user_id):
         result = database.get_pity(conn, user_id)
         conn.close()
         return result
+
+def get_focus():
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_focus(conn)
+        conn.close()
+        return result
