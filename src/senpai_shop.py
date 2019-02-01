@@ -63,10 +63,30 @@ class SenpaiGacha:
                 description = gacha[0] + "\nRarity: Mythic"
             database_helper.adjust_points(context.message.author.id)
             balance = database_helper.get_pikapoints(context.message.author.id)
+            database_helper.add_inventory(context.message.author.id, gacha[1])
             await context.send("You now have " + str(balance) + " pikapoints", embed=discord.Embed(title=title, description=description, color=0x9370db))
             await context.send("https://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(gacha[0].replace(" ", "_")))
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
+
+    @commands.command(name="inventory")
+    async def inventory(self, context):
+        inventory = database_helper.get_inventory(context.message.author.id)
+        if inventory is None:
+            await context.send("You have no pokemon! Start rolling!")
+        else:
+            title = "{}'s Inventory: \n".format(context.message.author.name)
+            description = ""
+            for poke in inventory:
+                if poke[3] <= 5:
+                    description = description + "\n{} {} - {}⭐".format(poke[4], poke[2], poke[3])
+                elif poke[3] == 6:
+                    description = description + "\n{} {} - Legendary".format(poke[4], poke[2])
+                elif poke[3] == 7:
+                    description = description + "\n{} {} - Legendary".format(poke[4], poke[2])
+            await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+
 
     @commands.command(name="units")
     async def units(self, context):

@@ -119,11 +119,33 @@ def get_units(conn):
     except Error as e:
         print(e)
 
+def get_inventory(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT DISTINCT * FROM (SELECT user_id, poke_id, name, rarity, count(*) FROM inventory INNER JOIN pikagacha ON inventory.poke_id = pikagacha.id WHERE inventory.user_id = $user_id GROUP BY user_id, poke_id, name, rarity ORDER BY rarity DESC, poke_id ASC)"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
+def add_inventory(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """INSERT INTO inventory(user_id, poke_id) VALUES($user_id, $poke_id)"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
                                     points integer DEFAULT 0)"""
 sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
+sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
 
 def load_pikadata(path):
     data = {}
@@ -137,6 +159,7 @@ def initialize(conn):
     create_table(conn, sql_create_pikapoints_table)
     create_table(conn, sql_create_pikagacha_table)
     create_table(conn, sql_create_pikapity_table)
+    create_table(conn, sql_create_inventory)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
