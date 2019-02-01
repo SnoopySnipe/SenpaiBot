@@ -22,11 +22,11 @@ class SenpaiSpoiler:
 
             # Embeded message
             embed_msg = discord.Embed(color=0xff93ac)
-            embed_msg.add_field(name="`**Sender:**`", value=context.message.author,
+            embed_msg.add_field(name="**Sender:**", value=context.message.author,
                 inline=False)
-            embed_msg.add_field(name="`**Spoiler For:**`", value=title,
+            embed_msg.add_field(name="**Spoiler For:**", value=title,
                 inline=False)
-            embed_msg.add_field(name="`**Spoils:**`", value=msg, inline=False)
+            embed_msg.add_field(name="**Spoils:**", value=msg, inline=False)
             await context.send(embed=embed_msg)
 
             # delete the command message
