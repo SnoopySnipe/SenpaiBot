@@ -41,7 +41,7 @@ class SenpaiGacha:
             elif 501 <= r <= 1003:
                 options = database_helper.get_roll(6)
                 database_helper.adjust_pity(context.message.author.id, True)
-            if 1 <= r <= details[1]:
+            elif 1 <= r <= details[1]:
                 options = database_helper.get_roll(3)
                 database_helper.adjust_pity(context.message.author.id, False)
             elif details[1] < r <= details[1] + details[2]:
