@@ -33,15 +33,15 @@ def adjust_pikapity(conn, user_id, got_five=None):
     try:
         c = conn.cursor()
         if got_five is None:
-            sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 400, 500, 40, 60);"""
+            sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 420, 540, 10, 30);"""
             placeholders = {"user_id": user_id}
             c.execute(sql_setup_pikapity, placeholders)
         elif (got_five == True):
-            sql_update_pikapity = """UPDATE pikapity SET focus = 60, five = 40, four = 500, three = 400 WHERE id=$user_id;"""
+            sql_update_pikapity = """UPDATE pikapity SET focus = 30, five = 10, four = 540, three = 420 WHERE id=$user_id;"""
             placeholders = {"user_id": user_id}
             c.execute(sql_update_pikapity, placeholders)
         else:
-            sql_update_pikapity = """UPDATE pikapity SET focus = focus + 10, five = five + 5, four = four - 5, three = three - 10 WHERE id=$user_id;"""
+            sql_update_pikapity = """UPDATE pikapity SET focus = focus + 5, five = five + 5, four = four - 5, three = three - 5 WHERE id=$user_id;"""
             placeholders = {"user_id": user_id}
             c.execute(sql_update_pikapity, placeholders)
         conn.commit()
@@ -103,7 +103,7 @@ def get_roll(conn, roll):
         if roll == 1:
             sql = """SELECT name FROM pikagacha WHERE focus = 1"""
         else:
-            sql = """SELECT name FROM pikagacha WHERE rarity = $roll"""
+            sql = """SELECT name FROM pikagacha WHERE rarity = $roll AND focus = 0"""
         placeholders = {"roll": roll}
         c.execute(sql, placeholders)
         return c.fetchall()

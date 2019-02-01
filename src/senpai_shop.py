@@ -4,7 +4,7 @@ from discord.ext import commands
 import database_helper
 
 
-class SenpaiShop:
+class SenpaiGacha:
 
     @commands.command(name="balance")
     async def balance(self, context):
@@ -20,7 +20,7 @@ class SenpaiShop:
         pity = database_helper.get_pity(context.message.author.id)
         title = "{}'s Pity Rates: \n".format(context.message.author.name)
         if pity is None:
-            description = "3⭐: 40%\n4⭐: 50%\n5⭐: 4%\nFocus: 6%"
+            description = "3⭐: 42.0%\n4⭐: 54.0%\n5⭐: 1.0%\nFocus: 3.0%"
         else:
             description = "3⭐: {}%\n4⭐: {}%\n5⭐: {}%\nFocus: {}%".format(pity[0]/10, pity[1]/10, pity[2]/10, pity[3]/10)
             
@@ -108,4 +108,4 @@ class SenpaiShop:
 
 
 def setup(bot):
-    bot.add_cog(SenpaiShop())
+    bot.add_cog(SenpaiGacha())
