@@ -2,6 +2,7 @@ import sys
 import signal
 import asyncio
 import datetime
+import discord
 from discord.ext import commands
 import database_helper
 import logging
@@ -57,6 +58,10 @@ async def on_ready():
     print(bot.user.id)
     print('------')
     database_helper.initialize(str(bot.guilds[0].id))
+    for channel in bot.get_all_channels():
+        if (isinstance(channel, discord.VoiceChannel)):
+            for member in channel.members:
+                voice_times[member.id] = datetime.datetime.now()
 
 @bot.command()
 async def leave():
@@ -68,17 +73,21 @@ async def on_voice_state_update(member, before, after):
     if(after.channel != None and member.id not in voice_times):
         voice_times[member.id] = datetime.datetime.now()
     elif(after.channel == None and member.id in voice_times):
-        start_time = voice_times[member.id]
-        voice_times.pop(member.id)
-        channel = bot.get_channel(COMMANDS_CHANNEL_ID)
-        elapsed_time = round((datetime.datetime.now()-start_time).total_seconds()/60)
-        print(elapsed_time)
+        elapsed_time = tally_time(member)
         database_helper.add_pikapoints(member.id, elapsed_time)
+        channel = bot.get_channel(COMMANDS_CHANNEL_ID)
         if(channel is not None):
             await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
         else:
             pass
 
+def tally_time(member):
+    if(member.id not in voice_times):
+        return 0
+    start_time = voice_times[member.id]
+    voice_times.pop(member.id)
+    elapsed_time = round((datetime.datetime.now()-start_time).total_seconds()/60)
+    return elapsed_time
 
 @bot.event
 async def on_message(message : str):
@@ -114,6 +123,18 @@ async def on_message_edit(before, after):
             msg = msg + "\n`proxy url: `" + a_attachment.proxy_url
         await channel.send(msg)
 
+async def tally_before_exit():
+    commands_channel = bot.get_channel(COMMANDS_CHANNEL_ID)
+    for channel in bot.get_all_channels():
+        if (isinstance(channel, discord.VoiceChannel)):
+            for member in channel.members:
+                elapsed_time = tally_time(member)
+                database_helper.add_pikapoints(member.id, elapsed_time)
+                if(commands_channel is not None):
+                    await commands_channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
+                else:
+                    pass                  
+  
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
            "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls", "senpai_shop", "senpai_spoiler"]
@@ -126,7 +147,7 @@ if (__name__ == "__main__"):
     token = None
 
     # map Ctrl+C to trigger signal_handler function
-    signal.signal(signal.SIGINT, signal_handler)
+    #signal.signal(signal.SIGINT, signal_handler)
 
     print("Logging in...")
 
@@ -140,4 +161,13 @@ if (__name__ == "__main__"):
 
     for module in modules:
         bot.load_extension(module)
-    bot.run(token)
+    try:
+        asyncio.get_event_loop().run_until_complete(bot.start(token))
+    except KeyboardInterrupt:
+        asyncio.get_event_loop().run_until_complete(tally_before_exit())
+        asyncio.get_event_loop().run_until_complete(bot.logout())
+        # cancel all tasks lingering
+    finally:
+        asyncio.get_event_loop().run_until_complete(bot.close())
+        print("Exited")
+  
