@@ -168,6 +168,5 @@ if (__name__ == "__main__"):
         asyncio.get_event_loop().run_until_complete(bot.logout())
         # cancel all tasks lingering
     finally:
-        asyncio.get_event_loop().run_until_complete(bot.close())
-        print("Exited")
+        bot.close()
   
