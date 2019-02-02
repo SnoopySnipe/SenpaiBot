@@ -2,8 +2,7 @@ import discord
 import random
 from discord.ext import commands
 import database_helper
-
-
+from PIL import Image
 class SenpaiGacha:
 
     @commands.command(name="balance")
@@ -69,6 +68,31 @@ class SenpaiGacha:
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 
+    @commands.command(name="testinventory")
+    async def testinventory(self, context):
+        #img = Image.open('images/crate.png', 'r')
+        inventory = database_helper.get_inventory(context.message.author.id)
+        if inventory is None:
+            await context.send("You have no pokemon! Start rolling!")
+        else:
+            background = Image.open('images/inv_background.png', 'r')
+            background = background.resize((850, 425))
+            (x, y) = (0, 0)
+            for pokemon in inventory:
+                print("images/pokemon/"+pokemon[2]+".png")
+                img = Image.open("images/pokemon/"+pokemon[2]+".png")
+                img = img.resize((75,75))
+                offset = (x*80+5, y*80+5)
+                background.paste(img, offset, img)
+                x += 1
+                if(x == 10):
+                    x = 0
+                    y += 1
+            background.save('images/out.png')
+            e = discord.Embed()
+            file = discord.File('images/out.png', filename='inventory.png')
+            e.set_image(url='images/out.png')
+            await context.channel.send(context.message.author.name+"'s inventory", file=file)
     @commands.command(name="inventory")
     async def inventory(self, context):
         inventory = database_helper.get_inventory(context.message.author.id)
