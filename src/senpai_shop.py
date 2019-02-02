@@ -86,6 +86,10 @@ class SenpaiGacha:
                         name = "nidoran-f"
                     elif(name == "Nidoran♂"):
                         name = "nidoran-m"
+                    elif(name == "Mr. Mime"):
+                        name = "mr-mime"
+                    elif(name == "Farfetch'd"):
+                        name = "farfetchd"
                     pokemon_res = pb.pokemon(name.lower())
                     sprite = pb.SpriteResource('pokemon', pokemon_res.id)
                     img = Image.open(sprite.path).convert("RGBA")
@@ -97,10 +101,11 @@ class SenpaiGacha:
                     if(x == 8):
                         x = 0
                         y += 1
-            background.save('images/'+context.message.author.id+'.png')
+            save_location = 'images/'+str(context.message.author.id)+'.png'
+            background.save(save_location)
             e = discord.Embed()
-            file = discord.File('images/out.png', filename='inventory.png')
-            e.set_image(url='images/out.png')
+            file = discord.File(save_location, filename='inventory.png')
+            e.set_image(url=save_location)
             await context.channel.send(context.message.author.name+"'s inventory", file=file)
     @commands.command(name="inventory")
     async def inventory(self, context):
