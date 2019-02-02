@@ -76,25 +76,17 @@ class SenpaiGacha:
         if inventory is None:
             await context.send("You have no pokemon! Start rolling!")
         else:
+            #background = Image.new('RGBA', (850,450), (255, 255, 255))
             background = Image.open('images/inv_background.png', 'r')
             background = background.resize((850, 450))
             (x, y) = (0, 0)
             for pokemon in inventory:
-                name = pokemon[2]
+                pokemon_id = pokemon[1]
+                sprite = pb.SpriteResource('pokemon', pokemon_id)
+                img = Image.open(sprite.path).convert("RGBA")
+                img = img.resize((150,150))
                 for i in range(pokemon[4]):
-                    if(name == "Nidoran♀"):
-                        name = "nidoran-f"
-                    elif(name == "Nidoran♂"):
-                        name = "nidoran-m"
-                    elif(name == "Mr. Mime"):
-                        name = "mr-mime"
-                    elif(name == "Farfetch'd"):
-                        name = "farfetchd"
-                    pokemon_res = pb.pokemon(name.lower())
-                    sprite = pb.SpriteResource('pokemon', pokemon_res.id)
-                    img = Image.open(sprite.path).convert("RGBA")
                     #img = Image.open("images/pokemon/"+pokemon[2]+".png")
-                    img = img.resize((150,150))
                     offset = (x*100, y*100)
                     background.paste(img, offset, img)
                     x += 1
