@@ -80,8 +80,13 @@ class SenpaiGacha:
             background = background.resize((850, 450))
             (x, y) = (0, 0)
             for pokemon in inventory:
+                name = pokemon[2]
                 for i in range(pokemon[4]):
-                    pokemon_res = pb.pokemon(pokemon[2].lower())
+                    if(name == "Nidoran♀"):
+                        name = "nidoran-f"
+                    elif(name == "Nidoran♂"):
+                        name = "nidoran-m"
+                    pokemon_res = pb.pokemon(name.lower())
                     sprite = pb.SpriteResource('pokemon', pokemon_res.id)
                     img = Image.open(sprite.path).convert("RGBA")
                     #img = Image.open("images/pokemon/"+pokemon[2]+".png")
