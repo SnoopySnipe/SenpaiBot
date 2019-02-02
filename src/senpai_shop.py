@@ -2,6 +2,7 @@ import discord
 import random
 from discord.ext import commands
 import database_helper
+import pokebase as pb
 from PIL import Image
 class SenpaiGacha:
 
@@ -76,17 +77,21 @@ class SenpaiGacha:
             await context.send("You have no pokemon! Start rolling!")
         else:
             background = Image.open('images/inv_background.png', 'r')
-            background = background.resize((850, 425))
+            background = background.resize((850, 450))
             (x, y) = (0, 0)
             for pokemon in inventory:
-                img = Image.open("images/pokemon/"+pokemon[2]+".png")
-                img = img.resize((75,75))
-                offset = (x*80+5, y*80+5)
-                background.paste(img, offset, img)
-                x += 1
-                if(x == 10):
-                    x = 0
-                    y += 1
+                for i in range(pokemon[4]):
+                    pokemon_res = pb.pokemon(pokemon[2].lower())
+                    sprite = pb.SpriteResource('pokemon', pokemon_res.id)
+                    img = Image.open(sprite.path).convert("RGBA")
+                    #img = Image.open("images/pokemon/"+pokemon[2]+".png")
+                    img = img.resize((150,150))
+                    offset = (x*100, y*100)
+                    background.paste(img, offset, img)
+                    x += 1
+                    if(x == 8):
+                        x = 0
+                        y += 1
             background.save('images/out.png')
             e = discord.Embed()
             file = discord.File('images/out.png', filename='inventory.png')
