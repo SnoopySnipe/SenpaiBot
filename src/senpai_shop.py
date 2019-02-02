@@ -79,7 +79,6 @@ class SenpaiGacha:
             background = background.resize((850, 425))
             (x, y) = (0, 0)
             for pokemon in inventory:
-                print("images/pokemon/"+pokemon[2]+".png")
                 img = Image.open("images/pokemon/"+pokemon[2]+".png")
                 img = img.resize((75,75))
                 offset = (x*80+5, y*80+5)
