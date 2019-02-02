@@ -97,7 +97,7 @@ class SenpaiGacha:
                     if(x == 8):
                         x = 0
                         y += 1
-            background.save('images/out.png')
+            background.save('images/'+context.message.author.id+'.png')
             e = discord.Embed()
             file = discord.File('images/out.png', filename='inventory.png')
             e.set_image(url='images/out.png')
