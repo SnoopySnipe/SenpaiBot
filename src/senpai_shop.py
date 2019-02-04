@@ -37,6 +37,70 @@ class SenpaiGacha:
             
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
+    @commands.command(name="fullroll")
+    async def fullroll(self, context, region=None):
+        PRICE = 30
+        database_helper.adjust_pity(context.message.author.id)
+        details = database_helper.get_user_details(context.message.author.id)
+        if details is None:
+            await context.send("You have no pikapoints! Join voice and start earning!")
+        elif PRICE <= details[0]:
+            balance = details[0]
+            rolls = balance // 30
+            await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
+
+            if region == 'kanto':
+                region = KANTO
+            elif region == 'johto':
+                region = JOHTO
+            # elif region == 'hoenn':
+            #     region = HOENN
+            # elif region == 'sinnoh':
+            #     region = SINNOH
+            # elif region == 'unova':
+            #     region = UNOVA
+            # elif region == 'kalos':
+            #     region = KALOS
+            # elif region == 'alola':
+            #     region = ALOLA
+            else:
+                region = None
+
+            for i in range(rolls):
+                r = random.randint(0, 1003)
+                if r == 0:
+                    options = database_helper.get_roll(7, region)
+                    database_helper.adjust_pity(context.message.author.id, True)
+                elif 1001 <= r <= 1003:
+                    options = database_helper.get_roll(6, region)
+                    database_helper.adjust_pity(context.message.author.id, True)
+                elif 1 <= r <= details[1]:
+                    options = database_helper.get_roll(3, region)
+                    database_helper.adjust_pity(context.message.author.id, False)
+                elif details[1] < r <= details[1] + details[2]:
+                    options = database_helper.get_roll(4, region)
+                    database_helper.adjust_pity(context.message.author.id, False)
+                elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
+                    options = database_helper.get_roll(5, region)
+                    database_helper.adjust_pity(context.message.author.id, True)
+                elif details[1] + details[2] + details[3] < r <= 1000:
+                    options = database_helper.get_roll(1, region)
+                    database_helper.adjust_pity(context.message.author.id, True)
+                gacha = options[random.randint(0, len(options) - 1)]
+                title = "{} Summoned: ".format(context.message.author.name)
+                if gacha[2] <= 5:
+                    description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
+                elif gacha[2] == 6:
+                    description = gacha[0] + "\nRarity: Legendary"
+                elif gacha[2] == 7:
+                    description = gacha[0] + "\nRarity: Mythic"
+                database_helper.adjust_points(context.message.author.id, -PRICE)
+                database_helper.add_inventory(context.message.author.id, gacha[1])
+                await context.send("`{}{}`\nhttps://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(
+                    title, description, gacha[0].replace(" ", "_")))
+            balance = database_helper.get_pikapoints(context.message.author.id)
+            await context.send("You now have {} pikapoints.".format(str(balance)))
+
     @commands.command(name="roll")
     async def roll(self, context, region=None):
         PRICE = 30
