@@ -47,7 +47,6 @@ class SenpaiGacha:
         elif PRICE <= details[0]:
             balance = details[0]
             rolls = balance // 30
-            await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
 
             if region == 'kanto':
                 region = KANTO
@@ -66,7 +65,7 @@ class SenpaiGacha:
             elif region is not None:
                 await context.send("Region must be in ('kanto', 'johto', None)")
                 return
-
+            await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
             for i in range(rolls):
                 r = random.randint(0, 1003)
                 if r == 0:
