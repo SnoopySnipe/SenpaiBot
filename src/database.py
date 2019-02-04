@@ -182,9 +182,9 @@ def full_remove_inventory(conn, user_id, rarity, region=None):
         else:
             sql = """DELETE FROM inventory WHERE user_id = $user_id AND poke_id IN (SELECT id FROM pikagacha WHERE rarity = $rarity AND id BETWEEN $low AND $high)"""
             placeholders = {"user_id": user_id, "rarity": rarity, "low": region[1], "high": region[2]}
-        c.execute(sql, placeholders)
+        rows = c.execute(sql, placeholders).rowcount
         conn.commit()
-        return c.rowcount
+        return rows
     except Error as e:
         print(e)
 

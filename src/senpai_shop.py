@@ -235,9 +235,9 @@ class SenpaiGacha:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.full_remove_inventory(context.message.author.id, rarity, region)
             await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokemon from {}...".format(str(balance), rows, rarity, str_region))
-            if rarity == 3:
+            if rarity == '3':
                 gain = 5
-            elif rarity == 4:
+            elif rarity == '4':
                 gain = 10
             total_gain = database_helper.adjust_points(context.message.author.id, gain*rows)
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
