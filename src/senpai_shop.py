@@ -146,7 +146,7 @@ class SenpaiGacha:
                 options = database_helper.get_roll(1, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             gacha = options[random.randint(0, len(options) - 1)]
-            title = "{} Summoned: ".format(context.message.author.name)
+            title = "{} Summoned: \n".format(context.message.author.name)
             if gacha[2] <= 5:
                 description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
             elif gacha[2] == 6:
@@ -156,7 +156,9 @@ class SenpaiGacha:
             database_helper.adjust_points(context.message.author.id, -PRICE)
             balance = database_helper.get_pikapoints(context.message.author.id)
             database_helper.add_inventory(context.message.author.id, gacha[1])
-            await context.send("You now have " + str(balance) + " pikapoints.\n`{}{}`\nhttps://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(title, description,gacha[0].replace(" ", "_")))
+            embed = discord.Embed(title=title, description=description, color=0x9370db)
+            embed.set_thumbnail(url="https://bulbapedia.bulbagarden.net/wiki/File:{}{}.png".format(gacha[1], gacha[0].replace(" ", "_")))
+            await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 
