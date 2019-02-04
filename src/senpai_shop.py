@@ -190,8 +190,22 @@ class SenpaiGacha:
 
 
     @commands.command(name="units")
-    async def units(self, context):
-        units = database_helper.get_units()
+    async def units(self, context, region):
+        if region == 'kanto':
+            region = KANTO
+        # elif region == 'johto':
+        #     region = JOHTO
+        # elif region == 'hoenn':
+        #     region = HOENN
+        # elif region == 'sinnoh':
+        #     region = SINNOH
+        # elif region == 'unova':
+        #     region = UNOVA
+        # elif region == 'kalos':
+        #     region = KALOS
+        # elif region == 'alola':
+        #     region = ALOLA
+        units = database_helper.get_units(region)
         focus = []
         five = []
         four = []

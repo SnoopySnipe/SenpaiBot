@@ -118,11 +118,12 @@ def get_roll(conn, roll, region=None):
     except Error as e:
         print(e)
 
-def get_units(conn):
+def get_units(conn, region):
     try:
         c = conn.cursor()
-        sql = """SELECT name, rarity, focus FROM pikagacha"""
-        c.execute(sql)
+        sql = """SELECT name, rarity, focus FROM pikagacha WHERE id BETWEEN $low AND $high"""
+        placeholders = {"low": region[1], "high": region[2]}
+        c.execute(sql, placeholders)
         return c.fetchall()
     except Error as e:
         print(e)

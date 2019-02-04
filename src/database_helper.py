@@ -54,11 +54,11 @@ def get_roll(roll, region=None):
         conn.close()
         return result
 
-def get_units():
+def get_units(region):
     conn = sqlite3.connect(db)
     result = None
     if(conn is not None):
-        result = database.get_units(conn)
+        result = database.get_units(conn, region)
         conn.close()
         return result
 
