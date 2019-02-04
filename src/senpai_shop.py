@@ -112,22 +112,19 @@ class SenpaiGacha:
             await context.channel.send(context.message.author.name+"'s inventory", file=file)
     @commands.command(name="team")
     async def team(self, context):
-        if len(inventory) == 0:
-            await context.send("You have no pokemon! Start rolling!")
-        else:
-            title = "{}'s Team: \n".format(context.message.author.name)
-            description = ""
-            for region in REGIONS:
-                inventory = database_helper.get_inventory(context.message.author.id)
-                description = description + "\n" + region[0]
-                for poke in inventory:
-                    if poke[3] <= 5:
-                        description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
-                    elif poke[3] == 6:
-                        description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
-                    elif poke[3] == 7:
-                        description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
-            await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+        title = "{}'s Team: \n".format(context.message.author.name)
+        description = ""
+        for region in REGIONS:
+            inventory = database_helper.get_inventory(context.message.author.id, region)
+            description = description + "\n" + region[0]
+            for poke in inventory:
+                if poke[3] <= 5:
+                    description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
+                elif poke[3] == 6:
+                    description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
+                elif poke[3] == 7:
+                    description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="release")
     async def release(self, context, name):
