@@ -122,3 +122,9 @@ def run_sql(query):
     if (conn is not None):
         database.run_sql(conn, query)
         conn.close()
+
+def full_remove_inventory(user_id, rarity, region=None):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        return database.full_remove_inventory(conn, user_id, rarity, region)
+        conn.close()

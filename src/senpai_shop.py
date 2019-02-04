@@ -206,6 +206,42 @@ class SenpaiGacha:
                     description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
+    @commands.command(name="fullrelease")
+    async def fullrelease(self, context, rarity, region=None):
+        if region == 'kanto':
+            region = KANTO
+        elif region == 'johto':
+            region = JOHTO
+        # elif region == 'hoenn':
+        #     region = HOENN
+        # elif region == 'sinnoh':
+        #     region = SINNOH
+        # elif region == 'unova':
+        #     region = UNOVA
+        # elif region == 'kalos':
+        #     region = KALOS
+        # elif region == 'alola':
+        #     region = ALOLA
+        elif region is not None:
+            await context.send("Region must be in ('kanto', 'johto', None)")
+
+        if rarity not in (3, 4):
+            await context.send("You can only full release 3⭐ and 4⭐ rarity Pokemon!")
+        else:
+            balance = database_helper.get_pikapoints(context.message.author.id)
+            if region is None:
+                str_region = "all regions"
+            else:
+                str_region = "the " + region[0] + " region"
+            rows = database_helper.full_remove_inventory(context.message.author.id, rarity, region)
+            await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokemon from {}...".format(str(balance), rows, rarity, str_region))
+            if rarity == 3:
+                gain = 5
+            elif rarity == 4:
+                gain = 10
+            total_gain = database_helper.adjust_points(context.message.author.id, gain*rows)
+            await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
+
     @commands.command(name="release")
     async def release(self, context, name):
         pokemon = database_helper.get_pokemon(name)
