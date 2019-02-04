@@ -170,7 +170,7 @@ def get_from_inventory(conn, user_id, poke_id):
         print(e)
 
 def change_focus(conn, *args):
-    poke = str(tuple(args))
+    poke = args
     try:
         c = conn.cursor()
         sql1 = """UPDATE pikagacha SET focus = 0;"""
