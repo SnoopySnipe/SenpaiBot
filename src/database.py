@@ -51,7 +51,7 @@ def adjust_pikapity(conn, user_id, got_five=None):
 def setup_pikagacha(conn, id, name, rarity, focus):
     try:
         c = conn.cursor()
-        sql_setup_pikagacha = """REPLACE INTO pikagacha(id, name, rarity, focus) VALUES($id, $name, $rarity, $focus)"""
+        sql_setup_pikagacha = """INSERT OR IGNORE INTO pikagacha(id, name, rarity, focus) VALUES($id, $name, $rarity, $focus)"""
         placeholders = {"id": id, "name": name, "rarity": rarity, "focus": focus}
         c.execute(sql_setup_pikagacha, placeholders)
         conn.commit()
