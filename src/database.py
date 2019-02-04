@@ -174,7 +174,7 @@ def change_focus(conn, *args):
         c = conn.cursor()
         t = ()
         for poke in args:
-            t = t + (poke)
+            t = t + (poke,)
         sql1 = """UPDATE pikagacha SET focus = 0"""
         sql2 = """UPDATE pikagacha SET focus = 1 WHERE name IN $poke"""
         placeholders = {"poke": poke}
