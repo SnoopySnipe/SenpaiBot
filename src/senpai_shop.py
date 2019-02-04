@@ -239,7 +239,8 @@ class SenpaiGacha:
                 gain = 5
             elif rarity == '4':
                 gain = 10
-            total_gain = database_helper.adjust_points(context.message.author.id, gain*rows)
+            database_helper.adjust_points(context.message.author.id, gain*rows)
+            total_gain = gain*rows
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
 
     @commands.command(name="release")
