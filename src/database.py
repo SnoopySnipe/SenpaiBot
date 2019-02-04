@@ -169,6 +169,20 @@ def get_from_inventory(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def change_focus(conn, *args):
+    try:
+        c = conn.cursor()
+        t = ()
+        for poke in args:
+            t = t + (poke)
+        sql1 = """UPDATE pikagacha SET focus = 0"""
+        sql2 = """UPDATE pikagacha SET focus = 1 WHERE name IN $poke"""
+        placeholders = {"poke": poke}
+        c.execute(sql1)
+        c.execute(sql2, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
 
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (

@@ -4,6 +4,9 @@ from discord.ext import commands
 import database_helper
 import pokebase as pb
 from PIL import Image
+
+SNOOPY_ID = 103634047929962496
+
 class SenpaiGacha:
 
     @commands.command(name="balance")
@@ -138,6 +141,13 @@ class SenpaiGacha:
                 await context.send("You do not have that Pokemon!")
         else:
             await context.send("Invalid Pokemon name!")
+
+    @commands.command(name="newfocus")
+    async def newfocus(self, context, *args):
+        if context.message.author.id == SNOOPY_ID:
+            database_helper.change_focus(*args)
+        else:
+            await context.send("You're not Snoopy-san...")
 
 
     @commands.command(name="units")

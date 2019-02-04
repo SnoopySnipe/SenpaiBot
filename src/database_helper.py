@@ -110,3 +110,9 @@ def remove_inventory(user_id, poke_id):
     if (conn is not None):
         database.remove_inventory(conn, user_id, poke_id)
         conn.close()
+
+def change_focus(*args):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.change_focus(conn, *args)
+        conn.close()
