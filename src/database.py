@@ -172,9 +172,7 @@ def get_from_inventory(conn, user_id, poke_id):
 def change_focus(conn, *args):
     try:
         c = conn.cursor()
-        t = ()
-        for poke in args:
-            t = t + (poke,)
+        poke = tuple(args)
         sql1 = """UPDATE pikagacha SET focus = 0"""
         sql2 = """UPDATE pikagacha SET focus = 1 WHERE name IN $poke"""
         placeholders = {"poke": poke}
