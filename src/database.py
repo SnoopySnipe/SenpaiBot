@@ -184,7 +184,7 @@ def full_remove_inventory(conn, user_id, rarity, region=None):
             placeholders = {"user_id": user_id, "rarity": rarity, "low": region[1], "high": region[2]}
         c.execute(sql, placeholders)
         conn.commit()
-        return c.rowcount()
+        return c.rowcount
     except Error as e:
         print(e)
 
