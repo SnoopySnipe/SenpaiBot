@@ -170,9 +170,9 @@ def get_from_inventory(conn, user_id, poke_id):
         print(e)
 
 def change_focus(conn, *args):
+    poke = str(tuple(args))
     try:
         c = conn.cursor()
-        poke = str(tuple(args))
         sql1 = """UPDATE pikagacha SET focus = 0;"""
         sql2 = """UPDATE pikagacha SET focus = 1 WHERE name IN $poke;"""
         placeholders = {"poke": poke}
@@ -180,6 +180,7 @@ def change_focus(conn, *args):
         c.execute(sql2, placeholders)
         conn.commit()
     except Error as e:
+        print(poke)
         print(e)
 
 
