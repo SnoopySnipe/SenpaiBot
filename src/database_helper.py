@@ -46,11 +46,11 @@ def get_user_details(user_id):
         conn.close()
         return result
 
-def get_roll(roll):
+def get_roll(roll, region=None):
     conn = sqlite3.connect(db)
     result = None
     if(conn is not None):
-        result = database.get_roll(conn, roll)
+        result = database.get_roll(conn, roll, region)
         conn.close()
         return result
 

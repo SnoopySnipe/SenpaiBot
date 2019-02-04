@@ -98,13 +98,19 @@ def adjust_points(conn, user_id, points):
     except Error as e:
         print(e)
 
-def get_roll(conn, roll):
+def get_roll(conn, roll, region=None):
     try:
         c = conn.cursor()
-        if roll == 1:
-            sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1"""
+        if region is None:
+            if roll == 1:
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1"""
+            else:
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0"""
         else:
-            sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0"""
+            if roll == 1:
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1 AND id BETWEEN region[1] AND region[2]"""
+            else:
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0 AND id BETWEEN region[1] AND region[2]"""
         placeholders = {"roll": roll}
         c.execute(sql, placeholders)
         return c.fetchall()

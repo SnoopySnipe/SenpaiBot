@@ -38,7 +38,7 @@ class SenpaiGacha:
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="roll")
-    async def roll(self, context):
+    async def roll(self, context, region=None):
         PRICE = 30
         database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
@@ -46,23 +46,40 @@ class SenpaiGacha:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
             r = random.randint(0, 1003)
+            if region == 'kanto':
+                region = KANTO
+            # elif region == 'johto':
+            #     region = JOHTO
+            # elif region == 'hoenn':
+            #     region = HOENN
+            # elif region == 'sinnoh':
+            #     region = SINNOH
+            # elif region == 'unova':
+            #     region = UNOVA
+            # elif region == 'kalos':
+            #     region = KALOS
+            # elif region == 'alola':
+            #     region = ALOLA
+            else:
+                region = None
+
             if r == 0:
-                options = database_helper.get_roll(7)
+                options = database_helper.get_roll(7, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             elif 1001 <= r <= 1003:
-                options = database_helper.get_roll(6)
+                options = database_helper.get_roll(6, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             elif 1 <= r <= details[1]:
-                options = database_helper.get_roll(3)
+                options = database_helper.get_roll(3, region)
                 database_helper.adjust_pity(context.message.author.id, False)
             elif details[1] < r <= details[1] + details[2]:
-                options = database_helper.get_roll(4)
+                options = database_helper.get_roll(4, region)
                 database_helper.adjust_pity(context.message.author.id, False)
             elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
-                options = database_helper.get_roll(5)
+                options = database_helper.get_roll(5, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             elif details[1] + details[2] + details[3] < r <= 1000:
-                options = database_helper.get_roll(1)
+                options = database_helper.get_roll(1, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             gacha = options[random.randint(0, len(options) - 1)]
             title = "{} Summoned: \n".format(context.message.author.name)
