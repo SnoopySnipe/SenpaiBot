@@ -82,7 +82,7 @@ class SenpaiGacha:
                 options = database_helper.get_roll(1, region)
                 database_helper.adjust_pity(context.message.author.id, True)
             gacha = options[random.randint(0, len(options) - 1)]
-            title = "{} Summoned: \n".format(context.message.author.name)
+            title = "{} Summoned: ".format(context.message.author.name)
             if gacha[2] <= 5:
                 description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
             elif gacha[2] == 6:
