@@ -73,7 +73,7 @@ class SenpaiGacha:
     async def testinventory(self, context):
         #img = Image.open('images/crate.png', 'r')
         inventory = database_helper.get_inventory(context.message.author.id)
-        if inventory is None:
+        if len(inventory) == 0:
             await context.send("You have no pokemon! Start rolling!")
         else:
             #background = Image.new('RGBA', (850,450), (255, 255, 255))
@@ -99,10 +99,10 @@ class SenpaiGacha:
             file = discord.File(save_location, filename='inventory.png')
             e.set_image(url=save_location)
             await context.channel.send(context.message.author.name+"'s inventory", file=file)
-    @commands.command(name="inventory")
-    async def inventory(self, context):
+    @commands.command(name="team")
+    async def team(self, context):
         inventory = database_helper.get_inventory(context.message.author.id)
-        if inventory is None:
+        if len(inventory) == 0:
             await context.send("You have no pokemon! Start rolling!")
         else:
             title = "{}'s Inventory: \n".format(context.message.author.name)
