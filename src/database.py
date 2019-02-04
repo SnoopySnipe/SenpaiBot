@@ -137,7 +137,8 @@ def get_inventory(conn, user_id, region=None):
             c.execute(sql, placeholders)
         else:
             sql = """SELECT DISTINCT * FROM (SELECT user_id, poke_id, name, rarity, count(*) FROM inventory INNER JOIN pikagacha ON inventory.poke_id = pikagacha.id WHERE inventory.user_id = $user_id GROUP BY user_id, poke_id, name, rarity ORDER BY rarity DESC, poke_id ASC)"""
-            c.execute(sql)
+            placeholders = {"user_id": user_id}
+            c.execute(sql, placeholders)
         return c.fetchall()
     except Error as e:
         print(e)
