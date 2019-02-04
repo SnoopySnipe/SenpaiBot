@@ -205,6 +205,8 @@ class SenpaiGacha:
         #     region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
+        else:
+            pass
         units = database_helper.get_units(region)
         focus = []
         five = []
