@@ -181,7 +181,7 @@ def change_focus(conn, focus1, focus2, focus3, focus4):
     except Error as e:
         print(e)
 
-def change_focus(conn, query):
+def run_sql(conn, query):
     try:
         c = conn.cursor()
         c.execute(query)
