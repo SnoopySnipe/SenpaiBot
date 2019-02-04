@@ -13,7 +13,7 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
-REGIONS = [KANTO]#, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
+REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
 
 class SenpaiGacha:
 
@@ -48,8 +48,8 @@ class SenpaiGacha:
             r = random.randint(0, 1003)
             if region == 'kanto':
                 region = KANTO
-            # elif region == 'johto':
-            #     region = JOHTO
+            elif region == 'johto':
+                region = JOHTO
             # elif region == 'hoenn':
             #     region = HOENN
             # elif region == 'sinnoh':
@@ -193,8 +193,8 @@ class SenpaiGacha:
     async def units(self, context, region):
         if region == 'kanto':
             region = KANTO
-        # elif region == 'johto':
-        #     region = JOHTO
+        elif region == 'johto':
+            region = JOHTO
         # elif region == 'hoenn':
         #     region = HOENN
         # elif region == 'sinnoh':
