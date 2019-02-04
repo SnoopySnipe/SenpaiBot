@@ -112,19 +112,21 @@ class SenpaiGacha:
             await context.channel.send(context.message.author.name+"'s inventory", file=file)
     @commands.command(name="team")
     async def team(self, context):
-        inventory = database_helper.get_inventory(context.message.author.id)
         if len(inventory) == 0:
             await context.send("You have no pokemon! Start rolling!")
         else:
-            title = "{}'s Inventory: \n".format(context.message.author.name)
+            title = "{}'s Team: \n".format(context.message.author.name)
             description = ""
-            for poke in inventory:
-                if poke[3] <= 5:
-                    description = description + "\n{} {} - {}⭐".format(poke[4], poke[2], poke[3])
-                elif poke[3] == 6:
-                    description = description + "\n{} {} - Legendary".format(poke[4], poke[2])
-                elif poke[3] == 7:
-                    description = description + "\n{} {} - Mythic".format(poke[4], poke[2])
+            for region in REGIONS:
+                inventory = database_helper.get_inventory(context.message.author.id)
+                description = description + "\n" + region[0]
+                for poke in inventory:
+                    if poke[3] <= 5:
+                        description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
+                    elif poke[3] == 6:
+                        description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
+                    elif poke[3] == 7:
+                        description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="release")
@@ -154,11 +156,13 @@ class SenpaiGacha:
     async def newfocus(self, context, *args):
         if context.message.author.id == SNOOPY_ID:
             database_helper.change_focus(*args)
-            focus = database_helper.get_focus()
             title = "New Focus Units: "
             description = ''
-            for unit in focus:
-                description = description + "\n" + unit[0]
+            for region in REGIONS:
+                focus = database_helper.get_focus(region)
+                description = description + "\n" + region[0]
+                for unit in focus:
+                    description = description + "\n    " + unit[0]
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
             await context.send("You're not Snoopy-san...")
