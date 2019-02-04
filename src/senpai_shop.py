@@ -225,7 +225,7 @@ class SenpaiGacha:
         elif region is not None:
             await context.send("Region must be in ('kanto', 'johto', None)")
 
-        if rarity not in (3, 4):
+        if rarity != 3 and rarity != 4:
             await context.send("You can only full release 3⭐ and 4⭐ rarity Pokemon!")
         else:
             balance = database_helper.get_pikapoints(context.message.author.id)
