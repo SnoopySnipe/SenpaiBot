@@ -63,8 +63,9 @@ class SenpaiGacha:
             #     region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
-            else:
-                region = None
+            elif region is not None:
+                await context.send("Region must be in ('kanto', 'johto', None)")
+                return
 
             for i in range(rolls):
                 r = random.randint(0, 1003)
@@ -87,7 +88,7 @@ class SenpaiGacha:
                     options = database_helper.get_roll(1, region)
                     database_helper.adjust_pity(context.message.author.id, True)
                 gacha = options[random.randint(0, len(options) - 1)]
-                title = "{} Summoned: ".format(context.message.author.name)
+                title = "{} Summoned: \n".format(context.message.author.name)
                 if gacha[2] <= 5:
                     description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
                 elif gacha[2] == 6:
@@ -96,10 +97,19 @@ class SenpaiGacha:
                     description = gacha[0] + "\nRarity: Mythic"
                 database_helper.adjust_points(context.message.author.id, -PRICE)
                 database_helper.add_inventory(context.message.author.id, gacha[1])
-                await context.send("`{}{}`\nhttps://bulbapedia.bulbagarden.net/wiki/{}_(Pok%C3%A9mon)".format(
-                    title, description, gacha[0].replace(" ", "_")))
+                embed = discord.Embed(title=title, description=description, color=0x9370db)
+                str_id = gacha[1]
+                if gacha[1] < 10:
+                    str_id = "00" + str(gacha[1])
+                elif gacha[1] < 100:
+                    str_id = "0" + str(gacha[1])
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                embed.set_thumbnail(url=url)))
+                await context.send(embed=embed)
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
+        else:
+            await context.send("`You don't have enough pikapoints to summon!`")
 
     @commands.command(name="roll")
     async def roll(self, context, region=None):
@@ -124,8 +134,9 @@ class SenpaiGacha:
             #     region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
-            else:
-                region = None
+            elif region is not None:
+                await context.send("Region must be in ('kanto', 'johto', None)")
+                return
 
             if r == 0:
                 options = database_helper.get_roll(7, region)
@@ -198,6 +209,7 @@ class SenpaiGacha:
             file = discord.File(save_location, filename='inventory.png')
             e.set_image(url=save_location)
             await context.channel.send(context.message.author.name+"'s inventory", file=file)
+
     @commands.command(name="team")
     async def team(self, context):
         title = "{}'s Team: \n".format(context.message.author.name)
@@ -232,6 +244,7 @@ class SenpaiGacha:
         #     region = ALOLA
         elif region is not None:
             await context.send("Region must be in ('kanto', 'johto', None)")
+            return
 
         if rarity not in ('3', '4'):
             await context.send("You can only full release 3⭐ and 4⭐ rarity Pokemon!")
