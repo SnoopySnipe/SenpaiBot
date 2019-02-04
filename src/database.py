@@ -169,18 +169,16 @@ def get_from_inventory(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
-def change_focus(conn, *args):
-    poke = args
+def change_focus(conn, focus1, focus2, focus3, focus4):
     try:
         c = conn.cursor()
         sql1 = """UPDATE pikagacha SET focus = 0;"""
-        sql2 = """UPDATE pikagacha SET focus = 1 WHERE name IN $poke;"""
-        placeholders = {"poke": poke}
+        sql2 = """UPDATE pikagacha SET focus = 1 WHERE name = $focus1 OR name = $focus2 OR name = $focus3 OR name = $focus4"""
+        placeholders = {"focus1": focus1, "focus2": focus2, "focus3": focus3, "focus4": focus4}
         c.execute(sql1)
         c.execute(sql2, placeholders)
         conn.commit()
     except Error as e:
-        print(poke)
         print(e)
 
 
