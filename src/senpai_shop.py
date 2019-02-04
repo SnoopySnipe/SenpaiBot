@@ -96,8 +96,8 @@ class SenpaiGacha:
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
 
-    @commands.command(name="testinventory")
-    async def testinventory(self, context):
+    @commands.command(name="box")
+    async def box(self, context):
         #img = Image.open('images/crate.png', 'r')
         inventory = database_helper.get_inventory(context.message.author.id)
         if len(inventory) == 0:
