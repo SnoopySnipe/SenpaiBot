@@ -6,6 +6,14 @@ import pokebase as pb
 from PIL import Image
 
 SNOOPY_ID = 103634047929962496
+KANTO = ('Kanto', 1, 151)
+JOHTO = ('Johto', 152, 251)
+HOENN = ('Hoenn', 252, 386)
+SINNOH = ('Sinnoh', 387, 493)
+UNOVA = ('Unova', 494, 649)
+KALOS = ('Kalos', 650, 721)
+ALOLA = ('Alola', 722, 809)
+REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
 
 class SenpaiGacha:
 
@@ -207,11 +215,13 @@ class SenpaiGacha:
 
     @commands.command(name="focus")
     async def focus(self, context):
-        focus = database_helper.get_focus()
         title = "Focus Units: "
         description = ''
-        for unit in focus:
-            description = description + "\n" + unit[0]
+        for region in REGIONS:
+            focus = database_helper.get_focus(region)
+            description = description + region[0]
+            for unit in focus:
+                description = description + "\n    " + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         
 

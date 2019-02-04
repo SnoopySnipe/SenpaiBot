@@ -68,11 +68,12 @@ def get_pity(conn, user_id):
     except Error as e:
         print(e)
 
-def get_focus(conn):
+def get_focus(conn, region):
     try:
         c = conn.cursor()
-        sql_get_focus = """SELECT name FROM pikagacha WHERE focus=1"""
-        c.execute(sql_get_focus)
+        sql_get_focus = """SELECT name FROM pikagacha WHERE focus = 1 AND id BETWEEN $low AND $high"""
+        placeholders = {"low": region[1], "high": region[2]}
+        c.execute(sql_get_focus, placeholders)
         return c.fetchall()
     except Error as e:
         print(e)
