@@ -155,6 +155,13 @@ class SenpaiGacha:
         else:
             await context.send("You're not Snoopy-san...")
 
+    @commands.command(name="sql")
+    async def sql(self, context, query):
+        if context.message.author.id == SNOOPY_ID:
+            database_helper.run_sql(query)
+        else:
+            await context.send("You're not Snoopy-san...")
+
 
     @commands.command(name="units")
     async def units(self, context):

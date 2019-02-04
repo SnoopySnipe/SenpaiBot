@@ -116,3 +116,9 @@ def change_focus(focus1, focus2, focus3, focus4):
     if (conn is not None):
         database.change_focus(conn, focus1, focus2, focus3, focus4)
         conn.close()
+
+def run_sql(query):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.run_sql(conn, query)
+        conn.close()

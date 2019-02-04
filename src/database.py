@@ -181,6 +181,14 @@ def change_focus(conn, focus1, focus2, focus3, focus4):
     except Error as e:
         print(e)
 
+def change_focus(conn, query):
+    try:
+        c = conn.cursor()
+        c.execute(query)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
