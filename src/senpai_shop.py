@@ -145,8 +145,7 @@ class SenpaiGacha:
     @commands.command(name="newfocus")
     async def newfocus(self, context, *args):
         if context.message.author.id == SNOOPY_ID:
-            #database_helper.change_focus(*args)
-            await context.send(tuple(args))
+            database_helper.change_focus(*args)
         else:
             await context.send("You're not Snoopy-san...")
 
