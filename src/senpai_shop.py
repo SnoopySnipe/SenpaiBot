@@ -104,7 +104,7 @@ class SenpaiGacha:
                 elif gacha[1] < 100:
                     str_id = "0" + str(gacha[1])
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-                embed.set_thumbnail(url=url)))
+                embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
