@@ -106,12 +106,13 @@ def get_roll(conn, roll, region=None):
                 sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1"""
             else:
                 sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0"""
+            placeholders = {"roll": roll}
         else:
             if roll == 1:
-                sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1 AND id BETWEEN region[1] AND region[2]"""
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1 AND id BETWEEN $low AND $high"""
             else:
-                sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0 AND id BETWEEN region[1] AND region[2]"""
-        placeholders = {"roll": roll}
+                sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND focus = 0 AND id BETWEEN $low AND $high"""
+            placeholders = {"roll": roll, "low": region[1], "high": region[2]}
         c.execute(sql, placeholders)
         return c.fetchall()
     except Error as e:
