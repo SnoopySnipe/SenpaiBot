@@ -143,9 +143,9 @@ class SenpaiGacha:
             await context.send("Invalid Pokemon name!")
 
     @commands.command(name="newfocus")
-    async def newfocus(self, context, focus1, focus2, focus3, focus4):
+    async def newfocus(self, context, *args):
         if context.message.author.id == SNOOPY_ID:
-            database_helper.change_focus(focus1, focus2, focus3, focus4)
+            database_helper.change_focus(*args)
             focus = database_helper.get_focus()
             title = "New Focus Units: "
             description = ''
