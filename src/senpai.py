@@ -68,7 +68,7 @@ async def on_ready():
     channel = bot.get_channel(QUIZ_CHANNEL_ID)
     while True:
         if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-            asyncio.sleep(10) # generate quizzes every 15 minutes
+            asyncio.sleep(900) # generate quizzes every 15 minutes
             if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
                 r = random.randint(1, 251) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)
@@ -82,7 +82,7 @@ async def on_ready():
                     return m.content == pokemon and m.channel == channel
 
                 try:
-                    msg = await bot.wait_for('message', timeout=9.0, check=check)
+                    msg = await bot.wait_for('message', timeout=60.0, check=check)
                 except asyncio.TimeoutError:
                     await channel.send('Nobody guessed it in time...')
                 else:
