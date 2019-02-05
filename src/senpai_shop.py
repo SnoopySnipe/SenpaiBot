@@ -169,11 +169,7 @@ class SenpaiGacha:
             balance = database_helper.get_pikapoints(context.message.author.id)
             database_helper.add_inventory(context.message.author.id, gacha[1])
             embed = discord.Embed(title=title, description=description, color=0x9370db)
-            str_id = gacha[1]
-            if gacha[1] < 10:
-                str_id = "00" + str(gacha[1])
-            elif gacha[1] < 100:
-                str_id = "0" + str(gacha[1])
+            str_id = "{:03}".format(gacha[1])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
