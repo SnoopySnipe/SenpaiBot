@@ -64,11 +64,7 @@ async def on_ready():
         if (isinstance(channel, discord.VoiceChannel)):
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
-
-    while True:
-        time.sleep(10)
-        channel = bot.get_channel(QUIZ_CHANNEL_ID)
-        await channel.send("ha yeet")
+    channel = bot.get_channel(QUIZ_CHANNEL_ID)
 
 @bot.command()
 async def leave():
