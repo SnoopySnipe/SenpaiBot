@@ -477,7 +477,7 @@ class SenpaiGacha:
             return
         while True:
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-                asyncio.sleep(300) # generate quizzes every 5 minutes
+                asyncio.sleep(3000) # generate quizzes every 5 minutes
                 if random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
                     r = random.randint(1, 251) # generate random pokemon
                     pokemon = database_helper.get_pokemon_name(r)
