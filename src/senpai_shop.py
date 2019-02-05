@@ -295,6 +295,48 @@ class SenpaiGacha:
             total_gain = gain*rows
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
 
+    @commands.command(name="releasedupes")
+    async def releasedupes(self, context, rarity, region=None):
+        if region == 'kanto':
+            region = KANTO
+        elif region == 'johto':
+            region = JOHTO
+        # elif region == 'hoenn':
+        #     region = HOENN
+        # elif region == 'sinnoh':
+        #     region = SINNOH
+        # elif region == 'unova':
+        #     region = UNOVA
+        # elif region == 'kalos':
+        #     region = KALOS
+        # elif region == 'alola':
+        #     region = ALOLA
+        elif region is not None:
+            await context.send("Region must be in ('kanto', 'johto', None)")
+            return
+
+        if rarity not in ('3', '4'):
+            await context.send("You can only dupe release 3⭐ and 4⭐ rarity Pokemon!")
+        else:
+            balance = database_helper.get_pikapoints(context.message.author.id)
+            if region is None:
+                str_region = "all regions"
+            else:
+                str_region = "the " + region[0] + " region"
+            rows = database_helper.remove_dupes(context.message.author.id, rarity, region)
+            await context.send(
+                "You currently have {} pikapoints.\nReleasing {} {}⭐ Pokemon from {}...".format(str(balance), rows,
+                                                                                                rarity, str_region))
+            if rarity == '3':
+                gain = 5
+            elif rarity == '4':
+                gain = 10
+            database_helper.adjust_points(context.message.author.id, gain * rows)
+            total_gain = gain * rows
+            await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain,
+                                                                                            database_helper.get_pikapoints(
+                                                                                                context.message.author.id)))
+
     @commands.command(name="release")
     async def release(self, context, name):
         pokemon = database_helper.get_pokemon(name)

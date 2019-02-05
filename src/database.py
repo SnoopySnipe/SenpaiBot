@@ -188,6 +188,21 @@ def full_remove_inventory(conn, user_id, rarity, region=None):
     except Error as e:
         print(e)
 
+def remove_dupes(conn, user_id, rarity, region=None):
+    try:
+        c = conn.cursor()
+        if region is None:
+            sql = """DELETE FROM inventory LEFT OUTER JOIN (SELECT MIN(inventory_id) as inv_id, user_id, poke_id FROM inventory GROUP BY user_id, poke_id) as KeepRows ON inventory.inventory_id = KeepRows.inv_id WHERE KeepRows.inv_id IS NULL user_id = $user_id AND poke_id IN (SELECT id FROM pikagacha WHERE rarity = $rarity)"""
+            placeholders = {"user_id": user_id, "rarity": rarity}
+        else:
+            sql = """DELETE FROM inventory LEFT OUTER JOIN (SELECT MIN(inventory_id) as inv_id, user_id, poke_id FROM inventory GROUP BY user_id, poke_id) as KeepRows ON inventory.inventory_id = KeepRows.inv_id WHERE KeepRows.inv_id IS NULL user_id = $user_id AND poke_id IN (SELECT id FROM pikagacha WHERE rarity = $rarity AND id BETWEEN $low AND $high)"""
+            placeholders = {"user_id": user_id, "rarity": rarity, "low": region[1], "high": region[2]}
+        rows = c.execute(sql, placeholders).rowcount
+        conn.commit()
+        return rows
+    except Error as e:
+        print(e)
+
 def get_from_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()
