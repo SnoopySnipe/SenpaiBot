@@ -71,7 +71,7 @@ async def on_ready():
             asyncio.sleep(900) # generate quizzes every 15 minutes
             if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
                 r = random.randint(1, 251) # generate random pokemon
-                pokemon = database_helper.get_pokemon_name(r)
+                pokemon = database_helper.get_pokemon_name(r)[0]
                 str_id = "{:03}".format(r)
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
