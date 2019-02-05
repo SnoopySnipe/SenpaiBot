@@ -134,3 +134,11 @@ def remove_dupes(user_id, rarity, region=None):
     if (conn is not None):
         return database.remove_dupes(conn, user_id, rarity, region)
         conn.close()
+
+def get_pokemon_name(id):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_pokemon_name(conn, id)
+        conn.close()
+        return result

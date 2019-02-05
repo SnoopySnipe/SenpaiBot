@@ -64,8 +64,18 @@ async def on_ready():
         if (isinstance(channel, discord.VoiceChannel)):
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
+
     channel = bot.get_channel(QUIZ_CHANNEL_ID)
-    await channel.send((datetime.datetime.now().hour))
+    while True:
+        if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
+            time.sleep(10) # generate quizzes every 15 minutes
+            if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
+                r = random.randint(1, 251) # generate random pokemon
+                pokemon = database_helper.get_pokemon_name(r)
+                str_id = "{:03}".format(r)
+                file_url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                quiz = discord.Embed(title="Who's That Pokémon?", file_url=file_url, color=0x00bfff)
+                await channel.send(embed=quiz)
 
 @bot.command()
 async def leave():

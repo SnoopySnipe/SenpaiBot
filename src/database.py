@@ -163,6 +163,16 @@ def get_pokemon(conn, name):
     except Error as e:
         print(e)
 
+def get_pokemon_name(conn, id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT name FROM pikagacha WHERE id = $id"""
+        placeholders = {"id": id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def remove_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()
