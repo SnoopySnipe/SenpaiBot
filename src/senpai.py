@@ -65,7 +65,7 @@ async def on_ready():
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
     channel = bot.get_channel(QUIZ_CHANNEL_ID)
-    await channel.send((datetime.datetime.now()))
+    await channel.send((datetime.datetime.now().hour))
 
 @bot.command()
 async def leave():
