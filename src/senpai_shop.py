@@ -4,6 +4,7 @@ from discord.ext import commands
 import database_helper
 import pokebase as pb
 import asyncio
+import datetime
 from PIL import Image
 
 SNOOPY_ID = 103634047929962496
@@ -15,10 +16,13 @@ UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
-
+QUIZ_CHANNEL_ID = 349942469804425216
 class SenpaiGacha:
     def __init__(self, bot):
         self.bot = bot
+    async def on_ready(self):
+        database_helper.initialize(str(self.bot.guilds[0].id))
+        self.bot.loop.create_task(self.background_quiz())        
     @commands.command(name="balance")
     async def balance(self, context):
         user_id = context.message.author.id
@@ -466,7 +470,32 @@ class SenpaiGacha:
                 description = description + "\n    " + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         
+    async def background_quiz(self):
+        print("test")
+        channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
+        if(channel is None):
+            return
+        while True:
+            if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
+                asyncio.sleep(300) # generate quizzes every 5 minutes
+                if random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
+                    r = random.randint(1, 251) # generate random pokemon
+                    pokemon = database_helper.get_pokemon_name(r)
+                    str_id = "{:03}".format(r)
+                    url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                    quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
+                    quiz.set_image(url=url)
+                    await channel.send(embed=quiz)
+                    
+                    def check(m):
+                        return m.content == pokemon and m.channel == channel
 
+                    try:
+                        msg = await self.bot.wait_for('message', timeout=60.0, check=check)
+                    except asyncio.TimeoutError:
+                        await channel.send('Nobody guessed it in time...')
+                    else:
+                        await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))    
 
 def setup(bot):
     bot.add_cog(SenpaiGacha(bot))

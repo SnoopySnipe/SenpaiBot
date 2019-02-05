@@ -17,7 +17,6 @@ logger.addHandler(handler)
 
 COMMANDS_CHANNEL_ID = 282336977418715146
 LOGS_CHANNEL_ID = 540189209898647554
-QUIZ_CHANNEL_ID = 542441381210226748
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
@@ -64,29 +63,6 @@ async def on_ready():
         if (isinstance(channel, discord.VoiceChannel)):
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
-
-    channel = bot.get_channel(QUIZ_CHANNEL_ID)
-    while True:
-        if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-            asyncio.sleep(900) # generate quizzes every 15 minutes
-            if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
-                r = random.randint(1, 251) # generate random pokemon
-                pokemon = database_helper.get_pokemon_name(r)
-                str_id = "{:03}".format(r)
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-                quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
-                quiz.set_image(url=url)
-                await channel.send(embed=quiz)
-
-                def check(m):
-                    return m.content == pokemon and m.channel == channel
-
-                try:
-                    msg = await bot.wait_for('message', timeout=60.0, check=check)
-                except asyncio.TimeoutError:
-                    await channel.send('Nobody guessed it in time...')
-                else:
-                    await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))
 
 @bot.command()
 async def leave():
