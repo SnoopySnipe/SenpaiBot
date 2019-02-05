@@ -68,7 +68,7 @@ async def on_ready():
     while True:
         time.sleep(10)
         channel = bot.get_channel(QUIZ_CHANNEL_ID)
-        channel.send("ha yeet")
+        await channel.send("ha yeet")
 
 @bot.command()
 async def leave():
