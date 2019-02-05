@@ -81,8 +81,12 @@ async def on_ready():
                 def check(m):
                     return m.content == pokemon and m.channel == channel
 
-                msg = await bot.wait_for('message', timeout=9.0, check=check)
-                await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))
+                try:
+                    msg = await bot.wait_for('message', timeout=9.0, check=check)
+                except asyncio.TimeoutError:
+                    await channel.send('Nobody guessed it in time...')
+                else:
+                    await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))
 
 @bot.command()
 async def leave():
