@@ -73,8 +73,9 @@ async def on_ready():
                 r = random.randint(1, 251) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)
                 str_id = "{:03}".format(r)
-                url = "https://www.serebii.net/sunmoon/pokemon/001.png"#.format(str_id)
-                quiz = discord.Embed(title="Who's That Pokémon?", post_url=url, file_url=url, color=0x00bfff)
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
+                quiz.set_image(url=url)
                 await channel.send(embed=quiz)
 
 @bot.command()
