@@ -471,13 +471,16 @@ class SenpaiGacha:
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         
     async def background_quiz(self):
+        await self.bot.wait_until_ready()
         print("test")
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
         if(channel is None):
             return
         while True:
-            if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-                asyncio.sleep(3000) # generate quizzes every 5 minutes
+            print("test2")
+            await asyncio.sleep(300) # generate quizzes every 5 minutes
+            if True: # generate quizzes only from 8am - 12am
+                print("test3")
                 if random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
                     r = random.randint(1, 251) # generate random pokemon
                     pokemon = database_helper.get_pokemon_name(r)
