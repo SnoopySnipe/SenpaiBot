@@ -3,6 +3,7 @@ import random
 from discord.ext import commands
 import database_helper
 import pokebase as pb
+import asyncio
 from PIL import Image
 
 SNOOPY_ID = 103634047929962496
@@ -16,7 +17,8 @@ ALOLA = ('Alola', 722, 809)
 REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
 
 class SenpaiGacha:
-
+    def __init__(self, bot):
+        self.bot = bot
     @commands.command(name="balance")
     async def balance(self, context):
         user_id = context.message.author.id
@@ -180,35 +182,67 @@ class SenpaiGacha:
 
     @commands.command(name="box")
     async def box(self, context):
-        #img = Image.open('images/crate.png', 'r')
+        await self.box_page(context, 1)
+    async def box_page(self, context, page_num):
+    #img = Image.open('images/crate.png', 'r')
         inventory = database_helper.get_inventory(context.message.author.id)
         if len(inventory) == 0:
-            await context.send("You have no pokemon! Start rolling!")
+            await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
         else:
-            #background = Image.new('RGBA', (850,450), (255, 255, 255))
-            background = Image.open('images/inv_background.png', 'r')
-            background = background.resize((850, 450))
-            (x, y) = (0, 0)
-            for pokemon in inventory:
-                pokemon_id = pokemon[1]
-                sprite = pb.SpriteResource('pokemon', pokemon_id)
-                img = Image.open(sprite.path).convert("RGBA")
-                img = img.resize((150,150))
-                for i in range(pokemon[4]):
-                    #img = Image.open("images/pokemon/"+pokemon[2]+".png")
-                    offset = (x*100, y*100)
-                    background.paste(img, offset, img)
-                    x += 1
-                    if(x == 8):
-                        x = 0
-                        y += 1
-            save_location = 'images/'+str(context.message.author.id)+'.png'
-            background.save(save_location)
-            e = discord.Embed()
+            num_pokemon = len(inventory)
+            save_location = self.draw_box(context, inventory, page_num)
             file = discord.File(save_location, filename='inventory.png')
-            e.set_image(url=save_location)
-            await context.channel.send(context.message.author.name+"'s inventory", file=file)
-
+            msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
+            await msg.add_reaction("⬅")
+            await msg.add_reaction("➡")
+            def check(reaction, user):
+                return user == context.message.author and (str(reaction.emoji) == "⬅" or str(reaction.emoji) == "➡")
+            timed_out = False
+            while(not timed_out):
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+                except asyncio.TimeoutError:
+                    timed_out = True
+                else:
+                    is_left = (str(reaction.emoji) == "⬅")
+                    is_right = (str(reaction.emoji) == "➡")
+                    if(( is_left and page_num-1>=1) or (is_right and (num_pokemon -(page_num)*32) > 0)):
+                        inc = -1 if is_left else 1
+                        page_num += inc
+                        save_location = self.draw_box(context, inventory, page_num)
+                        file = discord.File(save_location, filename='inventory.png') 
+                        await msg.delete()
+                        msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
+                        await msg.add_reaction("⬅")
+                        await msg.add_reaction("➡")                        
+    def draw_box(self, context, inventory, page_num):
+        #background = Image.new('RGBA', (850,450), (255, 255, 255))
+        background = Image.open('images/inv_background.png', 'r')
+        background = background.resize((850, 450))
+        (x, y) = (0, 0)
+        index = 32*(page_num-1)
+        count = 0
+        while(count <= 32 and index < len(inventory)): 
+            pokemon = inventory[index]
+            index += 1
+            pokemon_id = pokemon[1]
+            sprite = pb.SpriteResource('pokemon', pokemon_id)
+            img = Image.open(sprite.path).convert("RGBA")
+            img = img.resize((150,150))
+            for i in range(pokemon[4]):
+                #img = Image.open("images/pokemon/"+pokemon[2]+".png")
+                offset = (x*100, y*100)
+                background.paste(img, offset, img)
+                count += 1
+                if(count >= 32):
+                    break;
+                x += 1
+                if(x == 8):
+                    x = 0
+                    y += 1
+        save_location = 'images/'+str(context.message.author.id)+'.png'
+        background.save(save_location) 
+        return save_location
     @commands.command(name="team")
     async def team(self, context):
         title = "{}'s Team: \n".format(context.message.author.name)
@@ -381,4 +415,4 @@ class SenpaiGacha:
 
 
 def setup(bot):
-    bot.add_cog(SenpaiGacha())
+    bot.add_cog(SenpaiGacha(bot))
