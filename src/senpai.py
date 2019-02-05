@@ -2,6 +2,7 @@ import sys
 import signal
 import asyncio
 import datetime
+import time
 import discord
 from discord.ext import commands
 import database_helper
@@ -16,6 +17,7 @@ logger.addHandler(handler)
 
 COMMANDS_CHANNEL_ID = 282336977418715146
 LOGS_CHANNEL_ID = 540189209898647554
+QUIZ_CHANNEL_ID = 542441381210226748
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
@@ -62,6 +64,11 @@ async def on_ready():
         if (isinstance(channel, discord.VoiceChannel)):
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
+
+    while True:
+        time.sleep(10)
+        channel = bot.get_channel(QUIZ_CHANNEL_ID)
+        channel.send("ha yeet")
 
 @bot.command()
 async def leave():
