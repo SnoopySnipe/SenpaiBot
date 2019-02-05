@@ -63,7 +63,6 @@ async def on_ready():
         if (isinstance(channel, discord.VoiceChannel)):
             for member in channel.members:
                 voice_times[member.id] = datetime.datetime.now()
-
 @bot.command()
 async def leave():
     leave_all_voice_channels(bot)
