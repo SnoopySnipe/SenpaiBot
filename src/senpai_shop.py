@@ -185,10 +185,11 @@ class SenpaiGacha:
         if len(inventory) == 0:
             await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
         else:
+            page_indices = {1:(0,0)}
             num_pokemon = 0
             for pokemon in inventory:
                 num_pokemon += pokemon[4]
-            save_location = self.draw_box(context, inventory, page_num)
+            (save_location, curr_index, remain_num) = self.draw_box(context, inventory, 0, 0)
             file = discord.File(save_location, filename='inventory.png')
             msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
             await msg.add_reaction("⬅")
@@ -206,33 +207,44 @@ class SenpaiGacha:
                     is_right = (str(reaction.emoji) == "➡")
                     if(( is_left and page_num-1>=1) or (is_right and (num_pokemon -(page_num)*32) > 0)):
                         inc = -1 if is_left else 1
-                        page_num += inc
-                        save_location = self.draw_box(context, inventory, page_num)
+                        page_num += inc                         
+                        if(page_num in page_indices):
+                            (curr_index, remain_num) = page_indices[page_num]  
+                        if(page_num not in page_indices):
+                            page_indices[page_num] = (curr_index, remain_num)                        
+                        (save_location, curr_index, remain_num) = self.draw_box(context, inventory, curr_index, remain_num)
                         file = discord.File(save_location, filename='inventory.png') 
                         await msg.delete()
                         msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
                         await msg.add_reaction("⬅")
                         await msg.add_reaction("➡")                        
-    def draw_box(self, context, inventory, page_num):
+    def draw_box(self, context, inventory, index, remain_num):
         #background = Image.new('RGBA', (850,450), (255, 255, 255))
         background = Image.open('images/inv_background.png', 'r')
         background = background.resize((850, 450))
         (x, y) = (0, 0)
-        index = 32*(page_num-1)
         count = 0
-        while(count <= 32 and index < len(inventory)): 
+        remain_overflow = 0
+        init = True
+        while(count < 32 and index < len(inventory)):
             pokemon = inventory[index]
+            if(init):
+                pokemon_num = remain_num
+                init = False
+            else:
+                pokemon_num = pokemon[4]
             index += 1
             pokemon_id = pokemon[1]
             sprite = pb.SpriteResource('pokemon', pokemon_id)
             img = Image.open(sprite.path).convert("RGBA")
             img = img.resize((150,150))
-            for i in range(pokemon[4]):
+            for i in range(pokemon_num):
                 #img = Image.open("images/pokemon/"+pokemon[2]+".png")
                 offset = (x*100, y*100)
                 background.paste(img, offset, img)
                 count += 1
                 if(count >= 32):
+                    remain_overflow = pokemon_num - i - 1
                     break;
                 x += 1
                 if(x == 8):
@@ -240,7 +252,9 @@ class SenpaiGacha:
                     y += 1
         save_location = 'images/'+str(context.message.author.id)+'.png'
         background.save(save_location) 
-        return save_location
+        if(remain_overflow > 0):
+            index-=1
+        return (save_location, index, remain_overflow)
     @commands.command(name="team")
     async def team(self, context):
         title = "{}'s Team: \n".format(context.message.author.name)
