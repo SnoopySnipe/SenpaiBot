@@ -189,7 +189,9 @@ class SenpaiGacha:
         if len(inventory) == 0:
             await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
         else:
-            num_pokemon = len(inventory)
+            num_pokemon = 0
+            for pokemon in inventory:
+                num_pokemon += pokemon[4]
             save_location = self.draw_box(context, inventory, page_num)
             file = discord.File(save_location, filename='inventory.png')
             msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
