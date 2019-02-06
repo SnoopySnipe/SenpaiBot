@@ -205,9 +205,9 @@ class SenpaiGacha:
 
     @commands.command(name="pokedex")
     async def pokedex(self, context, name):
-        poke_id = database_helper.get_pokemon(name)[0]
-        if poke_id is not None:
-            str_id = "{:03}".format(poke_id)
+        poke_id = database_helper.get_pokemon(name)
+        if poke_id[0] is not None:
+            str_id = "{:03}".format(poke_id[0])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             dex = discord.Embed(title="ID: {}\nName: {}".format(str_id, name), color=0xffb6c1)
             dex.set_image(url=url)
