@@ -209,7 +209,7 @@ class SenpaiGacha:
         if poke_id is not None:
             str_id = "{:03}".format(poke_id)
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            dex = discord.Embed(title="ID: {} Name: {}".format(str_id, name), color=0xffb6c1)
+            dex = discord.Embed(title="ID: {}\nName: {}".format(str_id, name), color=0xffb6c1)
             dex.set_image(url=url)
             await context.send(embed=dex)
         else:
