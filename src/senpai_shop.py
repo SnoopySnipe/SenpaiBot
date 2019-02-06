@@ -229,7 +229,7 @@ class SenpaiGacha:
         (x, y) = (0, 0)
         count = 0
         remain_overflow = 0
-        if(index != 0):
+        if(remain_num != 0):
             init = True
         else:
             init = False
