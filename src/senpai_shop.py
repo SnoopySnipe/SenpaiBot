@@ -232,7 +232,7 @@ class SenpaiGacha:
         init = True
         while(count < 32 and index < len(inventory)):
             pokemon = inventory[index]
-            if(init):
+            if(init and index != 0):
                 pokemon_num = remain_num
                 init = False
             else:
@@ -472,15 +472,12 @@ class SenpaiGacha:
         
     async def background_quiz(self):
         await self.bot.wait_until_ready()
-        print("test")
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
         if(channel is None):
             return
         while True:
-            print("test2")
             await asyncio.sleep(300) # generate quizzes every 5 minutes
             if True: # generate quizzes only from 8am - 12am
-                print("test3")
                 if random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
                     r = random.randint(1, 251) # generate random pokemon
                     pokemon = database_helper.get_pokemon_name(r)
