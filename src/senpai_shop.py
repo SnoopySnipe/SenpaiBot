@@ -130,11 +130,7 @@ class SenpaiGacha:
                 database_helper.adjust_points(context.message.author.id, -PRICE)
                 database_helper.add_inventory(context.message.author.id, gacha[1])
                 embed = discord.Embed(title=title, description=description, color=0x9370db)
-                str_id = gacha[1]
-                if gacha[1] < 10:
-                    str_id = "00" + str(gacha[1])
-                elif gacha[1] < 100:
-                    str_id = "0" + str(gacha[1])
+                str_id = "{:03}".format(gacha[1])
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
@@ -206,6 +202,18 @@ class SenpaiGacha:
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
         else:
             await context.send("`You don't have enough pikapoints to summon!`")
+
+    @commands.command(name="pokedex")
+    async def pokedex(self, context, name):
+        poke_id = database_helper.get_pokemon(name)
+        if poke_id is not None:
+            str_id = "{:03}".format(poke_id)
+            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+            dex = discord.Embed(title="ID: {} Name: {}".format(str_id, name), color=0xffb6c1)
+            dex.set_image(url=url)
+            await context.send(embed=dex)
+        else:
+            await context.send("Invalid Pokemon name!")
 
     @commands.command(name="box")
     async def box(self, context):
