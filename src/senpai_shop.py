@@ -479,11 +479,11 @@ class SenpaiGacha:
         if(channel is None):
             return
         while True:
-            await asyncio.sleep(300) # generate quizzes every 5 minutes
-            if True: # generate quizzes only from 8am - 12am
-                if random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
+            await asyncio.sleep(120) # generate quizzes every 15 minutes
+            if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
+                if True: #random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
                     r = random.randint(1, 251) # generate random pokemon
-                    pokemon = database_helper.get_pokemon_name(r)
+                    pokemon = database_helper.get_pokemon_name(r)[0]
                     str_id = "{:03}".format(r)
                     url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                     quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
@@ -498,7 +498,9 @@ class SenpaiGacha:
                     except asyncio.TimeoutError:
                         await channel.send('Nobody guessed it in time...')
                     else:
-                        await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))    
+                        await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))
+                        database_helper.adjust_points(msg.author.id, 30)
+
 
 def setup(bot):
     bot.add_cog(SenpaiGacha(bot))
