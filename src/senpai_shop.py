@@ -229,10 +229,13 @@ class SenpaiGacha:
         (x, y) = (0, 0)
         count = 0
         remain_overflow = 0
-        init = True
+        if(index != 0):
+            init = True
+        else:
+            init = False
         while(count < 32 and index < len(inventory)):
             pokemon = inventory[index]
-            if(init and index != 0):
+            if(init):
                 pokemon_num = remain_num
                 init = False
             else:
