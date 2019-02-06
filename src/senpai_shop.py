@@ -479,28 +479,28 @@ class SenpaiGacha:
         if(channel is None):
             return
         while True:
-            await asyncio.sleep(900) # generate quizzes every 15 minutes
+            t = random.randint(10, 30)
+            await asyncio.sleep(60 * t) # generate quizzes every 10 - 30 minutes
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-                if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
-                    r = random.randint(1, 251) # generate random pokemon
-                    pokemon = database_helper.get_pokemon_name(r)[0]
-                    str_id = "{:03}".format(r)
-                    url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-                    quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
-                    quiz.set_image(url=url)
-                    await channel.send(embed=quiz)
+                r = random.randint(1, 251) # generate random pokemon
+                pokemon = database_helper.get_pokemon_name(r)[0]
+                str_id = "{:03}".format(r)
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
+                quiz.set_image(url=url)
+                await channel.send(embed=quiz)
                     
-                    def check(m):
-                        return m.content == pokemon and m.channel == channel
+                def check(m):
+                    return m.content == pokemon and m.channel == channel
 
-                    try:
-                        msg = await self.bot.wait_for('message', timeout=60.0, check=check)
-                    except asyncio.TimeoutError:
-                        await channel.send('Nobody guessed the Pokémon correctly in time...')
-                    else:
-                        database_helper.adjust_points(msg.author.id, 30)
-                        balance = database_helper.get_pikapoints(msg.author.id)
-                        await channel.send('Congratulations {.author}! You win 30 pikapoints!\nYou now have {} pikapoints.'.format(msg, str(balance)))
+                try:
+                    msg = await self.bot.wait_for('message', timeout=60.0, check=check)
+                except asyncio.TimeoutError:
+                    await channel.send('Nobody guessed the Pokémon correctly in time...')
+                else:
+                    database_helper.adjust_points(msg.author.id, 30)
+                    balance = database_helper.get_pikapoints(msg.author.id)
+                    await channel.send('Congratulations {.author}! You win 30 pikapoints!\nYou now have {} pikapoints.'.format(msg, str(balance)))
 
 
 def setup(bot):
