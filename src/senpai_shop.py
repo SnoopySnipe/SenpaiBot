@@ -16,7 +16,7 @@ UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
-QUIZ_CHANNEL_ID = 349942469804425216
+QUIZ_CHANNEL_ID = 542441381210226748
 class SenpaiGacha:
     def __init__(self, bot):
         self.bot = bot
@@ -479,9 +479,9 @@ class SenpaiGacha:
         if(channel is None):
             return
         while True:
-            await asyncio.sleep(120) # generate quizzes every 15 minutes
+            await asyncio.sleep(900) # generate quizzes every 15 minutes
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-                if True: #random.randint(0, 1) == 1: # 50% chance for quiz every 5 minutes
+                if random.randint(0, 1) == 1: # 50% chance for quiz every 15 minutes
                     r = random.randint(1, 251) # generate random pokemon
                     pokemon = database_helper.get_pokemon_name(r)[0]
                     str_id = "{:03}".format(r)
@@ -496,10 +496,11 @@ class SenpaiGacha:
                     try:
                         msg = await self.bot.wait_for('message', timeout=60.0, check=check)
                     except asyncio.TimeoutError:
-                        await channel.send('Nobody guessed it in time...')
+                        await channel.send('Nobody guessed the Pokémon correctly in time...')
                     else:
-                        await channel.send('Congratulations {.author}! You win 30 pikapoints!'.format(msg))
                         database_helper.adjust_points(msg.author.id, 30)
+                        balance = database_helper.get_pikapoints(msg.author.id)
+                        await channel.send('Congratulations {.author}! You win 30 pikapoints!\nYou now have {} pikapoints.'.format(msg, str(balance)))
 
 
 def setup(bot):
