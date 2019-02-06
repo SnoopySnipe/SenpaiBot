@@ -205,7 +205,7 @@ class SenpaiGacha:
 
     @commands.command(name="pokedex")
     async def pokedex(self, context, name):
-        poke_id = database_helper.get_pokemon(name)
+        poke_id = database_helper.get_pokemon(name)[0]
         if poke_id is not None:
             str_id = "{:03}".format(poke_id)
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
