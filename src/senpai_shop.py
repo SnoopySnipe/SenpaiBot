@@ -312,22 +312,37 @@ class SenpaiGacha:
             index-=1
         return (save_location, index, remain_overflow)
     @commands.command(name="team")
-    async def team(self, context, user_id=None):
+    async def team(self, context, region, user_id=None):
+        if region == 'kanto':
+            region = KANTO
+        elif region == 'johto':
+            region = JOHTO
+        # elif region == 'hoenn':
+        #     region = HOENN
+        # elif region == 'sinnoh':
+        #     region = SINNOH
+        # elif region == 'unova':
+        #     region = UNOVA
+        # elif region == 'kalos':
+        #     region = KALOS
+        # elif region == 'alola':
+        #     region = ALOLA
+        else:
+            return
         if user_id is None:
             user_id = context.message.author.id
         username = self.bot.get_user(int(user_id)).name
-        title = "{}'s Team: \n".format(username)
+        title = "{}'s {} Team: \n".format(username, region[0])
         description = ""
-        for region in REGIONS:
-            inventory = database_helper.get_inventory(user_id, region)
-            description = description + "\n" + region[0]
-            for poke in inventory:
-                if poke[3] <= 5:
-                    description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
-                elif poke[3] == 6:
-                    description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
-                elif poke[3] == 7:
-                    description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
+        inventory = database_helper.get_inventory(user_id, region)
+        description = description + "\n" + region[0]
+        for poke in inventory:
+            if poke[3] <= 5:
+                description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
+            elif poke[3] == 6:
+                description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
+            elif poke[3] == 7:
+                description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="fullrelease")
