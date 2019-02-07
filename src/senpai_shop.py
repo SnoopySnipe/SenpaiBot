@@ -57,18 +57,23 @@ class SenpaiGacha:
                 return True
         return False
     @commands.command(name="balance")
-    async def balance(self, context):
-        user_id = context.message.author.id
+    async def balance(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        username = self.bot.get_user(user_id)
         balance = database_helper.get_pikapoints(user_id)
         if (balance is None):
-            await context.send("You have no pikapoints! Join voice and start earning!")
+            await context.send("{} has no pikapoints!".format(username))
         else:
-            await context.send("You have " + str(balance) + " pikapoints")
+            await context.send(username + " has " + str(balance) + " pikapoints")
 
     @commands.command(name="pity")
-    async def pity(self, context):
-        pity = database_helper.get_pity(context.message.author.id)
-        title = "{}'s Pity Rates: \n".format(context.message.author.name)
+    async def pity(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        username = self.bot.get_user(user_id)
+        pity = database_helper.get_pity(user_id)
+        title = "{}'s Pity Rates: \n".format(username)
         if pity is None:
             description = "3⭐: 54.0%\n4⭐: 42.0%\n5⭐: 1.0%\nFocus: 3.0%"
         else:
@@ -222,11 +227,14 @@ class SenpaiGacha:
             await context.send("Invalid Pokemon name!")
 
     @commands.command(name="box")
-    async def box(self, context):
-        await self.box_page(context, 1)
-    async def box_page(self, context, page_num):
+    async def box(self, context, user_id=None):
+        await self.box_page(context, 1, user_id)
+    async def box_page(self, context, page_num, user_id):
     #img = Image.open('images/crate.png', 'r')
-        inventory = database_helper.get_inventory(context.message.author.id)
+        if user_id is None:
+            user_id = context.message.author.id
+        username = self.bot.get_user(user_id)
+        inventory = database_helper.get_inventory(user_id)
         if len(inventory) == 0:
             await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
         else:
@@ -236,7 +244,7 @@ class SenpaiGacha:
                 num_pokemon += pokemon[4]
             (save_location, curr_index, remain_num) = self.draw_box(context, inventory, 0, 0)
             file = discord.File(save_location, filename='inventory.png')
-            msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
+            msg = await context.channel.send(username+"'s inventory (page " + str(page_num) +")", file=file)
             await msg.add_reaction("⬅")
             await msg.add_reaction("➡")
             def check(reaction, user):
@@ -260,7 +268,7 @@ class SenpaiGacha:
                         (save_location, curr_index, remain_num) = self.draw_box(context, inventory, curr_index, remain_num)
                         file = discord.File(save_location, filename='inventory.png') 
                         await msg.delete()
-                        msg = await context.channel.send(context.message.author.name+"'s inventory (page " + str(page_num) +")", file=file)
+                        msg = await context.channel.send(username+"'s inventory (page " + str(page_num) +")", file=file)
                         await msg.add_reaction("⬅")
                         await msg.add_reaction("➡")                        
     def draw_box(self, context, inventory, index, remain_num):
@@ -304,11 +312,14 @@ class SenpaiGacha:
             index-=1
         return (save_location, index, remain_overflow)
     @commands.command(name="team")
-    async def team(self, context):
-        title = "{}'s Team: \n".format(context.message.author.name)
+    async def team(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        username = self.bot.get_user(user_id)
+        title = "{}'s Team: \n".format(username)
         description = ""
         for region in REGIONS:
-            inventory = database_helper.get_inventory(context.message.author.id, region)
+            inventory = database_helper.get_inventory(user_id, region)
             description = description + "\n" + region[0]
             for poke in inventory:
                 if poke[3] <= 5:
