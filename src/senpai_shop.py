@@ -19,6 +19,7 @@ ALOLA = ('Alola', 722, 809)
 REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748
 COMMANDS_CHANNEL_ID = 282336977418715146
+LEAGUE_ID = 401518684763586560
 class SenpaiGacha:
     def __init__(self, bot):
         self.bot = bot
@@ -27,14 +28,14 @@ class SenpaiGacha:
         database_helper.initialize(str(self.bot.guilds[0].id))
         self.bot.loop.create_task(self.background_quiz())
     async def on_member_update(self, before, after):
-        print(before.activities)
-        print(after.activities)
+        print(after.activity.name)
+        print(after.activity.application_id)
         if(type(after.activity) == discord.activity.Activity and self.in_champ_select(before)):
             if(after.id not in self.league_players):
                 self.league_players.append(after.id)
         elif(self.in_game(before) and not self.in_game(after) and after.id in self.league_players):
             for activity in before.activities:
-                if(type(activity) == discord.activity.Activity and activity.name == "League of Legends"):
+                if(type(activity) == discord.activity.Activity and activity.application_id == LEAGUE_ID):
                     channel = self.bot.get_channel(COMMANDS_CHANNEL_ID)
                     end_time = int(time.time())
                     start = str(activity.timestamps["start"])
@@ -49,12 +50,12 @@ class SenpaiGacha:
                     await channel.send("`{} was in a league game for {} minutes{}`".format(after.name, game_minutes, earn_string))
     def in_champ_select(self, member):
         for activity in member.activities:
-            if(type(activity) == discord.activity.Activity and activity.state == "In Champion Select" and  "Custom" not in activity.details):
+            if(type(activity) == discord.activity.Activity and activity.state == "In Champion Select" and  "Custom" not in activity.details and activity.application_id == LEAGUE_ID):
                 return True
         return False
     def in_game(self, member):
         for activity in member.activities:
-            if(type(activity) == discord.activity.Activity and activity.state == "In Game"):
+            if(type(activity) == discord.activity.Activity and activity.state == "In Game" and activity.application_id == LEAGUE_ID):
                 return True
         return False
     @commands.command(name="balance")
