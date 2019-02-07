@@ -60,7 +60,7 @@ class SenpaiGacha:
     async def balance(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(user_id)
+        username = self.bot.get_user(user_id).name
         balance = database_helper.get_pikapoints(user_id)
         if (balance is None):
             await context.send("{} has no pikapoints!".format(username))
@@ -71,7 +71,7 @@ class SenpaiGacha:
     async def pity(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(user_id)
+        username = self.bot.get_user(user_id).name
         pity = database_helper.get_pity(user_id)
         title = "{}'s Pity Rates: \n".format(username)
         if pity is None:
@@ -233,7 +233,7 @@ class SenpaiGacha:
     #img = Image.open('images/crate.png', 'r')
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(user_id)
+        username = self.bot.get_user(user_id).name
         inventory = database_helper.get_inventory(user_id)
         if len(inventory) == 0:
             await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
@@ -315,7 +315,7 @@ class SenpaiGacha:
     async def team(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(user_id)
+        username = self.bot.get_user(user_id).name
         title = "{}'s Team: \n".format(username)
         description = ""
         for region in REGIONS:
