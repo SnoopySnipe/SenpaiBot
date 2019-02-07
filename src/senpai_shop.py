@@ -25,8 +25,10 @@ class SenpaiGacha:
         self.league_players = list()
     async def on_ready(self):
         database_helper.initialize(str(self.bot.guilds[0].id))
-        self.bot.loop.create_task(self.background_quiz())        
+        self.bot.loop.create_task(self.background_quiz())
     async def on_member_update(self, before, after):
+        print(before.activities)
+        print(after.activities)
         if(type(after.activity) == discord.activity.Activity and self.in_champ_select(before)):
             if(after.id not in self.league_players):
                 self.league_players.append(after.id)
@@ -37,9 +39,14 @@ class SenpaiGacha:
                     end_time = int(time.time())
                     start = str(activity.timestamps["start"])
                     start_time = int(start[:len(str(end_time))])
-                    game_length = int(time.time()) - start_time
+                    game_minutes = (int(time.time()) - start_time)//60
                     self.league_players.remove(after.id)
-                    await channel.send("`{} was in a league game for {} seconds`".format(after.name, game_length))
+                    if(game_minutes >= 15):
+                        database_helper.add_pikapoints(after.id, 30)
+                        earn_string = " and earned 30 pikapoints!"
+                    else:
+                        earn_string = ""
+                    await channel.send("`{} was in a league game for {} minutes{}`".format(after.name, game_minutes, earn_string))
     def in_champ_select(self, member):
         for activity in member.activities:
             if(type(activity) == discord.activity.Activity and activity.state == "In Champion Select" and  "Custom" not in activity.details):
