@@ -142,3 +142,17 @@ def get_pokemon_name(id):
         result = database.get_pokemon_name(conn, id)
         conn.close()
         return result
+
+def get_streak(user_id):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_streak(conn, user_id)
+        conn.close()
+        return result
+
+def update_streak(user_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        return database.update_streak(user_id)
+        conn.close()

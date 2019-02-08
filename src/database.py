@@ -10,7 +10,7 @@ def create_table(conn, create_table_sql):
 def add_pikapoints_query(conn, user_id, points):
     try:
         c = conn.cursor()
-        sql_insert_new_balance="""INSERT OR IGNORE INTO pikapoints VALUES ($user_id, $points);"""
+        sql_insert_new_balance="""INSERT OR IGNORE INTO pikapoints (id, points) VALUES ($user_id, $points);"""
         sql_update_balance="""UPDATE pikapoints SET points = points + $points WHERE id=$user_id;"""
         placeholders = {"user_id":user_id, "points": points}
         c.execute(sql_insert_new_balance, placeholders)
@@ -244,10 +244,33 @@ def run_sql(conn, query):
     except Error as e:
         print(e)
 
+def get_streak(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT streak FROM pikapoints WHERE user_id = $user_id"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def update_streak(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql1 = """UPDATE pikapoints SET streak = 0 WHERE user_id != $user_id"""
+        sql2 = """UPDATE pikapoints SET streak = streak + 1 WHERE user_id = $user_id"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql1, placeholders)
+        c.execute(sql2, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
-                                    points integer DEFAULT 0)"""
+                                    points integer DEFAULT 0,
+                                    streak integer DEFAULT 0)"""
 sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
@@ -265,12 +288,6 @@ def initialize(conn):
     create_table(conn, sql_create_pikagacha_table)
     create_table(conn, sql_create_pikapity_table)
     create_table(conn, sql_create_inventory)
-
-    #c = conn.cursor()
-    #c.execute("UPDATE pikapoints SET points = 150")
-    #c.execute("UPDATE pikapity SET focus = 30, five = 10, four = 420, three = 540")
-    #c.execute("DELETE FROM inventory")
-    #conn.commit()
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
