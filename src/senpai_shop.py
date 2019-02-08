@@ -565,11 +565,11 @@ class SenpaiGacha:
                 except asyncio.TimeoutError:
                     await channel.send('Nobody guessed the Pokémon correctly in time...')
                 else:
-                    curr_streak = database_helper.get_streak(msg.author.id)
+                    curr_streak = database_helper.get_streak(msg.author.id)[0]
                     database_helper.adjust_points(msg.author.id, 30 + 15 * curr_streak)
                     balance = database_helper.get_pikapoints(msg.author.id)
                     database_helper.update_streak(msg.author.id)
-                    new_streak = database_helper.get_streak(msg.author.id)
+                    new_streak = database_helper.get_streak(msg.author.id)[0]
                     await channel.send('Congratulations {.author}! You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg, str(30 + 15 * curr_streak), str(balance), new_streak))
 
 
