@@ -247,7 +247,7 @@ def run_sql(conn, query):
 def get_streak(conn, user_id):
     try:
         c = conn.cursor()
-        sql = """SELECT streak FROM pikapoints WHERE user_id = $user_id"""
+        sql = """SELECT streak FROM pikapoints WHERE id = $user_id"""
         placeholders = {"user_id": user_id}
         c.execute(sql, placeholders)
         return c.fetchone()
@@ -257,8 +257,8 @@ def get_streak(conn, user_id):
 def update_streak(conn, user_id):
     try:
         c = conn.cursor()
-        sql1 = """UPDATE pikapoints SET streak = 0 WHERE user_id != $user_id"""
-        sql2 = """UPDATE pikapoints SET streak = streak + 1 WHERE user_id = $user_id"""
+        sql1 = """UPDATE pikapoints SET streak = 0 WHERE id != $user_id"""
+        sql2 = """UPDATE pikapoints SET streak = streak + 1 WHERE id = $user_id"""
         placeholders = {"user_id": user_id}
         c.execute(sql1, placeholders)
         c.execute(sql2, placeholders)
