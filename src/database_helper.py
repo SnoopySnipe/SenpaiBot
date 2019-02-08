@@ -154,5 +154,5 @@ def get_streak(user_id):
 def update_streak(user_id):
     conn = sqlite3.connect(db)
     if (conn is not None):
-        return database.update_streak(user_id)
+        return database.update_streak(conn, user_id)
         conn.close()
