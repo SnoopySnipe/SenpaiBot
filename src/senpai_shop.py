@@ -547,7 +547,7 @@ class SenpaiGacha:
             return
         while True:
             t = random.randint(10, 30)
-            await asyncio.sleep(60)#(random.randint(600, 1800)) # generate quizzes every 10 - 30 minutes
+            await asyncio.sleep(30)#(random.randint(600, 1800)) # generate quizzes every 10 - 30 minutes
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 251) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
@@ -561,7 +561,7 @@ class SenpaiGacha:
                     return m.content == pokemon and m.channel == channel
 
                 try:
-                    msg = await self.bot.wait_for('message', timeout=30.0, check=check)
+                    msg = await self.bot.wait_for('message', timeout=15.0, check=check)
                 except asyncio.TimeoutError:
                     await channel.send('Nobody guessed the Pokémon correctly in time...')
                 else:
