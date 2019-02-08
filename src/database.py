@@ -267,10 +267,11 @@ def update_streak(conn, user_id):
         print(e)
 
 
-sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
-                                    id integer PRIMARY KEY,
-                                    points integer DEFAULT 0,
-                                    streak integer DEFAULT 0)"""
+sql_create_pikapoints_table = """ALTER TABLE pikapoints ADD COLUMN streak integer DEFAULT 0"""
+                                    # CREATE TABLE IF NOT EXISTS pikapoints (
+                                    # id integer PRIMARY KEY,
+                                    # points integer DEFAULT 0,
+                                    # streak integer DEFAULT 0)"""
 sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""

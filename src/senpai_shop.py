@@ -548,7 +548,6 @@ class SenpaiGacha:
         while True:
             t = random.randint(10, 30)
             await asyncio.sleep(60)#(random.randint(600, 1800)) # generate quizzes every 10 - 30 minutes
-            await channel.send(datetime.datetime.now().hour)
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 251) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
