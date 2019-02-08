@@ -17,7 +17,7 @@ UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
-QUIZ_CHANNEL_ID = 349942469804425216 #542441381210226748
+QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 class SenpaiGacha:
@@ -547,7 +547,7 @@ class SenpaiGacha:
             return
         while True:
             t = random.randint(10, 30)
-            await asyncio.sleep(30)#(random.randint(600, 1800)) # generate quizzes every 10 - 30 minutes
+            await asyncio.sleep(random.randint(600, 1800)) # generate quizzes every 10 - 30 minutes
             if not 5 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 251) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
@@ -561,7 +561,7 @@ class SenpaiGacha:
                     return m.content == pokemon and m.channel == channel
 
                 try:
-                    msg = await self.bot.wait_for('message', timeout=15.0, check=check)
+                    msg = await self.bot.wait_for('message', timeout=60.0, check=check)
                 except asyncio.TimeoutError:
                     await channel.send('Nobody guessed the Pokémon correctly in time...')
                 else:
