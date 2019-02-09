@@ -111,6 +111,7 @@ class SenpaiGacha:
                 return
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
             for i in range(rolls):
+                details = database_helper.get_user_details(context.message.author.id)
                 r = random.randint(0, 1003)
                 if r == 0:
                     options = database_helper.get_roll(7, region)
