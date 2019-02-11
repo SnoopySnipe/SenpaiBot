@@ -283,7 +283,7 @@ class SenpaiGacha:
         await msg.add_reaction('✅')
 
         def check(reaction, user):
-            return user == user2 and str(reaction.emoji) == '✅' and reaction.message == msg
+            return user == user2 and str(reaction.emoji) == '✅'
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
