@@ -149,7 +149,7 @@ class SenpaiGacha:
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
         else:
-            await context.send("`You don't have enough pikapoints to summon! It costs {} pikapoints per roll!`".format(str(PRICE)))
+            await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
     @commands.command(name="roll")
     async def roll(self, context, region=None):
@@ -213,7 +213,7 @@ class SenpaiGacha:
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
         else:
-            await context.send("`You don't have enough pikapoints to summon! It costs {} pikapoints per roll!`".format(str(PRICE)))
+            await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
     @commands.command(name="pokedex")
     async def pokedex(self, context, name):
