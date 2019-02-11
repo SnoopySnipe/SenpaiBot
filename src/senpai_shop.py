@@ -285,7 +285,7 @@ class SenpaiGacha:
         reactors = []
         def check(reaction, user):
             if str(reaction.emoji) == '✅' and (user == user1 or user == user2):
-                reactors.add((user, reaction))
+                reactors.append((user, reaction))
             return (user1, '✅') in reactors and (user2, '✅') in reactors
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
