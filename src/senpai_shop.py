@@ -579,7 +579,7 @@ class SenpaiGacha:
                     database_helper.update_streak(msg.author.id)
                     new_streak = database_helper.get_streak(msg.author.id)[0]
                     shutdown_msg = ''
-                    if streak > 0:
+                    if shutdown > 0:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
                     await channel.send('Congratulations {.author}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg, shutdown_msg, str(gain), str(balance), new_streak))
 
