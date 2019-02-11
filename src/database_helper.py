@@ -154,7 +154,7 @@ def get_streak(user_id):
 def update_streak(user_id):
     conn = sqlite3.connect(db)
     if (conn is not None):
-        return database.update_streak(conn, user_id)
+        database.update_streak(conn, user_id)
         conn.close()
 
 def get_streaker():
@@ -164,3 +164,9 @@ def get_streaker():
         result = database.get_streaker(conn)
         conn.close()
         return result
+
+def perform_trade(id1, id2, pokemonid1, pokemonid2):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.perform_trade(conn, id1, id2, pokemonid1, pokemonid2)
+        conn.close()

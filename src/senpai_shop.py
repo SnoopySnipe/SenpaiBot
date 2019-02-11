@@ -253,19 +253,53 @@ class SenpaiGacha:
             await context.send("Invalid Pokemon name!")
             return
 
+        if pokemon1 == pokemon2:
+            await context.send("Pokemon must be different!")
+            return
+
         if rarity1 == rarity2:
             cost = 60 * rarity1
         else:
             await context.send("Pokemon's rarities must match!")
             return
 
-        username1 = self.bot.get_user(int(id1)).name
-        username2 = self.bot.get_user(int(id2)).name
+        balance1 = database_helper.get_pikapoints(id1)
+        if balance1 < cost:
+            await context.send("You don't have enough pikapoints to perform this trade!")
+            return
+        balance2 = database_helper.get_pikapoints(id2)
+        if balance2 < cost:
+            await context.send("They don't have enough pikapoints to perform this trade!")
+            return
+
+        user1 = self.bot.get_user(int(id1))
+        user2 = self.bot.get_user(int(id2))
+        username1 = user1.name
+        username2 = user2.name
 
         title = "Trade Request"
         description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
         await msg.add_reaction("✅")
+
+        reactors = []
+        def check(reaction, user):
+            if str(reaction.emoji) == '✅' and (user == user1 or user == user2):
+                reactors.add((user, reaction))
+            return (user1, '✅') in reactors and (user2, '✅') in reactors
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await context.send("Trade timed out...")
+        else:
+            database_helper.perform_trade(id1, id2, pokemon1_id[0], pokemon2_id[0])
+            database_helper.adjust_points(id1, -cost)
+            database_helper.adjust_points(id2, -cost)
+            new_balance1 = database_helper.get_pikapoints(id1)
+            new_balance2 = database_helper.get_pikapoints(id2)
+            await context.send("{} has {} pikapoints. {} has {} pikapoints.\nPerforming trade...\nTrade successful! {} now has {} pikapoints. {} now has {} pikapoints.".format(
+                username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
+            ))
 
     @commands.command(name="box")
     async def box(self, context, user_id=None):

@@ -275,6 +275,19 @@ def update_streak(conn, user_id):
     except Error as e:
         print(e)
 
+def perform_trade(conn, id1, id2, pokemonid1, pokemonid2):
+    try:
+        c = conn.cursor()
+        sql1 = """UPDATE inventory SET user_id = $id2 WHERE user_id = $id1 AND poke_id = $pokemonid1 LIMIT 1"""
+        sql2 = """UPDATE inventory SET user_id = $id1 WHERE user_id = $id2 AND poke_id = $pokemonid2 LIMIT 1"""
+        placeholders1 = {"id2": id2, "id1": id1, "pokemonid1": pokemonid1}
+        placeholders2 = {"id1": id1, "id2": id2, "pokemonid2": pokemonid2}
+        c.execute(sql1, placeholders1)
+        c.execute(sql2, placeholders2)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
