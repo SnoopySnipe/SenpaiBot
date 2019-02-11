@@ -279,13 +279,13 @@ class SenpaiGacha:
 
         title = "Trade Request"
         description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
-        await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
+        await msg.add_reaction('✅')
 
-        def check(m):
-            return m.content == '!senpai trade accept' and m.channel == context.channel and m.author == user2
-
+        def check(reaction, user):
+            return user == user2 and str(reaction.emoji) == '✅' and reaction.message == msg
         try:
-            await self.bot.wait_for('message', timeout=30.0, check=check)
+            await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Trade timed out...")
         else:
