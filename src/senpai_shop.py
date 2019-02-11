@@ -266,10 +266,10 @@ class SenpaiGacha:
         balance1 = database_helper.get_pikapoints(id1)
         balance2 = database_helper.get_pikapoints(id2)
         if balance1 < cost:
-            await context.send("You don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost))+ "\nYou have: {}.".format(str(balance1))+ "\nThey have: {}.".format(str(balance2)))
+            await context.send("You don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.\nYou have {} pikapoints. They have {} pikapoints.".format(str(cost), str(balance1), str(balance2)))
             return
         if balance2 < cost:
-            await context.send("They don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost))+ "\nYou have: {}.".format(str(balance1))+ "\nThey have: {}.".format(str(balance2)))
+            await context.send("They don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.\nYou have {} pikapoints. They have {} pikapoints.".format(str(cost), str(balance1), str(balance2)))
             return
 
         user1 = self.bot.get_user(int(id1))
