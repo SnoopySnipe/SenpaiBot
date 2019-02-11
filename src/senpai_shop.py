@@ -280,7 +280,6 @@ class SenpaiGacha:
         title = "Trade Request"
         description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
-        await msg.add_reaction("✅")
 
         def check(m):
             return m.content == '!senpai trade accept' and m.channel == context.channel and m.author == user2
