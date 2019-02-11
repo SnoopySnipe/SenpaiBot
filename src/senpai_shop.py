@@ -227,6 +227,46 @@ class SenpaiGacha:
         else:
             await context.send("Invalid Pokemon name!")
 
+    @commands.command(name="trade")
+    async def trade(self, context, pokemon1, pokemon2, id2):
+        id1 = context.message.author.id
+
+        pokemon1_id = database_helper.get_pokemon(pokemon1)
+        if pokemon1_id is not None:
+            if database_helper.get_from_inventory(id1, pokemon1_id[0]):
+                rarity1 = pokemon1_id[1]
+            else:
+                await context.send("You do not have that Pokemon!")
+                return
+        else:
+            await context.send("Invalid Pokemon name!")
+            return
+
+        pokemon2_id = database_helper.get_pokemon(pokemon2)
+        if pokemon2_id is not None:
+            if database_helper.get_from_inventory(id2, pokemon2_id[0]):
+                rarity2 = pokemon2_id[1]
+            else:
+                await context.send("They do not have that Pokemon!")
+                return
+        else:
+            await context.send("Invalid Pokemon name!")
+            return
+
+        if rarity1 == rarity2:
+            cost = 60 * rarity1
+        else:
+            await context.send("Pokemon's rarities must match!")
+            return
+
+        username1 = self.bot.get_user(int(id1)).name
+        username2 = self.bot.get_user(int(id2)).name
+
+        title = "Trade Request"
+        description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
+        await msg.add_reaction("✅")
+
     @commands.command(name="box")
     async def box(self, context, user_id=None):
         await self.box_page(context, 1, user_id)
