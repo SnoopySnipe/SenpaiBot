@@ -78,7 +78,7 @@ class SenpaiGacha:
             description = "3⭐: 54.0%\n4⭐: 42.0%\n5⭐: 1.0%\nFocus: 3.0%"
         else:
             description = "3⭐: {}%\n4⭐: {}%\n5⭐: {}%\nFocus: {}%".format(pity[0]/10, pity[1]/10, pity[2]/10, pity[3]/10)
-            
+
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="fullroll")
@@ -264,12 +264,12 @@ class SenpaiGacha:
             return
 
         balance1 = database_helper.get_pikapoints(id1)
-        if balance1 < cost:
-            await context.send("You don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost)))
-            return
         balance2 = database_helper.get_pikapoints(id2)
+        if balance1 < cost:
+            await context.send("You don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost))+ "\nYou have: {}.".format(str(balance1))+ "\nThey have: {}.".format(str(balance2)))
+            return
         if balance2 < cost:
-            await context.send("They don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost)))
+            await context.send("They don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.".format(str(cost))+ "\nYou have: {}.".format(str(balance1))+ "\nThey have: {}.".format(str(balance2)))
             return
 
         user1 = self.bot.get_user(int(id1))
@@ -332,17 +332,17 @@ class SenpaiGacha:
                     is_right = (str(reaction.emoji) == "➡")
                     if(( is_left and page_num-1>=1) or (is_right and (num_pokemon -(page_num)*32) > 0)):
                         inc = -1 if is_left else 1
-                        page_num += inc                         
+                        page_num += inc
                         if(page_num in page_indices):
-                            (curr_index, remain_num) = page_indices[page_num]  
+                            (curr_index, remain_num) = page_indices[page_num]
                         if(page_num not in page_indices):
-                            page_indices[page_num] = (curr_index, remain_num)                        
+                            page_indices[page_num] = (curr_index, remain_num)
                         (save_location, curr_index, remain_num) = self.draw_box(context, inventory, curr_index, remain_num)
-                        file = discord.File(save_location, filename='inventory.png') 
+                        file = discord.File(save_location, filename='inventory.png')
                         await msg.delete()
                         msg = await context.channel.send(username+"'s inventory (page " + str(page_num) +")", file=file)
                         await msg.add_reaction("⬅")
-                        await msg.add_reaction("➡")                        
+                        await msg.add_reaction("➡")
     def draw_box(self, context, inventory, index, remain_num):
         #background = Image.new('RGBA', (850,450), (255, 255, 255))
         background = Image.open('images/inv_background.png', 'r')
@@ -379,7 +379,7 @@ class SenpaiGacha:
                     x = 0
                     y += 1
         save_location = 'images/'+str(context.message.author.id)+'.png'
-        background.save(save_location) 
+        background.save(save_location)
         if(remain_overflow > 0):
             index-=1
         return (save_location, index, remain_overflow)
@@ -611,7 +611,7 @@ class SenpaiGacha:
             for unit in focus:
                 description = description + "\n    " + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
-        
+
     async def background_quiz(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
@@ -627,7 +627,7 @@ class SenpaiGacha:
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
                 quiz.set_image(url=url)
                 await channel.send(embed=quiz)
-                    
+
                 def check(m):
                     return m.content == pokemon and m.channel == channel
 
