@@ -568,13 +568,20 @@ class SenpaiGacha:
                 else:
                     curr_streak = database_helper.get_streak(msg.author.id)[0]
                     streaker = database_helper.get_streaker()
-                    await channel.send(streaker)
-                    gain = min(30 + 15 * curr_streak, 90)
+                    streak_user = streaker[0]
+                    streak = streaker[1]
+                    shutdown = 0
+                    if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
+                        shutdown = 10 * (streak - 1)
+                    gain = min(30 + 15 * curr_streak + shutdown, 90)
                     database_helper.adjust_points(msg.author.id, gain)
                     balance = database_helper.get_pikapoints(msg.author.id)
                     database_helper.update_streak(msg.author.id)
                     new_streak = database_helper.get_streak(msg.author.id)[0]
-                    await channel.send('Congratulations {.author}! You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg, str(gain), str(balance), new_streak))
+                    shutdown_msg = ''
+                    if streak > 0:
+                        shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
+                    await channel.send('Congratulations {.author}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg, shutdown_msg, str(gain), str(balance), new_streak))
 
 
 def setup(bot):
