@@ -156,3 +156,11 @@ def update_streak(user_id):
     if (conn is not None):
         return database.update_streak(conn, user_id)
         conn.close()
+
+def get_streaker():
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_streaker(conn)
+        conn.close()
+        return result

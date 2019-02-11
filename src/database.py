@@ -254,6 +254,15 @@ def get_streak(conn, user_id):
     except Error as e:
         print(e)
 
+def get_streaker(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id, streak FROM pikapoints WHERE streak != 0"""
+        c.execute(sql)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def update_streak(conn, user_id):
     try:
         c = conn.cursor()
