@@ -285,7 +285,7 @@ class SenpaiGacha:
         def check(reaction, user):
             return user == user2 and str(reaction.emoji) == '✅' and reaction.message == msg
         try:
-            await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Trade timed out...")
         else:
