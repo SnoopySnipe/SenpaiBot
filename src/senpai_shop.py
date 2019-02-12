@@ -643,7 +643,7 @@ class SenpaiGacha:
                     shutdown = 0
                     if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
                         shutdown = 10 * (streak - 1)
-                    gain = min(30 + 15 * curr_streak + shutdown, 90)
+                    gain = min(30 + 15 * curr_streak, 90) + shutdown
                     database_helper.adjust_points(msg.author.id, gain)
                     balance = database_helper.get_pikapoints(msg.author.id)
                     database_helper.update_streak(msg.author.id)
