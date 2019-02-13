@@ -217,6 +217,9 @@ class SenpaiGacha:
 
     @commands.command(name="pokedex")
     async def pokedex(self, context, name):
+        if name is None:
+            await context.send("`Usage:`\n```!senpai pokedex pokemon_name```")
+            return
         poke_id = database_helper.get_pokemon(name)
         if poke_id is not None:
             str_id = "{:03}".format(poke_id[0])
@@ -229,6 +232,9 @@ class SenpaiGacha:
 
     @commands.command(name="trade")
     async def trade(self, context, pokemon1, pokemon2, id2):
+        if pokemon1 is None or pokemon2 is None or id2 is None:
+            await context.send("`Usage:`\n```!senpai trade your_pokemon their_pokemon their_id```")
+            return
         id1 = context.message.author.id
 
         pokemon1_id = database_helper.get_pokemon(pokemon1)
@@ -385,6 +391,9 @@ class SenpaiGacha:
         return (save_location, index, remain_overflow)
     @commands.command(name="team")
     async def team(self, context, region, user_id=None):
+        if region is None:
+            await context.send("`Usage:`\n```!senpai team region [user_id]```")
+            return
         if region == 'kanto':
             region = KANTO
         elif region == 'johto':
@@ -419,6 +428,9 @@ class SenpaiGacha:
 
     @commands.command(name="fullrelease")
     async def fullrelease(self, context, rarity, region=None):
+        if rarity is None:
+            await context.send("`Usage:`\n```!senpai fullrelease rarity [region]```")
+            return
         if region == 'kanto':
             region = KANTO
         elif region == 'johto':
@@ -457,6 +469,9 @@ class SenpaiGacha:
 
     @commands.command(name="releasedupes")
     async def releasedupes(self, context, rarity, region=None):
+        if rarity is None:
+            await context.send("`Usage:`\n```!senpai releasedupes rarity [region]```")
+            return
         if region == 'kanto':
             region = KANTO
         elif region == 'johto':
@@ -499,6 +514,9 @@ class SenpaiGacha:
 
     @commands.command(name="release")
     async def release(self, context, name):
+        if name is None:
+            await context.send("`Usage:`\n```!senpai release pokemon_name```")
+            return
         pokemon = database_helper.get_pokemon(name)
         if pokemon is not None:
             if database_helper.get_from_inventory(context.message.author.id, pokemon[0]):
@@ -545,6 +563,9 @@ class SenpaiGacha:
 
     @commands.command(name="units")
     async def units(self, context, region):
+        if region is None:
+            await context.send("`Usage:`\n```!senpai units region```")
+            return
         if region == 'kanto':
             region = KANTO
         elif region == 'johto':
@@ -563,12 +584,18 @@ class SenpaiGacha:
             return
         units = database_helper.get_units(region)
         focus = []
+        seven = []
+        six = []
         five = []
         four = []
         three = []
         for unit in units:
             if unit[2] == 1:
                 focus.append(unit[0])
+            elif unit[1] == 7:
+                seven.append(unit[0])
+            elif unit[1] == 6:
+                six.append(unit[0])
             elif unit[1] == 5:
                 five.append(unit[0])
             elif unit[1] == 4:
@@ -578,6 +605,18 @@ class SenpaiGacha:
         title = "Focus Units: \n"
         description = ''
         for unit in focus:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+        title = "Mythic Units: \n"
+        description = ''
+        for unit in seven:
+            description = description + "\n" + unit
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+        title = "Legendary Units: \n"
+        description = ''
+        for unit in six:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
