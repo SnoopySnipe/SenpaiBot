@@ -216,7 +216,7 @@ class SenpaiGacha:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
     @commands.command(name="pokedex")
-    async def pokedex(self, context, name):
+    async def pokedex(self, context, name=None):
         if name is None:
             await context.send("`Usage:`\n```!senpai pokedex pokemon_name```")
             return
@@ -231,7 +231,7 @@ class SenpaiGacha:
             await context.send("Invalid Pokemon name!")
 
     @commands.command(name="trade")
-    async def trade(self, context, pokemon1, pokemon2, id2):
+    async def trade(self, context, pokemon1=None, pokemon2=None, id2=None):
         if pokemon1 is None or pokemon2 is None or id2 is None:
             await context.send("`Usage:`\n```!senpai trade your_pokemon their_pokemon their_id```")
             return
@@ -390,7 +390,7 @@ class SenpaiGacha:
             index-=1
         return (save_location, index, remain_overflow)
     @commands.command(name="team")
-    async def team(self, context, region, user_id=None):
+    async def team(self, context, region=None, user_id=None):
         if region is None:
             await context.send("`Usage:`\n```!senpai team region [user_id]```")
             return
@@ -427,7 +427,7 @@ class SenpaiGacha:
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="fullrelease")
-    async def fullrelease(self, context, rarity, region=None):
+    async def fullrelease(self, context, rarity=None, region=None):
         if rarity is None:
             await context.send("`Usage:`\n```!senpai fullrelease rarity [region]```")
             return
@@ -468,7 +468,7 @@ class SenpaiGacha:
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
 
     @commands.command(name="releasedupes")
-    async def releasedupes(self, context, rarity, region=None):
+    async def releasedupes(self, context, rarity=None, region=None):
         if rarity is None:
             await context.send("`Usage:`\n```!senpai releasedupes rarity [region]```")
             return
@@ -513,7 +513,7 @@ class SenpaiGacha:
                                                                                                 context.message.author.id)))
 
     @commands.command(name="release")
-    async def release(self, context, name):
+    async def release(self, context, name=None):
         if name is None:
             await context.send("`Usage:`\n```!senpai release pokemon_name```")
             return
@@ -562,7 +562,7 @@ class SenpaiGacha:
 
 
     @commands.command(name="units")
-    async def units(self, context, region):
+    async def units(self, context, region=None):
         if region is None:
             await context.send("`Usage:`\n```!senpai units region```")
             return
