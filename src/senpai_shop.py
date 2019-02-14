@@ -662,7 +662,7 @@ class SenpaiGacha:
             if high_streak is not None:
                 next_quiz = datetime.datetime.now() + datetime.timedelta(seconds=t)
                 if not 4 < next_quiz.hour < 13:
-                    await channel.send("{} is on a {}-streak! Next quiz will be at approximately {:02}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], (next_quiz - datetime.timedelta(hours=5)).hour % 12, next_quiz.minute))
+                    await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], (next_quiz - datetime.timedelta(hours=5)).hour % 12, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 4 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 251) # generate random pokemon
