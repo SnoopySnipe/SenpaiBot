@@ -91,6 +91,15 @@ def get_from_inventory(user_id, poke_id):
         conn.close()
     return result
 
+def get_high_streak():
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        if len(database.get_high_streak(conn)) > 0:
+            result = database.get_high_streak(conn)
+        conn.close()
+    return result
+
 def add_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
     if(conn is not None):

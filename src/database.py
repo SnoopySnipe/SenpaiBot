@@ -223,6 +223,15 @@ def get_from_inventory(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def get_high_streak(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id, streak FROM pikapoints WHERE streak >= 5"""
+        c.execute(sql)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def change_focus(conn, *args):
     try:
         c = conn.cursor()
