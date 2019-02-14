@@ -107,7 +107,7 @@ class SenpaiGacha:
             # elif region == 'alola':
             #     region = ALOLA
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', None)")
                 return
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
             database_helper.adjust_points(context.message.author.id, -(PRICE*rolls))
@@ -175,7 +175,7 @@ class SenpaiGacha:
             # elif region == 'alola':
             #     region = ALOLA
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', None)")
                 return
 
             if r == 0:
@@ -446,7 +446,7 @@ class SenpaiGacha:
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', None)")
             return
 
         if rarity not in ('3', '4'):
@@ -487,7 +487,7 @@ class SenpaiGacha:
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', None)")
             return
 
         if rarity not in ('3', '4'):
