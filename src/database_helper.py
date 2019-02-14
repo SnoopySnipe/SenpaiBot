@@ -95,7 +95,7 @@ def get_high_streak():
     conn = sqlite3.connect(db)
     result = None
     if (conn is not None):
-        if len(database.get_high_streak(conn)) > 0:
+        if database.get_high_streak(conn) is not None:
             result = database.get_high_streak(conn)
         conn.close()
     return result
