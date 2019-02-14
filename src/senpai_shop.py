@@ -110,6 +110,7 @@ class SenpaiGacha:
                 await context.send("Region must be in ('kanto', 'johto', None)")
                 return
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
+            database_helper.adjust_points(context.message.author.id, -(PRICE*rolls))
             for i in range(rolls):
                 details = database_helper.get_user_details(context.message.author.id)
                 r = random.randint(0, 1003)
@@ -139,7 +140,6 @@ class SenpaiGacha:
                     description = gacha[0] + "\nRarity: Legendary"
                 elif gacha[2] == 7:
                     description = gacha[0] + "\nRarity: Mythic"
-                database_helper.adjust_points(context.message.author.id, -PRICE)
                 database_helper.add_inventory(context.message.author.id, gacha[1])
                 embed = discord.Embed(title=title, description=description, color=0x9370db)
                 str_id = "{:03}".format(gacha[1])
@@ -416,7 +416,7 @@ class SenpaiGacha:
         title = "{}'s {} Team: \n".format(username, region[0])
         description = ""
         inventory = database_helper.get_inventory(user_id, region)
-        description = description + "\n" + region[0]
+        description = description + "\n**__" + region[0] + "__**"
         for poke in inventory:
             if poke[3] <= 5:
                 description = description + "\n    {} {} - {}⭐".format(poke[4], poke[2], poke[3])
@@ -546,7 +546,7 @@ class SenpaiGacha:
             description = ''
             for region in REGIONS:
                 focus = database_helper.get_focus(region)
-                description = description + "\n" + region[0]
+                description = description + "\n**__" + region[0] + "__**"
                 for unit in focus:
                     description = description + "\n    " + unit[0]
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
@@ -646,7 +646,7 @@ class SenpaiGacha:
         description = ''
         for region in REGIONS:
             focus = database_helper.get_focus(region)
-            description = description + "\n" + region[0]
+            description = description + "\n**__" + region[0] + "__**"
             for unit in focus:
                 description = description + "\n    " + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
