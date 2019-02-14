@@ -75,7 +75,7 @@ class SenpaiGacha:
         pity = database_helper.get_pity(user_id)
         title = "{}'s Pity Rates: \n".format(username)
         if pity is None:
-            description = "3⭐: 54.0%\n4⭐: 42.0%\n5⭐: 1.0%\nFocus: 3.0%"
+            description = "3⭐: 54.0%\n4⭐: 42.0%\n5⭐: 3.0%\nFocus: 1.0%"
         else:
             description = "3⭐: {}%\n4⭐: {}%\n5⭐: {}%\nFocus: {}%".format(pity[0]/10, pity[1]/10, pity[2]/10, pity[3]/10)
 

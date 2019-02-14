@@ -33,11 +33,11 @@ def adjust_pikapity(conn, user_id, got_five=None):
     try:
         c = conn.cursor()
         if got_five is None:
-            sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 540, 420, 10, 30);"""
+            sql_setup_pikapity = """INSERT OR IGNORE INTO pikapity(id, three, four, five, focus) VALUES($user_id, 540, 420, 30, 10);"""
             placeholders = {"user_id": user_id}
             c.execute(sql_setup_pikapity, placeholders)
         elif (got_five == True):
-            sql_update_pikapity = """UPDATE pikapity SET focus = 30, five = 10, four = 420, three = 540 WHERE id=$user_id;"""
+            sql_update_pikapity = """UPDATE pikapity SET focus = 10, five = 30, four = 420, three = 540 WHERE id=$user_id;"""
             placeholders = {"user_id": user_id}
             c.execute(sql_update_pikapity, placeholders)
         else:
