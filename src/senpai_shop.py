@@ -228,7 +228,7 @@ class SenpaiGacha:
             dex.set_image(url=url)
             await context.send(embed=dex)
         else:
-            await context.send("Invalid Pokemon name!")
+            await context.send("Invalid Pokémon name!")
 
     @commands.command(name="trade")
     async def trade(self, context, pokemon1=None, pokemon2=None, id2=None):
@@ -242,10 +242,10 @@ class SenpaiGacha:
             if database_helper.get_from_inventory(id1, pokemon1_id[0]):
                 rarity1 = pokemon1_id[1]
             else:
-                await context.send("You do not have that Pokemon!")
+                await context.send("You do not have that Pokémon!")
                 return
         else:
-            await context.send("Invalid Pokemon name!")
+            await context.send("Invalid Pokémon name!")
             return
 
         pokemon2_id = database_helper.get_pokemon(pokemon2)
@@ -253,20 +253,20 @@ class SenpaiGacha:
             if database_helper.get_from_inventory(id2, pokemon2_id[0]):
                 rarity2 = pokemon2_id[1]
             else:
-                await context.send("They do not have that Pokemon!")
+                await context.send("They do not have that Pokémon!")
                 return
         else:
-            await context.send("Invalid Pokemon name!")
+            await context.send("Invalid Pokémon name!")
             return
 
         if pokemon1 == pokemon2:
-            await context.send("Pokemon must be different!")
+            await context.send("Pokémon must be different!")
             return
 
         if rarity1 == rarity2:
             cost = 60 * rarity1
         else:
-            await context.send("Pokemon's rarities must match!")
+            await context.send("Pokémon's rarities must match!")
             return
 
         balance1 = database_helper.get_pikapoints(id1)
@@ -314,7 +314,7 @@ class SenpaiGacha:
         username = self.bot.get_user(int(user_id)).name
         inventory = database_helper.get_inventory(user_id)
         if len(inventory) == 0:
-            await context.send("You have no pokemon on page {}! Start rolling!".format(page_num))
+            await context.send("You have no pokémon on page {}! Start rolling!".format(page_num))
         else:
             page_indices = {1:(0,0)}
             num_pokemon = 0
@@ -450,7 +450,7 @@ class SenpaiGacha:
             return
 
         if rarity not in ('3', '4'):
-            await context.send("You can only full release 3⭐ and 4⭐ rarity Pokemon!")
+            await context.send("You can only full release 3⭐ and 4⭐ rarity Pokémon!")
         else:
             balance = database_helper.get_pikapoints(context.message.author.id)
             if region is None:
@@ -458,7 +458,7 @@ class SenpaiGacha:
             else:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.full_remove_inventory(context.message.author.id, rarity, region)
-            await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokemon from {}...".format(str(balance), rows, rarity, str_region))
+            await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...".format(str(balance), rows, rarity, str_region))
             if rarity == '3':
                 gain = 5
             elif rarity == '4':
@@ -491,7 +491,7 @@ class SenpaiGacha:
             return
 
         if rarity not in ('3', '4'):
-            await context.send("You can only dupe release 3⭐ and 4⭐ rarity Pokemon!")
+            await context.send("You can only dupe release 3⭐ and 4⭐ rarity Pokémon!")
         else:
             balance = database_helper.get_pikapoints(context.message.author.id)
             if region is None:
@@ -500,7 +500,7 @@ class SenpaiGacha:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.remove_dupes(context.message.author.id, rarity, region)
             await context.send(
-                "You currently have {} pikapoints.\nReleasing {} {}⭐ Pokemon from {}...".format(str(balance), rows,
+                "You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...".format(str(balance), rows,
                                                                                                 rarity, str_region))
             if rarity == '3':
                 gain = 5
@@ -534,9 +534,9 @@ class SenpaiGacha:
                 database_helper.adjust_points(context.message.author.id, gain)
                 await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
             else:
-                await context.send("You do not have that Pokemon!")
+                await context.send("You do not have that Pokémon!")
         else:
-            await context.send("Invalid Pokemon name!")
+            await context.send("Invalid Pokémon name!")
 
     @commands.command(name="newfocus")
     async def newfocus(self, context, *args):
