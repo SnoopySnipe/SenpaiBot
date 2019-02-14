@@ -16,7 +16,7 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
-REGIONS = [KANTO, JOHTO]#, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
+REGIONS = [KANTO, JOHTO, HOENN]#, SINNOH, UNOVA, KALOS, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
@@ -96,8 +96,8 @@ class SenpaiGacha:
                 region = KANTO
             elif region == 'johto':
                 region = JOHTO
-            # elif region == 'hoenn':
-            #     region = HOENN
+            elif region == 'hoenn':
+                region = HOENN
             # elif region == 'sinnoh':
             #     region = SINNOH
             # elif region == 'unova':
@@ -164,8 +164,8 @@ class SenpaiGacha:
                 region = KANTO
             elif region == 'johto':
                 region = JOHTO
-            # elif region == 'hoenn':
-            #     region = HOENN
+            elif region == 'hoenn':
+                region = HOENN
             # elif region == 'sinnoh':
             #     region = SINNOH
             # elif region == 'unova':
@@ -398,8 +398,8 @@ class SenpaiGacha:
             region = KANTO
         elif region == 'johto':
             region = JOHTO
-        # elif region == 'hoenn':
-        #     region = HOENN
+        elif region == 'hoenn':
+            region = HOENN
         # elif region == 'sinnoh':
         #     region = SINNOH
         # elif region == 'unova':
@@ -435,8 +435,8 @@ class SenpaiGacha:
             region = KANTO
         elif region == 'johto':
             region = JOHTO
-        # elif region == 'hoenn':
-        #     region = HOENN
+        elif region == 'hoenn':
+            region = HOENN
         # elif region == 'sinnoh':
         #     region = SINNOH
         # elif region == 'unova':
@@ -476,8 +476,8 @@ class SenpaiGacha:
             region = KANTO
         elif region == 'johto':
             region = JOHTO
-        # elif region == 'hoenn':
-        #     region = HOENN
+        elif region == 'hoenn':
+            region = HOENN
         # elif region == 'sinnoh':
         #     region = SINNOH
         # elif region == 'unova':
@@ -570,8 +570,8 @@ class SenpaiGacha:
             region = KANTO
         elif region == 'johto':
             region = JOHTO
-        # elif region == 'hoenn':
-        #     region = HOENN
+        elif region == 'hoenn':
+            region = HOENN
         # elif region == 'sinnoh':
         #     region = SINNOH
         # elif region == 'unova':
