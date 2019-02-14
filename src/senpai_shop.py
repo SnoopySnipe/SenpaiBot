@@ -546,7 +546,7 @@ class SenpaiGacha:
             description = ''
             for region in REGIONS:
                 focus = database_helper.get_focus(region)
-                description = description + "\n**__" + region[0] + "__**"
+                description = description + "\n\n**__" + region[0] + "__**"
                 for unit in focus:
                     description = description + "\n    " + unit[0]
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
@@ -646,7 +646,7 @@ class SenpaiGacha:
         description = ''
         for region in REGIONS:
             focus = database_helper.get_focus(region)
-            description = description + "\n**__" + region[0] + "__**"
+            description = description + "\n\n**__" + region[0] + "__**"
             for unit in focus:
                 description = description + "\n    " + unit[0]
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
