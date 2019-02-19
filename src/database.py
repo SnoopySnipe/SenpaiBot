@@ -303,7 +303,6 @@ def update_jackpot(conn, id, reset):
         sql1 = """INSERT OR IGNORE INTO jackpot (id) VALUES ($id)"""
         placeholders = {"id": id}
         c.execute(sql1, placeholders)
-        conn.commit()
         if reset:
             sql2 = """UPDATE jackpot SET contribution = 0"""
             c.execute(sql2)
