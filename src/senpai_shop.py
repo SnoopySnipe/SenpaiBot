@@ -665,7 +665,7 @@ class SenpaiGacha:
         title = "Current Jackpot:"
         description = ''
         contributors = database_helper.get_jackpot(False)
-        if contributors is None:
+        if len(contributors) == 0:
             await context.send("The jackpot is currently empty!")
             return
         for contributor in contributors:
