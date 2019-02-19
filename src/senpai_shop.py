@@ -123,15 +123,19 @@ class SenpaiGacha:
                 elif 1 <= r <= details[1]:
                     options = database_helper.get_roll(3, region)
                     database_helper.adjust_pity(context.message.author.id, False)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 elif details[1] < r <= details[1] + details[2]:
                     options = database_helper.get_roll(4, region)
                     database_helper.adjust_pity(context.message.author.id, False)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
                     options = database_helper.get_roll(5, region)
                     database_helper.adjust_pity(context.message.author.id, True)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 elif details[1] + details[2] + details[3] < r <= 1000:
                     options = database_helper.get_roll(1, region)
                     database_helper.adjust_pity(context.message.author.id, True)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 gacha = options[random.randint(0, len(options) - 1)]
                 title = "{} Summoned: \n".format(context.message.author.name)
                 if gacha[2] <= 5:
@@ -146,6 +150,11 @@ class SenpaiGacha:
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
+                if gacha[2] > 5:
+                    jackpot = database_helper.get_jackpot(True)[0]
+                    database_helper.adjust_points(context.message.author.id, jackpot)
+                    database_helper.update_jackpot(context.message.author.id, True)
+                    await context.send("{} wins the jackpot of {} pikapoints! They now have {} pikapoints.".format(context.message.author.name, jackpot, database_helper.get_pikapoints(context.message.author.id)))
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
         else:
