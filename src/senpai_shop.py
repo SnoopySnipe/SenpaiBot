@@ -667,6 +667,7 @@ class SenpaiGacha:
         contributors = database_helper.get_jackpot(False)
         if contributors is None:
             await context.send("The jackpot is currently empty!")
+            return
         for contributor in contributors:
             description = description + "\n" + self.bot.get_user(contributor[0]) + " - {} points".format(contributor[1])
         description = description + "\n**Total: {} points**".format(database_helper.get_jackpot(True))
