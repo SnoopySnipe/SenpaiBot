@@ -114,7 +114,7 @@ class SenpaiGacha:
             for i in range(rolls):
                 details = database_helper.get_user_details(context.message.author.id)
                 r = random.randint(0, 1003)
-                if r == 0:
+                if 0 <= r <= 500:
                     options = database_helper.get_roll(7, region)
                     database_helper.adjust_pity(context.message.author.id, True)
                 elif 1001 <= r <= 1003:
