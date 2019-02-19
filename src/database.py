@@ -300,7 +300,7 @@ def perform_trade(conn, id1, id2, pokemonid1, pokemonid2):
 def update_jackpot(conn, id, reset):
     try:
         c = conn.cursor()
-        sql1 = """INSERT OR IGNORE INTO jackpot (id) VALUES ($id)"""
+        sql1 = """INSERT OR IGNORE INTO jackpot (id, contribution) VALUES ($id, 0)"""
         placeholders = {"id": id}
         c.execute(sql1, placeholders)
         if reset:
