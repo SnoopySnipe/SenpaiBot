@@ -183,8 +183,10 @@ def perform_trade(id1, id2, pokemonid1, pokemonid2):
 def update_jackpot(id, reset):
     conn = sqlite3.connect(db)
     if (conn is not None):
+        new = False
         if database.get_from_jackpot(conn, id) is None:
-            database.update_jackpot(conn, id, reset)
+            new = True
+        database.update_jackpot(conn, id, reset, new=new)
         conn.close()
 
 def get_jackpot(sum):

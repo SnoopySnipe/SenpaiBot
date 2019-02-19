@@ -307,10 +307,14 @@ def get_from_jackpot(conn, id):
     except Error as e:
         print(e)
 
-def update_jackpot(conn, id, reset):
+def update_jackpot(conn, id, reset, new=False):
     try:
         c = conn.cursor()
         placeholders = {"id": id}
+        if new:
+            sql1 = """INSERT INTO jackpot (id) VALUES ($id)"""
+            c.execute(sql1, placeholders)
+            conn.commit()
         if reset:
             sql2 = """UPDATE jackpot SET contribution = 0"""
             c.execute(sql2)
