@@ -179,3 +179,17 @@ def perform_trade(id1, id2, pokemonid1, pokemonid2):
     if (conn is not None):
         database.perform_trade(conn, id1, id2, pokemonid1, pokemonid2)
         conn.close()
+
+def update_jackpot(id, reset):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_jackpot(conn, id, reset)
+        conn.close()
+
+def get_jackpot(sum):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_jackpot(conn, sum)
+        conn.close()
+        return result

@@ -297,6 +297,37 @@ def perform_trade(conn, id1, id2, pokemonid1, pokemonid2):
     except Error as e:
         print(e)
 
+def update_jackpot(conn, id, reset):
+    try:
+        c = conn.cursor()
+        sql1 = """INSERT OR IGNORE INTO jackpot (id) VALUES ($id)"""
+        placeholders = {"id": id}
+        c.execute(sql1, placeholders)
+        conn.commit()
+        if reset:
+            sql2 = """UPDATE jackpot SET contribution = 0"""
+            c.execute(sql2)
+        else:
+            sql2 = """UPDATE jackpot SET contribution = contribution + 1 WHERE id = $id"""
+            c.execute(sql2, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def get_jackpot(conn, sum):
+    try:
+        c = conn.cursor()
+        if sum:
+            sql = """SELECT sum(contribution) FROM jackpot"""
+            c.execute(sql)
+            return c.fetchone()
+        else:
+            sql = """SELECT * FROM jackpot WHERE contribution > 0"""
+            c.execute(sql)
+            return c.fetchall()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
@@ -305,6 +336,7 @@ sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
 sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
+sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL, contribution integer DEFAULT 0)"""
 
 def load_pikadata(path):
     data = {}
@@ -319,6 +351,7 @@ def initialize(conn):
     create_table(conn, sql_create_pikagacha_table)
     create_table(conn, sql_create_pikapity_table)
     create_table(conn, sql_create_inventory)
+    create_table(conn, sql_create_jackpot)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
