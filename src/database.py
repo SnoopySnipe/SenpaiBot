@@ -297,12 +297,20 @@ def perform_trade(conn, id1, id2, pokemonid1, pokemonid2):
     except Error as e:
         print(e)
 
+def get_from_jackpot(conn, id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id FROM jackpot where id = $id"""
+        placeholders = {"id": id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def update_jackpot(conn, id, reset):
     try:
         c = conn.cursor()
-        sql1 = """INSERT OR IGNORE INTO jackpot (id, contribution) VALUES ($id, 0)"""
         placeholders = {"id": id}
-        c.execute(sql1, placeholders)
         if reset:
             sql2 = """UPDATE jackpot SET contribution = 0"""
             c.execute(sql2)
