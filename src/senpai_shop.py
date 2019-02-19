@@ -159,7 +159,7 @@ class SenpaiGacha:
         if details is None:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
-            r = random.randint(0, 0)
+            r = random.randint(0, 1003)
             if region == 'kanto':
                 region = KANTO
             elif region == 'johto':
@@ -217,7 +217,7 @@ class SenpaiGacha:
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
             if gacha[2] > 5:
-                jackpot = database_helper.get_jackpot(True)
+                jackpot = database_helper.get_jackpot(True)[0]
                 database_helper.adjust_points(context.message.author.id, jackpot)
                 database_helper.update_jackpot(context.message.author.id, True)
                 await context.send("{} wins the jackpot of {} pikapoints! They now have {} pikapoints.".format(context.message.author.name, jackpot, database_helper.get_pikapoints(context.message.author.id)))
