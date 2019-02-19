@@ -159,7 +159,7 @@ class SenpaiGacha:
         if details is None:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
-            r = random.randint(0, 0)
+            r = random.randint(0, 1003)
             if region == 'kanto':
                 region = KANTO
             elif region == 'johto':
