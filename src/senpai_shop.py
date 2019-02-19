@@ -670,7 +670,7 @@ class SenpaiGacha:
             return
         for contributor in contributors:
             description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} points".format(contributor[1])
-        description = description + "\n**Total: {} points**".format(database_helper.get_jackpot(True))
+        description = description + "\n**Total: {} points**".format(database_helper.get_jackpot(True)[0])
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
     async def background_quiz(self):
