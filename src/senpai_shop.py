@@ -117,9 +117,11 @@ class SenpaiGacha:
                 if r == 0:
                     options = database_helper.get_roll(7, region)
                     database_helper.adjust_pity(context.message.author.id, True)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 elif 1001 <= r <= 1003:
                     options = database_helper.get_roll(6, region)
                     database_helper.adjust_pity(context.message.author.id, True)
+                    database_helper.update_jackpot(context.message.author.id, False)
                 elif 1 <= r <= details[1]:
                     options = database_helper.get_roll(3, region)
                     database_helper.adjust_pity(context.message.author.id, False)
@@ -152,9 +154,21 @@ class SenpaiGacha:
                 await context.send(embed=embed)
                 if gacha[2] > 5:
                     jackpot = database_helper.get_jackpot(True)[0]
-                    database_helper.adjust_points(context.message.author.id, jackpot)
+                    no_contributors = len(database_helper.get_jackpot(False))
+                    msg = context.message.author.name + ' summoned a '
+                    if gacha[2] == 6:
+                        payout = jackpot // no_contributors
+                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed to the jackpot and will each receive {} pikapoints:'.format(
+                            jackpot, payout)
+                    elif gacha[2] == 7:
+                        payout = (jackpot * 2) // no_contributors
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multipler --> {} pikapoints. The following users contributed to the jackpot and will each receive {} pikapoints:'.format(
+                            jackpot, jackpot * 2, payout)
+                    for contributor in database_helper.get_jackpot(False):
+                        database_helper.adjust_points(contributor[0], payout)
+                        msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                     database_helper.update_jackpot(context.message.author.id, True)
-                    await context.send("{} wins the jackpot of {} pikapoints! They now have {} pikapoints.".format(context.message.author.name, jackpot, database_helper.get_pikapoints(context.message.author.id)))
+                    await context.send(msg)
             balance = database_helper.get_pikapoints(context.message.author.id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
         else:
@@ -190,9 +204,11 @@ class SenpaiGacha:
             if r == 0:
                 options = database_helper.get_roll(7, region)
                 database_helper.adjust_pity(context.message.author.id, True)
+                database_helper.update_jackpot(context.message.author.id, False)
             elif 1001 <= r <= 1003:
                 options = database_helper.get_roll(6, region)
                 database_helper.adjust_pity(context.message.author.id, True)
+                database_helper.update_jackpot(context.message.author.id, False)
             elif 1 <= r <= details[1]:
                 options = database_helper.get_roll(3, region)
                 database_helper.adjust_pity(context.message.author.id, False)
@@ -231,14 +247,15 @@ class SenpaiGacha:
                 msg = context.message.author.name + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
-                    msg = msg + 'Legendary Pokémon! The jackpot currently has '
+                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed to the jackpot and will each receive {} pikapoints:'.format(jackpot, payout)
                 elif gacha[2] == 7:
                     payout = (jackpot * 2) // no_contributors
-                    msg = msg + 'Mythic Pokémon! '
+                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multipler --> {} pikapoints. The following users contributed to the jackpot and will each receive {} pikapoints:'.format(jackpot, jackpot * 2, payout)
                 for contributor in database_helper.get_jackpot(False):
                     database_helper.adjust_points(contributor[0], payout)
+                    msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                 database_helper.update_jackpot(context.message.author.id, True)
-                await context.send("{} wins the jackpot of {} pikapoints! They now have {} pikapoints.".format(context.message.author.name, jackpot, database_helper.get_pikapoints(context.message.author.id)))
+                await context.send(msg)
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
