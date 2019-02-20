@@ -227,7 +227,16 @@ class SenpaiGacha:
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
             if gacha[2] > 5:
                 jackpot = database_helper.get_jackpot(True)[0]
-                database_helper.adjust_points(context.message.author.id, jackpot)
+                no_contributors = len(database_helper.get_jackpot(False))
+                msg = context.message.author.name + ' summoned a '
+                if gacha[2] == 6:
+                    payout = jackpot // no_contributors
+                    msg = msg + 'Legendary Pokémon! The jackpot currently has '
+                elif gacha[2] == 7:
+                    payout = (jackpot * 2) // no_contributors
+                    msg = msg + 'Mythic Pokémon! '
+                for contributor in database_helper.get_jackpot(False):
+                    database_helper.adjust_points(contributor[0], payout)
                 database_helper.update_jackpot(context.message.author.id, True)
                 await context.send("{} wins the jackpot of {} pikapoints! They now have {} pikapoints.".format(context.message.author.name, jackpot, database_helper.get_pikapoints(context.message.author.id)))
         else:
