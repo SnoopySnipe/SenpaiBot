@@ -333,7 +333,7 @@ def get_jackpot(conn, sum):
             c.execute(sql)
             return c.fetchone()
         else:
-            sql = """SELECT * FROM jackpot WHERE contribution > 0"""
+            sql = """SELECT * FROM jackpot WHERE contribution > 0 ORDER BY contribution DESC"""
             c.execute(sql)
             return c.fetchall()
     except Error as e:

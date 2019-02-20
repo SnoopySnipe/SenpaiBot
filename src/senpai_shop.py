@@ -671,7 +671,7 @@ class SenpaiGacha:
 
     @commands.command(name="jackpot")
     async def jackpot(self, context):
-        title = "Current Jackpot:"
+        title = "Current Jackpot Contribution:"
         description = ''
         contributors = database_helper.get_jackpot(False)
         if len(contributors) == 0:
@@ -679,7 +679,7 @@ class SenpaiGacha:
             return
         for contributor in contributors:
             description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} points".format(contributor[1])
-        description = description + "\n**Total: {} points**".format(database_helper.get_jackpot(True)[0])
+        description = description + "\n\n**Current Jackpot Total: {} points**".format(database_helper.get_jackpot(True)[0])
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
     async def background_quiz(self):
