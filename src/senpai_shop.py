@@ -705,7 +705,7 @@ class SenpaiGacha:
             return
         for contributor in contributors:
             description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} points".format(contributor[1])
-        description = description + "\n\n**Current Jackpot Total: {} points**".format(database_helper.get_jackpot(True)[0])
+        description = description + "\n\n**Current Jackpot Total: {} points\nTotal Number of Contributors: {}**".format(database_helper.get_jackpot(True)[0], len(contributors))
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
     async def background_quiz(self):
