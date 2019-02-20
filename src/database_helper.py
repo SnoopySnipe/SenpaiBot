@@ -196,3 +196,11 @@ def get_jackpot(sum):
         result = database.get_jackpot(conn, sum)
         conn.close()
         return result
+
+def get_jackpot_rewards():
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_jackpot_rewards(conn)
+        conn.close()
+        return result

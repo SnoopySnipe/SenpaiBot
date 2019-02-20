@@ -339,6 +339,15 @@ def get_jackpot(conn, sum):
     except Error as e:
         print(e)
 
+def get_jackpot_rewards(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM jackpot WHERE contribution >= 5 ORDER BY contribution DESC"""
+        c.execute(sql)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
