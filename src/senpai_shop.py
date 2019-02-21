@@ -729,7 +729,10 @@ class SenpaiGacha:
             description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} points".format(contributor[1])
         jackpot_sum = database_helper.get_jackpot(True)[0]
         no_contributors = len(database_helper.get_jackpot_rewards())
-        payout = jackpot_sum // no_contributors
+        if no_contributors == 0:
+            payout = 0
+        else:
+            payout = jackpot_sum // no_contributors
         multiplier = 2
         description = description + "\n\n**You need to have contributed at least 3 points to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} pikapoints\nTotal Number of Contributors: {}\nCurrent Number of Reward Earners: {}\nCurrent Payout: {} pikapoints\nMythic Multipler: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
