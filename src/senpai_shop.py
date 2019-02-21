@@ -155,6 +155,15 @@ class SenpaiGacha:
                 if gacha[2] > 5:
                     jackpot = database_helper.get_jackpot(True)[0]
                     no_contributors = len(database_helper.get_jackpot_rewards())
+                    if no_contributors == 0:
+                        if gacha[2] == 6:
+                            str_rarity = 'Legendary'
+                        elif gacha[2] == 7:
+                            str_rarity = 'Mythic'
+                        await context.send(
+                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 5 points to the jackpot, therefore the jackpot will not be reset.'.format(
+                                context.message.author.name, str_rarity, jackpot))
+                        return
                     msg = context.message.author.name + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
@@ -246,6 +255,13 @@ class SenpaiGacha:
             if gacha[2] > 5:
                 jackpot = database_helper.get_jackpot(True)[0]
                 no_contributors = len(database_helper.get_jackpot_rewards())
+                if no_contributors == 0:
+                    if gacha[2] == 6:
+                        str_rarity = 'Legendary'
+                    elif gacha[2] == 7:
+                        str_rarity = 'Mythic'
+                    await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 5 points to the jackpot, therefore the jackpot will not be reset.'.format(context.message.author.name, str_rarity, jackpot))
+                    return
                 msg = context.message.author.name + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
@@ -715,7 +731,7 @@ class SenpaiGacha:
         no_contributors = len(database_helper.get_jackpot_rewards())
         payout = jackpot_sum // no_contributors
         multiplier = 2
-        description = description + "\n\n**You need to have contributed at least 5 points to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} points\nTotal Number of Contributors: {} contributors\nCurrent Number of Reward Earners: {} contributors\nCurrent payout: {} pikapoints\nMythic Multipler: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
+        description = description + "\n\n**You need to have contributed at least 5 points to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} pikapoints\nTotal Number of Contributors: {}\nCurrent Number of Reward Earners: {}\nCurrent Payout: {} pikapoints\nMythic Multipler: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
     async def background_quiz(self):
