@@ -342,7 +342,7 @@ def get_jackpot(conn, sum):
 def get_jackpot_rewards(conn):
     try:
         c = conn.cursor()
-        sql = """SELECT * FROM jackpot WHERE contribution >= 5 ORDER BY contribution DESC"""
+        sql = """SELECT * FROM jackpot WHERE contribution >= 3 ORDER BY contribution DESC"""
         c.execute(sql)
         return c.fetchall()
     except Error as e:
