@@ -387,8 +387,8 @@ class SenpaiGacha:
             for pokemon in inventory:
                 num_pokemon += pokemon[4]
             (save_location, curr_index, remain_num) = self.draw_box(context, inventory, 0, 0)
-            file = discord.File(save_location, filename='inventory.png')
-            msg = await context.channel.send(username+"'s inventory (page " + str(page_num) +")", file=file)
+            file = discord.File(save_location, filename='team.png')
+            msg = await context.channel.send(username+"'s team (page " + str(page_num) +")", file=file)
             await msg.add_reaction("⬅")
             await msg.add_reaction("➡")
             def check(reaction, user):
@@ -410,9 +410,9 @@ class SenpaiGacha:
                         if(page_num not in page_indices):
                             page_indices[page_num] = (curr_index, remain_num)
                         (save_location, curr_index, remain_num) = self.draw_box(context, inventory, curr_index, remain_num)
-                        file = discord.File(save_location, filename='inventory.png')
+                        file = discord.File(save_location, filename='team.png')
                         await msg.delete()
-                        msg = await context.channel.send(username+"'s inventory (page " + str(page_num) +")", file=file)
+                        msg = await context.channel.send(username+"'s team (page " + str(page_num) +")", file=file)
                         await msg.add_reaction("⬅")
                         await msg.add_reaction("➡")
     def draw_box(self, context, inventory, index, remain_num):
