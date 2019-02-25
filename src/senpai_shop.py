@@ -515,8 +515,11 @@ class SenpaiGacha:
             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
             return
 
-        if rarity not in ('3', '4'):
-            await context.send("You can only full release 3⭐ and 4⭐ rarity Pokémon!")
+        if rarity == 'five':
+            rarity = '5'
+
+        if rarity not in ('3', '4', '5'):
+            await context.send("You can only full release 3⭐, 4⭐, and 5⭐ rarity Pokémon!")
         else:
             balance = database_helper.get_pikapoints(context.message.author.id)
             if region is None:
@@ -556,8 +559,11 @@ class SenpaiGacha:
             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
             return
 
-        if rarity not in ('3', '4'):
-            await context.send("You can only dupe release 3⭐ and 4⭐ rarity Pokémon!")
+        if rarity == 'five':
+            rarity = '5'
+
+        if rarity not in ('3', '4', '5'):
+            await context.send("You can only full release 3⭐, 4⭐, and 5⭐ rarity Pokémon!")
         else:
             balance = database_helper.get_pikapoints(context.message.author.id)
             if region is None:
