@@ -517,6 +517,9 @@ class SenpaiGacha:
 
         if rarity == 'five':
             rarity = '5'
+        elif rarity == '5':
+            await context.send("`Usage:`\n```!senpai fullrelease five [region]```")
+            return
 
         if rarity not in ('3', '4', '5'):
             await context.send("You can only full release 3⭐, 4⭐, and 5⭐ rarity Pokémon!")
@@ -532,6 +535,8 @@ class SenpaiGacha:
                 gain = 5
             elif rarity == '4':
                 gain = 10
+            elif rarity == '5':
+                gain = 15
             database_helper.adjust_points(context.message.author.id, gain*rows)
             total_gain = gain*rows
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain, database_helper.get_pikapoints(context.message.author.id)))
@@ -561,6 +566,9 @@ class SenpaiGacha:
 
         if rarity == 'five':
             rarity = '5'
+        elif rarity == '5':
+            await context.send("`Usage:`\n```!senpai releasedupes five [region]```")
+            return
 
         if rarity not in ('3', '4', '5'):
             await context.send("You can only full release 3⭐, 4⭐, and 5⭐ rarity Pokémon!")
@@ -578,6 +586,8 @@ class SenpaiGacha:
                 gain = 5
             elif rarity == '4':
                 gain = 10
+            elif rarity == '5':
+                gain = 15
             database_helper.adjust_points(context.message.author.id, gain * rows)
             total_gain = gain * rows
             await context.send("You got {} pikapoints!\nYou now have {} pikapoints.".format(total_gain,
