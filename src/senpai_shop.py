@@ -171,7 +171,7 @@ class SenpaiGacha:
                             jackpot, payout)
                     elif gacha[2] == 7:
                         payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multipler --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
                             jackpot, jackpot * 2, payout)
                     for contributor in database_helper.get_jackpot(False):
                         if contributor[1] >= 3:
@@ -269,7 +269,7 @@ class SenpaiGacha:
                         jackpot, payout)
                 elif gacha[2] == 7:
                     payout = (jackpot * 2) // no_contributors
-                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multipler --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
+                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
                         jackpot, jackpot * 2, payout)
                 for contributor in database_helper.get_jackpot(False):
                     if contributor[1] >= 3:
@@ -750,7 +750,7 @@ class SenpaiGacha:
         else:
             payout = jackpot_sum // no_contributors
         multiplier = 2
-        description = description + "\n\n**You need to have contributed at least 3 pikapoints to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} pikapoints\nTotal Number of Contributors: {}\nCurrent Number of Reward Earners: {}\nCurrent Payout: {} pikapoints\nMythic Multipler: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
+        description = description + "\n\n**You need to have contributed at least 3 pikapoints to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} pikapoints\nTotal Number of Contributors: {}\nCurrent Number of Reward Earners: {}\nCurrent Payout: {} pikapoints\nMythic Multiplier: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
     async def background_quiz(self):
