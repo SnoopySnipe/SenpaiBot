@@ -7,6 +7,8 @@ import asyncio
 import datetime
 import time
 from PIL import Image
+import requests
+from io import BytesIO
 
 SNOOPY_ID = 103634047929962496
 KANTO = ('Kanto', 1, 151)
@@ -437,7 +439,8 @@ class SenpaiGacha:
             pokemon_id = pokemon[1]
             #sprite = pb.SpriteResource('pokemon', pokemon_id)
             #img = Image.open(sprite.path).convert("RGBA")
-            img = Image.open("https://www.serebii.net/sunmoon/pokemon/{}.png".format(pokemon_id))
+            response = requests.get("https://www.serebii.net/sunmoon/pokemon/{}.png".format(pokemon_id))
+            img = Image.open(BytesIO(response.content))
             img = img.resize((150,150))
             for i in range(pokemon_num):
                 #img = Image.open("images/pokemon/"+pokemon[2]+".png")
