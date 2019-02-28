@@ -434,7 +434,7 @@ class SenpaiGacha:
             else:
                 pokemon_num = pokemon[4]
             index += 1
-            pokemon_id = pokemon[1]
+            pokemon_id = 804#pokemon[1]
             sprite = pb.SpriteResource('pokemon', pokemon_id)
             img = Image.open(sprite.path).convert("RGBA")
             img = img.resize((150,150))
