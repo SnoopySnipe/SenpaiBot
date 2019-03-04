@@ -358,6 +358,26 @@ def get_jackpot_rewards(conn):
     except Error as e:
         print(e)
 
+def check_bag(conn, user_id, ball_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM bag WHERE user_id = $user_id AND ball = $ball_id"""
+        placeholders = {"user_id": user_id, "ball_id": ball_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
+def use_item(conn, user_id, ball_id):
+    try:
+        c = conn.cursor()
+        sql = """DELETE FROM bag WHERE user_id = $user_id AND ball = $ball_id LIMIT 1"""
+        placeholders = {"user_id": user_id, "ball_id": ball_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,

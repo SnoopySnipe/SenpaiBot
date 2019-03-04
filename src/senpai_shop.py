@@ -374,6 +374,123 @@ class SenpaiGacha:
                 username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
             ))
 
+    @commands.command(name="open")
+    async def open(self, context, ball=None):
+        if ball is None:
+            await context.send("`Usage:`\n```!senpai open ball_name```")
+            return
+
+        if ball not in ('pokeball', 'greatball', 'ultraball', 'masterball'):
+            await context.send("Ball name must be in ('pokeball', 'greatball', 'ultraball', 'masterball')")
+            return
+
+        if ball == 'pokeball':
+            ball_id = 1
+        elif ball == 'greatball':
+            ball_id = 2
+        elif ball == 'ultraball':
+            ball_id = 3
+        elif ball == 'masterball':
+            ball_id = 4
+
+        user_id = context.message.author.id
+        user = self.bot.get_user(user_id)
+        username = user.name
+        if not database_helper.check_bag(user_id, ball_id):
+            await context.send("You do not have that item!")
+            return
+
+        database_helper.use_item(user_id, ball_id)
+
+        option = random.randint(0, 1)
+        if option == 0:
+            if ball_id == 1:
+                pt_range = (1, 15)
+                ball_str = 'Poké Ball'
+            elif ball_id == 2:
+                pt_range = (15, 30)
+                ball_str = 'Great Ball'
+            elif ball_id == 3:
+                pt_range = (30, 60)
+                ball_str = 'Ultra Ball'
+            elif ball_id == 4:
+                pt_range = (60, 150)
+                ball_str = 'Master Ball'
+            pt_prize = random.randint(pt_range[0], pt_range[1])
+            database_helper.adjust_points(user_id, pt_prize)
+            balance = database_helper.get_pikapoints(context.message.author.id)
+            await context.send("{} opened a {} and got {} pikapoints! You now have {} pikapoints.".format(username, ball_str, pt_prize, balance))
+        elif option == 1:
+            if ball_id == 1:
+                ball_str = 'Poké Ball'
+                roll_range = {
+                    3: 60,
+                    4: 40,
+                }
+                roll = random.randint(1, 100)
+                if 1 <= roll <= roll_range[3]:
+                    options = database_helper.get_roll(3)
+                elif roll_range[3] < roll <= 100:
+                    options = database_helper.get_roll(4)
+            elif ball_id == 2:
+                ball_str = 'Great Ball'
+                roll_range = {
+                    3: 50,
+                    4: 40,
+                    5: 10
+                }
+                roll = random.randint(1, 100)
+                if 1 <= roll <= roll_range[3]:
+                    options = database_helper.get_roll(3)
+                elif roll_range[3] < roll <= roll_range[3] + roll_range[4]:
+                    options = database_helper.get_roll(4)
+                elif roll_range[3] + roll_range[4] < roll <= 100:
+                    options = database_helper.get_roll(5)
+            elif ball_id == 3:
+                ball_str = 'Ultra Ball'
+                roll_range = {
+                    4: 60,
+                    5: 35,
+                    6: 5
+                }
+                roll = random.randint(1, 100)
+                if 1 <= roll <= roll_range[4]:
+                    options = database_helper.get_roll(4)
+                elif roll_range[4] < roll <= roll_range[4] + roll_range[5]:
+                    options = database_helper.get_roll(5)
+                elif roll_range[4] + roll_range[5] < roll <= 100:
+                    options = database_helper.get_roll(6)
+            elif ball_id == 4:
+                ball_str = 'Master Ball'
+                roll_range = {
+                    5: 85,
+                    6: 10,
+                    7: 5
+                }
+                roll = random.randint(1, 100)
+                if 1 <= roll <= roll_range[5]:
+                    options = database_helper.get_roll(5)
+                elif roll_range[5] < roll <= roll_range[5] + roll_range[6]:
+                    options = database_helper.get_roll(6)
+                elif roll_range[5] + roll_range[6] < roll <= 100:
+                    options = database_helper.get_roll(7)
+            gacha = random.choice(options)
+            title = "{} Opened: \n".format(username)
+            if gacha[2] <= 5:
+                description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
+            elif gacha[2] == 6:
+                description = gacha[0] + "\nRarity: Legendary"
+            elif gacha[2] == 7:
+                description = gacha[0] + "\nRarity: Mythic"
+            database_helper.add_inventory(user_id, gacha[1])
+            embed = discord.Embed(title=title, description=description, color=0x9370db)
+            str_id = "{:03}".format(gacha[1])
+            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+            embed.set_thumbnail(url=url)
+            await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
+
+
+
     @commands.command(name="bag")
     async def bag(self, context):
         await self.bag_page(context, 1)

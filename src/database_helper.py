@@ -90,6 +90,21 @@ def get_bag(user_id):
         conn.close()
         return result
 
+def check_bag(user_id, ball_id):
+    conn = sqlite3.connect(db)
+    result = False
+    if(conn is not None):
+        if len(database.check_bag(conn, user_id, ball_id)) > 0:
+            result = True
+        conn.close()
+    return result
+
+def use_item(user_id, ball_id):
+    conn = sqlite3.connect(db)
+    if(conn is not None):
+        database.use_item(conn, user_id, ball_id)
+        conn.close()
+
 def get_from_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
     result = False
