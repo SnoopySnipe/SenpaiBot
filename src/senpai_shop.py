@@ -163,7 +163,7 @@ class SenpaiGacha:
                         await context.send(
                             '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(
                                 context.message.author.name, str_rarity, jackpot))
-                        return
+                        continue
                     msg = context.message.author.name + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
