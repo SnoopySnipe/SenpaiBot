@@ -163,6 +163,16 @@ def add_inventory(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def add_item(conn, user_id, item_id):
+    try:
+        c = conn.cursor()
+        sql = """INSERT INTO bag(user_id, ball) VALUES($user_id, $item_id)"""
+        placeholders = {"user_id": user_id, "item_id": item_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 def get_pokemon(conn, name):
     try:
         c = conn.cursor()

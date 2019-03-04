@@ -129,6 +129,12 @@ def add_inventory(user_id, poke_id):
         database.add_inventory(conn, user_id, poke_id)
         conn.close()
 
+def add_item(user_id, item_id):
+    conn = sqlite3.connect(db)
+    if(conn is not None):
+        database.add_item(conn, user_id, item_id)
+        conn.close()
+
 def get_pokemon(name):
     conn = sqlite3.connect(db)
     result = None

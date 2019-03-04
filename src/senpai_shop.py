@@ -166,19 +166,38 @@ class SenpaiGacha:
                             '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(
                                 context.message.author.name, str_rarity, jackpot))
                         continue
+
+                    ball = random.randint(1, 10000)
+                    master_chance = min(jackpot, 1000)
+                    ultra_chance = master_chance * 3
+                    great_chance = master_chance * 6
+                    if 1 <= ball <= master_chance:
+                        ball_str = 'Master Ball'
+                        ball_id = 4
+                    elif master_chance < ball <= master_chance + ultra_chance:
+                        ball_str = 'Ultra Ball'
+                        ball_id = 3
+                    elif master_chance + ultra_chance < ball <= master_chance + ultra_chance + great_chance:
+                        ball_str = 'Great Ball'
+                        ball_id = 2
+                    elif master_chance + ultra_chance + great_chance < ball <= 10000:
+                        ball_str = 'Poké Ball'
+                        ball_id = 1
+
                     msg = context.message.author.name + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
-                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
-                            jackpot, payout)
+                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                            jackpot, payout, ball_str)
                     elif gacha[2] == 7:
                         payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
-                            jackpot, jackpot * 2, payout)
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                            jackpot, jackpot * 2, payout, ball_str)
                     contributors = database_helper.get_jackpot(False)
                     for contributor in contributors:
                         if contributor[1] >= 3:
                             database_helper.adjust_points(contributor[0], payout)
+                            database_helper.add_item(contributor[0], ball_id)
                             msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                     msg = msg + '```'
                     database_helper.update_jackpot(context.message.author.id, True)
@@ -265,19 +284,38 @@ class SenpaiGacha:
                         str_rarity = 'Mythic'
                     await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(context.message.author.name, str_rarity, jackpot))
                     return
+
+                ball = random.randint(1, 10000)
+                master_chance = min(jackpot, 1000)
+                ultra_chance = master_chance * 3
+                great_chance = master_chance * 6
+                if 1 <= ball <= master_chance:
+                    ball_str = 'Master Ball'
+                    ball_id = 4
+                elif master_chance < ball <= master_chance + ultra_chance:
+                    ball_str = 'Ultra Ball'
+                    ball_id = 3
+                elif master_chance + ultra_chance < ball <= master_chance + ultra_chance + great_chance:
+                    ball_str = 'Great Ball'
+                    ball_id = 2
+                elif master_chance + ultra_chance + great_chance < ball <= 10000:
+                    ball_str = 'Poké Ball'
+                    ball_id = 1
+
                 msg = context.message.author.name + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
-                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
-                        jackpot, payout)
+                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        jackpot, payout, ball_str)
                 elif gacha[2] == 7:
                     payout = (jackpot * 2) // no_contributors
-                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
-                        jackpot, jackpot * 2, payout)
+                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        jackpot, jackpot * 2, payout, ball_str)
                 contributors = database_helper.get_jackpot(False)
                 for contributor in contributors:
                     if contributor[1] >= 3:
                         database_helper.adjust_points(contributor[0], payout)
+                        database_helper.add_item(contributor[0], ball_id)
                         msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                 msg = msg + '```'
                 database_helper.update_jackpot(context.message.author.id, True)
