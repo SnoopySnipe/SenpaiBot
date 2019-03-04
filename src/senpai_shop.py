@@ -173,7 +173,8 @@ class SenpaiGacha:
                         payout = (jackpot * 2) // no_contributors
                         msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
                             jackpot, jackpot * 2, payout)
-                    for contributor in database_helper.get_jackpot(False):
+                    contributors = database_helper.get_jackpot(False)
+                    for contributor in contributors:
                         if contributor[1] >= 3:
                             database_helper.adjust_points(contributor[0], payout)
                             msg = msg + '\n' + self.bot.get_user(contributor[0]).name
@@ -271,7 +272,8 @@ class SenpaiGacha:
                     payout = (jackpot * 2) // no_contributors
                     msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints:```'.format(
                         jackpot, jackpot * 2, payout)
-                for contributor in database_helper.get_jackpot(False):
+                contributors = database_helper.get_jackpot(False)
+                for contributor in contributors:
                     if contributor[1] >= 3:
                         database_helper.adjust_points(contributor[0], payout)
                         msg = msg + '\n' + self.bot.get_user(contributor[0]).name
