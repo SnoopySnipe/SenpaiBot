@@ -7,6 +7,8 @@ import asyncio
 import datetime
 import time
 from PIL import Image
+import requests
+from io import BytesIO
 
 SNOOPY_ID = 103634047929962496
 KANTO = ('Kanto', 1, 151)
@@ -371,6 +373,106 @@ class SenpaiGacha:
             await context.send("{} has {} pikapoints. {} has {} pikapoints.\nPerforming trade...\nTrade successful! {} now has {} pikapoints. {} now has {} pikapoints.".format(
                 username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
             ))
+
+    @commands.command(name="bag")
+    async def bag(self, context):
+        await self.bag_page(context, 1)
+
+    async def bag_page(self, context, page_num):
+        # img = Image.open('images/crate.png', 'r')
+        user_id = context.message.author.id
+        username = self.bot.get_user(int(user_id)).name
+        bag = database_helper.get_bag(user_id)
+        if len(bag) == 0:
+            await context.send("You have no items in your bag!")
+        else:
+            page_indices = {1: (0, 0)}
+            num_items = 0
+            for item in bag:
+                num_items += item[1]
+            (save_location, curr_index, remain_num) = self.draw_bag(context, bag, 0, 0)
+            file = discord.File(save_location, filename='bag.png')
+            msg = await context.channel.send(username + "'s bag (page " + str(page_num) + ")", file=file)
+            await msg.add_reaction("⬅")
+            await msg.add_reaction("➡")
+
+            def check(reaction, user):
+                return user == context.message.author and (str(reaction.emoji) == "⬅" or str(reaction.emoji) == "➡")
+
+            timed_out = False
+            while (not timed_out):
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=20.0, check=check)
+                except asyncio.TimeoutError:
+                    timed_out = True
+                else:
+                    is_left = (str(reaction.emoji) == "⬅")
+                    is_right = (str(reaction.emoji) == "➡")
+                    if ((is_left and page_num - 1 >= 1) or (is_right and (num_items - (page_num) * 32) > 0)):
+                        inc = -1 if is_left else 1
+                        page_num += inc
+                        if (page_num in page_indices):
+                            (curr_index, remain_num) = page_indices[page_num]
+                        if (page_num not in page_indices):
+                            page_indices[page_num] = (curr_index, remain_num)
+                        (save_location, curr_index, remain_num) = self.draw_box(context, bag, curr_index,
+                                                                                remain_num)
+                        file = discord.File(save_location, filename='bag.png')
+                        await msg.delete()
+                        msg = await context.channel.send(username + "'s bag (page " + str(page_num) + ")", file=file)
+                        await msg.add_reaction("⬅")
+                        await msg.add_reaction("➡")
+
+    def draw_bag(self, context, bag, index, remain_num):
+        # background = Image.new('RGBA', (850,450), (255, 255, 255))
+        background = Image.open('images/inv_background.png', 'r')
+        background = background.resize((850, 450))
+        (x, y) = (0, 0)
+        count = 0
+        remain_overflow = 0
+        if (remain_num != 0):
+            init = True
+        else:
+            init = False
+        while (count < 32 and index < len(bag)):
+            item = bag[index]
+            if (init):
+                item_num = remain_num
+                init = False
+            else:
+                item_num = bag[1]
+            index += 1
+            item_id = bag[0]
+            # sprite = pb.SpriteResource('pokemon', pokemon_id)
+            # img = Image.open(sprite.path).convert("RGBA")
+            if item_id == 1:
+                item_str = 'pokeball'
+            elif item_id == 2:
+                item_str = 'greatball'
+            elif item_id == 3:
+                item_str = 'ultraball'
+            elif item_id == 4:
+                item_str = 'masterball'
+            response = requests.get("https://www.serebii.net/itemdex/sprites/pgl/{}.png".format(item_str))
+            img = Image.open(BytesIO(response.content)).convert("RGBA")
+            img = img.resize((150, 150))
+            for i in range(item_num):
+                # img = Image.open("images/pokemon/"+pokemon[2]+".png")
+                offset = (x * 100, y * 100)
+                background.paste(img, offset, img)
+                count += 1
+                if (count >= 32):
+                    remain_overflow = item_num - i - 1
+                    break;
+                x += 1
+                if (x == 8):
+                    x = 0
+                    y += 1
+        save_location = 'images/' + str(context.message.author.id) + '.png'
+        background.save(save_location)
+        if (remain_overflow > 0):
+            index -= 1
+        return (save_location, index, remain_overflow)
 
     @commands.command(name="box")
     async def box(self, context, user_id=None):

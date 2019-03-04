@@ -82,6 +82,14 @@ def get_inventory(user_id, region=None):
         conn.close()
         return result
 
+def get_bag(user_id):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_bag(conn, user_id)
+        conn.close()
+        return result
+
 def get_from_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
     result = False

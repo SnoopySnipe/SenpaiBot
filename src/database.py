@@ -143,6 +143,16 @@ def get_inventory(conn, user_id, region=None):
     except Error as e:
         print(e)
 
+def get_bag(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT DISTINCT ball, count(ball) FROM bag WHERE user_id = $user_id GROUP BY ball ORDER BY ball ASC"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 def add_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()
@@ -357,6 +367,7 @@ sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
 sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL, contribution integer DEFAULT 0)"""
+sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ball integer NOT NULL, bag_id integer PRIMARY KEY)"""
 
 def load_pikadata(path):
     data = {}
@@ -372,6 +383,7 @@ def initialize(conn):
     create_table(conn, sql_create_pikapity_table)
     create_table(conn, sql_create_inventory)
     create_table(conn, sql_create_jackpot)
+    create_table(conn, sql_create_bag)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
