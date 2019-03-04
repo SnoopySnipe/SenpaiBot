@@ -396,7 +396,7 @@ class SenpaiGacha:
             timed_out = False
             while(not timed_out):
                 try:
-                    reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=20.0, check=check)
                 except asyncio.TimeoutError:
                     timed_out = True
                 else:
