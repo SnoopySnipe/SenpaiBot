@@ -445,13 +445,13 @@ class SenpaiGacha:
             item_id = bag[0]
             # sprite = pb.SpriteResource('pokemon', pokemon_id)
             # img = Image.open(sprite.path).convert("RGBA")
-            if item_id == 1:
+            if item_id == '1':
                 item_str = 'pokeball'
-            elif item_id == 2:
+            elif item_id == '2':
                 item_str = 'greatball'
-            elif item_id == 3:
+            elif item_id == '3':
                 item_str = 'ultraball'
-            elif item_id == 4:
+            elif item_id == '4':
                 item_str = 'masterball'
             response = requests.get("https://www.serebii.net/itemdex/sprites/pgl/{}.png".format(item_str))
             img = Image.open(BytesIO(response.content)).convert("RGBA")
