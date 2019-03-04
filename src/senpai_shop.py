@@ -440,9 +440,9 @@ class SenpaiGacha:
                 item_num = remain_num
                 init = False
             else:
-                item_num = bag[1]
+                item_num = item[1]
             index += 1
-            item_id = bag[0]
+            item_id = item[0]
             # sprite = pb.SpriteResource('pokemon', pokemon_id)
             # img = Image.open(sprite.path).convert("RGBA")
             if item_id == 1:
