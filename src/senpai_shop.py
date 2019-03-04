@@ -453,8 +453,6 @@ class SenpaiGacha:
                 item_str = 'ultraball'
             elif item_id == 4:
                 item_str = 'masterball'
-            print(item_id)
-            print(item_str)
             response = requests.get("https://www.serebii.net/itemdex/sprites/pgl/{}.png".format(item_str))
             img = Image.open(BytesIO(response.content)).convert("RGBA")
             img = img.resize((150, 150))
