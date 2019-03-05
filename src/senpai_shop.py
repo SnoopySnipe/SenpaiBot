@@ -125,7 +125,7 @@ class SenpaiGacha:
                 try:
                     int(no_rolls)
                     is_int = True
-                except TypeError:
+                except:
                     is_int = False
 
                 if is_int:
