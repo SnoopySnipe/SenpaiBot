@@ -457,7 +457,7 @@ class SenpaiGacha:
             pt_prize = random.randint(pt_range[0], pt_range[1])
             database_helper.adjust_points(user_id, pt_prize)
             balance = database_helper.get_pikapoints(context.message.author.id)
-            await context.send("{} opened a {} and got {} pikapoints! You now have {} pikapoints.".format(username, ball_str, pt_prize, balance))
+            await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str, pt_prize, balance))
         elif option == 1:
             if ball_id == 1:
                 ball_str = 'Poké Ball'
@@ -530,16 +530,17 @@ class SenpaiGacha:
 
 
     @commands.command(name="bag")
-    async def bag(self, context):
-        await self.bag_page(context, 1)
+    async def bag(self, context, user_id=None):
+        await self.bag_page(context, 1, user_id)
 
-    async def bag_page(self, context, page_num):
+    async def bag_page(self, context, page_num, user_id):
         # img = Image.open('images/crate.png', 'r')
-        user_id = context.message.author.id
+        if user_id is None:
+            user_id = context.message.author.id
         username = self.bot.get_user(int(user_id)).name
         bag = database_helper.get_bag(user_id)
         if len(bag) == 0:
-            await context.send("You have no items in your bag!")
+            await context.send("{} has no items in their bag!".format(username))
         else:
             page_indices = {1: (0, 0)}
             num_items = 0
