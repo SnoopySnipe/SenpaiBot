@@ -84,7 +84,7 @@ class SenpaiGacha:
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
     @commands.command(name="fullroll")
-    async def fullroll(self, context, region=None):
+    async def fullroll(self, context, region=None, no_rolls=None):
         PRICE = 30
         database_helper.adjust_pity(context.message.author.id)
         details = database_helper.get_user_details(context.message.author.id)
@@ -93,6 +93,10 @@ class SenpaiGacha:
         elif PRICE <= details[0]:
             balance = details[0]
             rolls = balance // 30
+
+            if region is None:
+                await context.send("`Usage:`\n```!senpai fullroll region [no_rolls]```")
+                return
 
             if region == 'kanto':
                 region = KANTO
@@ -108,9 +112,27 @@ class SenpaiGacha:
             #     region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
-            elif region is not None:
+            else:
                 await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
                 return
+
+            if no_rolls == 'jackpot':
+                no_rolls = rolls - 3
+                rolls = max(no_rolls, 0)
+            elif isinstance(no_rolls, int):
+                if no_rolls <= rolls:
+                    rolls = max(no_rolls, 0)
+                else:
+                    await context.send("You cannot roll that many times!")
+                    return
+            elif no_rolls is not None:
+                await context.send("Number of rolls must be an integer or 'jackpot'")
+                return
+
+            if rolls == 0:
+                await context.send("There is nothing to roll...")
+                return
+
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
             database_helper.adjust_points(context.message.author.id, -(PRICE*rolls))
             for i in range(rolls):
@@ -790,6 +812,9 @@ class SenpaiGacha:
             else:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.full_remove_inventory(context.message.author.id, rarity, region)
+            if rows == 0:
+                await context.send("There is nothing to release...")
+                return
             await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...".format(str(balance), rows, rarity, str_region))
             if rarity == '3':
                 gain = 5
