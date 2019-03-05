@@ -112,8 +112,10 @@ class SenpaiGacha:
             #     region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
+            elif region == 'all':
+                region = None
             else:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'all')")
                 return
 
             if no_rolls == 'jackpot':
