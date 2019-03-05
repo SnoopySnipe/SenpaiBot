@@ -123,13 +123,13 @@ class SenpaiGacha:
                 rolls = max(no_rolls, 0)
             elif no_rolls is not None:
                 try:
-                    int(no_rolls)
+                    no_rolls = int(no_rolls)
                     is_int = True
                 except:
                     is_int = False
 
                 if is_int:
-                    if int(no_rolls) <= rolls:
+                    if no_rolls <= rolls:
                         rolls = max(no_rolls, 0)
                     else:
                         await context.send("You cannot roll that many times!")
