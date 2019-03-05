@@ -121,15 +121,22 @@ class SenpaiGacha:
             if no_rolls == 'jackpot':
                 no_rolls = rolls - 3
                 rolls = max(no_rolls, 0)
-            elif isinstance(no_rolls, int):
-                if no_rolls <= rolls:
-                    rolls = max(no_rolls, 0)
-                else:
-                    await context.send("You cannot roll that many times!")
-                    return
             elif no_rolls is not None:
-                await context.send("Number of rolls must be an integer or 'jackpot'")
-                return
+                try:
+                    int(no_rolls)
+                    is_int = True
+                except TypeError:
+                    is_int = False
+
+                if is_int:
+                    if no_rolls <= rolls:
+                        rolls = max(no_rolls, 0)
+                    else:
+                        await context.send("You cannot roll that many times!")
+                        return
+                else:
+                    await context.send("Number of rolls must be an integer or 'jackpot'")
+                    return
 
             if rolls == 0:
                 await context.send("There is nothing to roll...")
