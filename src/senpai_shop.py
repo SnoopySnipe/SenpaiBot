@@ -1088,7 +1088,7 @@ class SenpaiGacha:
                 await context.send("Amount of pikapoints to deposit must be an integer or 'all'")
                 return
 
-        if amount <= 0:
+        if amount <= 0 or balance is None:
             await context.send("There is no pikapoints to deposit...")
             return
 
@@ -1097,7 +1097,7 @@ class SenpaiGacha:
 
         balance = database_helper.get_pikapoints(user_id)
         savings = database_helper.get_savings(user_id)
-        await context.send("Successfully deposited {} pikapoints in the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
+        await context.send("Successfully deposited {} pikapoints into the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
 
     @commands.command(name="withdraw")
     async def withdraw(self, context, amount=None):
@@ -1128,7 +1128,7 @@ class SenpaiGacha:
                 await context.send("Amount of pikapoints to withdraw must be an integer or 'all'")
                 return
 
-        if amount <= 0:
+        if amount <= 0 or balance is None:
             await context.send("There is no pikapoints to withdraw...")
             return
 
@@ -1137,7 +1137,7 @@ class SenpaiGacha:
 
         balance = database_helper.get_pikapoints(user_id)
         savings = database_helper.get_savings(user_id)
-        await context.send("Successfully withdrew {} pikapoints in the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
+        await context.send("Successfully withdrew {} pikapoints from the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
