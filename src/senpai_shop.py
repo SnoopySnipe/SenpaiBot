@@ -1037,7 +1037,7 @@ class SenpaiGacha:
             return
         for contributor in contributors:
             if context.message.author == self.bot.get_user(contributor[0]):
-                description = description + "\n**" + self.bot.get_user(contributor[0]).name + " - {} pikapoints**".format(contributor[1])
+                description = description + "\n`" + self.bot.get_user(contributor[0]).name + " - {} pikapoints`".format(contributor[1])
             else:
                 description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} pikapoints".format(
                     contributor[1])
