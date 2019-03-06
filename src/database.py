@@ -111,8 +111,10 @@ def adjust_points(conn, user_id, points):
 def adjust_savings(conn, user_id, points):
     try:
         c = conn.cursor()
+        sql_insert_new_balance = """INSERT OR IGNORE INTO bank (id) VALUES ($user_id)"""
         sql_update_points = """UPDATE bank SET points = points + $points WHERE id = $user_id"""
         placeholders = {"user_id": user_id, "points": points}
+        c.execute(sql_insert_new_balance, placeholders)
         c.execute(sql_update_points, placeholders)
         conn.commit()
     except Error as e:
