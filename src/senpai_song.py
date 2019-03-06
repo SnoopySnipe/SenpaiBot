@@ -47,8 +47,7 @@ def create_youtube_song(url : str, voice_channel):
         'skip_download': True,
         'nooverwrites': True,
         'restrictfilenames': True,
-        'noplaylist': True,
-        'default_search': 'auto'
+        'noplaylist': True
         }
 
     song = None
@@ -67,7 +66,6 @@ def create_youtube_song(url : str, voice_channel):
 def create_local_song(url : str, voice_channel):
 
     ydl_download_opts = {
-        'default_search': 'auto',
         'quiet': True,
         'format': 'bestaudio/best',
         'outtmpl': DOWNLOAD_DIR + "%(title)s.mp4",
