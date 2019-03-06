@@ -119,7 +119,7 @@ class SenpaiGacha:
                 return
 
             if no_rolls == 'jackpot':
-                no_rolls = rolls - 3
+                no_rolls = rolls - 9
                 rolls = max(no_rolls, 0)
             elif no_rolls is not None:
                 try:
