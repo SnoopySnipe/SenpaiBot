@@ -22,6 +22,16 @@ def get_pikapoints(user_id):
         conn.close()
         return result
 
+def get_savings(user_id):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_savings(conn, user_id)
+        if(result is not None):
+            result = result[0]
+        conn.close()
+        return result
+
 def get_pity(user_id):
     conn = sqlite3.connect(db)
     result = None

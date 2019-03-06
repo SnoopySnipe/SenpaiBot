@@ -1047,6 +1047,18 @@ class SenpaiGacha:
         description = description + "\n\n**You need to have contributed at least 3 pikapoints to the current jackpot to receive rewards!\n\nCurrent Jackpot Total: {} pikapoints\nTotal Number of Contributors: {}\nCurrent Number of Reward Earners: {}\nCurrent Payout: {} pikapoints\nMythic Multiplier: x{} pikapoints**".format(jackpot_sum, len(contributors), no_contributors, payout, multiplier)
         await context.send(embed=discord.Embed(title=title, description=description, color=0x00ff7f))
 
+    @commands.command(name="bank")
+    async def bank(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+        balance = database_helper.get_savings(user_id)
+        if (balance is None):
+            await context.send("{} has no pikapoints saved in their bank!".format(username))
+        else:
+            await context.send(username + " has " + str(balance) + " pikapoints saved in their bank")
+
     async def background_quiz(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)

@@ -29,6 +29,16 @@ def get_pikapoints_query(conn, user_id):
     except Error as e:
         print(e)
 
+def get_savings(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql_select_balance = """SELECT points FROM bank WHERE id=$user_id"""
+        placeholders = {"user_id":user_id}
+        c.execute(sql_select_balance, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def adjust_pikapity(conn, user_id, got_five=None):
     try:
         c = conn.cursor()
@@ -398,6 +408,7 @@ sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer P
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
 sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL, contribution integer DEFAULT 0)"""
 sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ball integer NOT NULL, bag_id integer PRIMARY KEY)"""
+sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
 
 def load_pikadata(path):
     data = {}
@@ -414,6 +425,7 @@ def initialize(conn):
     create_table(conn, sql_create_inventory)
     create_table(conn, sql_create_jackpot)
     create_table(conn, sql_create_bag)
+    create_table(conn, sql_create_bank)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
