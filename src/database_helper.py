@@ -84,6 +84,12 @@ def adjust_points(user_id, points):
         database.adjust_points(conn, user_id, points)
         conn.close()
 
+def adjust_savings(user_id, points):
+    conn = sqlite3.connect(db)
+    if(conn is not None):
+        database.adjust_savings(conn, user_id, points)
+        conn.close()
+
 def get_inventory(user_id, region=None):
     conn = sqlite3.connect(db)
     result = None

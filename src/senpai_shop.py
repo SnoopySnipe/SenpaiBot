@@ -119,7 +119,7 @@ class SenpaiGacha:
                 return
 
             if no_rolls == 'jackpot':
-                no_rolls = rolls - 9
+                no_rolls = rolls - 3
                 rolls = max(no_rolls, 0)
             elif no_rolls is not None:
                 try:
@@ -1058,6 +1058,86 @@ class SenpaiGacha:
             await context.send("{} has no pikapoints saved in their bank!".format(username))
         else:
             await context.send(username + " has " + str(balance) + " pikapoints saved in their bank")
+
+    @commands.command(name="deposit")
+    async def deposit(self, context, amount=None):
+        if amount is None:
+            await context.send("`Usage:`\n```!senpai deposit amount```")
+            return
+
+        user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+
+        balance = database_helper.get_pikapoints(user_id)
+
+        if amount == 'all':
+            amount = balance
+        elif amount is not None:
+            try:
+                amount = int(amount)
+                is_int = True
+            except:
+                is_int = False
+
+            if is_int:
+                if amount > balance:
+                    await context.send("You don't have that many pikapoints!")
+                    return
+            else:
+                await context.send("Amount of pikapoints to deposit must be an integer or 'all'")
+                return
+
+        if amount <= 0:
+            await context.send("There is no pikapoints to deposit...")
+            return
+
+        database_helper.adjust_points(user_id, -amount)
+        database_helper.adjust_savings(user_id, amount)
+
+        balance = database_helper.get_pikapoints(user_id)
+        savings = database_helper.get_savings(user_id)
+        await context.send("Successfully deposited {} pikapoints in the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
+
+    @commands.command(name="withdraw")
+    async def withdraw(self, context, amount=None):
+        if amount is None:
+            await context.send("`Usage:`\n```!senpai withdraw amount```")
+            return
+
+        user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+
+        balance = database_helper.get_savings(user_id)
+
+        if amount == 'all':
+            amount = balance
+        elif amount is not None:
+            try:
+                amount = int(amount)
+                is_int = True
+            except:
+                is_int = False
+
+            if is_int:
+                if amount > balance:
+                    await context.send("You don't have that many pikapoints saved in your bank!")
+                    return
+            else:
+                await context.send("Amount of pikapoints to withdraw must be an integer or 'all'")
+                return
+
+        if amount <= 0:
+            await context.send("There is no pikapoints to withdraw...")
+            return
+
+        database_helper.adjust_points(user_id, amount)
+        database_helper.adjust_savings(user_id, -amount)
+
+        balance = database_helper.get_pikapoints(user_id)
+        savings = database_helper.get_savings(user_id)
+        await context.send("Successfully withdrew {} pikapoints in the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()

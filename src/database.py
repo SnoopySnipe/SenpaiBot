@@ -108,6 +108,16 @@ def adjust_points(conn, user_id, points):
     except Error as e:
         print(e)
 
+def adjust_savings(conn, user_id, points):
+    try:
+        c = conn.cursor()
+        sql_update_points = """UPDATE bank SET points = points + $points WHERE id = $user_id"""
+        placeholders = {"user_id": user_id, "points": points}
+        c.execute(sql_update_points, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 def get_roll(conn, roll, region=None):
     try:
         c = conn.cursor()
