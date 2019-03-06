@@ -18,7 +18,7 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
-REGIONS = [KANTO, JOHTO, HOENN, SINNOH]#, UNOVA, KALOS, ALOLA]
+REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA]#, KALOS, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
@@ -106,8 +106,8 @@ class SenpaiGacha:
                 region = HOENN
             elif region == 'sinnoh':
                 region = SINNOH
-            # elif region == 'unova':
-            #     region = UNOVA
+            elif region == 'unova':
+                region = UNOVA
             # elif region == 'kalos':
             #     region = KALOS
             # elif region == 'alola':
@@ -115,7 +115,7 @@ class SenpaiGacha:
             elif region == 'all':
                 region = None
             else:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'all')")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'all')")
                 return
 
             if no_rolls == 'jackpot':
@@ -255,14 +255,14 @@ class SenpaiGacha:
                 region = HOENN
             elif region == 'sinnoh':
                 region = SINNOH
-            # elif region == 'unova':
-            #     region = UNOVA
+            elif region == 'unova':
+                region = UNOVA
             # elif region == 'kalos':
             #     region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
                 return
 
             if r == 0:
@@ -759,8 +759,8 @@ class SenpaiGacha:
             region = HOENN
         elif region == 'sinnoh':
             region = SINNOH
-        # elif region == 'unova':
-        #     region = UNOVA
+        elif region == 'unova':
+            region = UNOVA
         # elif region == 'kalos':
         #     region = KALOS
         # elif region == 'alola':
@@ -796,14 +796,14 @@ class SenpaiGacha:
             region = HOENN
         elif region == 'sinnoh':
             region = SINNOH
-        # elif region == 'unova':
-        #     region = UNOVA
+        elif region == 'unova':
+            region = UNOVA
         # elif region == 'kalos':
         #     region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
             return
 
         if rarity == 'five':
@@ -848,14 +848,14 @@ class SenpaiGacha:
             region = HOENN
         elif region == 'sinnoh':
             region = SINNOH
-        # elif region == 'unova':
-        #     region = UNOVA
+        elif region == 'unova':
+            region = UNOVA
         # elif region == 'kalos':
         #     region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
             return
 
         if rarity == 'five':
@@ -950,8 +950,8 @@ class SenpaiGacha:
             region = HOENN
         elif region == 'sinnoh':
             region = SINNOH
-        # elif region == 'unova':
-        #     region = UNOVA
+        elif region == 'unova':
+            region = UNOVA
         # elif region == 'kalos':
         #     region = KALOS
         # elif region == 'alola':
@@ -1064,7 +1064,7 @@ class SenpaiGacha:
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 4 < datetime.datetime.now().hour < 13: # generate quizzes only from 8am - 12am
-                r = random.randint(1, 493) # generate random pokemon
+                r = random.randint(1, 649) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 str_id = "{:03}".format(r)
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
