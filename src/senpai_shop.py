@@ -1059,6 +1059,22 @@ class SenpaiGacha:
         else:
             await context.send(username + " has " + str(balance) + " pikapoints saved in their bank")
 
+    @commands.command(name="account")
+    async def account(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+        balance = database_helper.get_pikapoints(user_id)
+        savings = database_helper.get_savings(user_id)
+        if (balance is None):
+            balance = 0
+        if (savings is None):
+            savings = 0
+        title = "{}'s Account".format(username)
+        description = "Balance: {} pikapoints\nSavings: {} pikapoints".format(balance, savings)
+        await context.send(embed=discord.Embed(title=title, description=description, color=0xffff99))
+
     @commands.command(name="deposit")
     async def deposit(self, context, amount=None):
         if amount is None:
