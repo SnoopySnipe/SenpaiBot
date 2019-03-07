@@ -935,6 +935,9 @@ class SenpaiGacha:
         username = user.name
 
         favs = database_helper.get_favs(user_id)
+        if not len(favs) > 0:
+            await context.send ("{} has no favourite pokémon!".format(username))
+            return
 
         title = "{}'s Favourite Pokémon:".format(username)
         description = ''
