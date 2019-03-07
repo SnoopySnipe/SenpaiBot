@@ -1095,7 +1095,7 @@ class SenpaiGacha:
     async def account(self, context, user_id=None):
         user_details = [self.box, self.bag, self.points]
         for user_detail in user_details:
-            await context.invoke(user_detail, [user_id])
+            await context.invoke(user_detail, user_id)
 
     @commands.command(name="deposit")
     async def deposit(self, context, amount=None):
