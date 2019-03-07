@@ -215,6 +215,16 @@ def get_pokemon_name(conn, id):
     except Error as e:
         print(e)
 
+def add_fav(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """INSERT INTO favs (user_id, poke_id) VALUES ($user_id, $poke_id)"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 def remove_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()

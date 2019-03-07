@@ -189,6 +189,12 @@ def remove_dupes(user_id, rarity, region=None):
         return database.remove_dupes(conn, user_id, rarity, region)
         conn.close()
 
+def add_fav(user_id, poke_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.add_fav(conn, user_id, poke_id)
+        conn.close()
+
 def get_favs(user_id):
     conn = sqlite3.connect(db)
     result = None
