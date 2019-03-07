@@ -809,7 +809,7 @@ class SenpaiGacha:
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
-                await self.fullrelease.reinvoke(context, r, region)
+                await context.invoke(self.fullrelease, [r, region])
             return
 
         if rarity == 'five':
@@ -867,7 +867,7 @@ class SenpaiGacha:
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
-                await self.releasedupes.reinvoke(context, r, region)
+                await context.invoke(self.releasedupes, [r, region])
             return
 
         if rarity == 'five':
@@ -1095,7 +1095,7 @@ class SenpaiGacha:
     async def account(self, context, user_id=None):
         user_details = [self.box, self.bag, self.points]
         for user_detail in user_details:
-            await user_detail.reinvoke(context, user_id)
+            await context.invoke(user_detail, [user_id])
 
     @commands.command(name="deposit")
     async def deposit(self, context, amount=None):
