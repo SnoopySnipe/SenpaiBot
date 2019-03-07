@@ -947,7 +947,7 @@ class SenpaiGacha:
             await context.send("You already have this pokémon favourited!")
             return
 
-        database_helper.add_fav(user_id, poke_id)
+        database_helper.add_fav(user_id, pokemon[0])
         await context.send("Successfully favourited {}!".format(name))
 
     @commands.command(name="favs")
