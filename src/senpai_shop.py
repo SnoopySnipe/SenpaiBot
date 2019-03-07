@@ -809,7 +809,7 @@ class SenpaiGacha:
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
-                await context.invoke(self.fullrelease, [r, region])
+                await context.invoke(self.fullrelease, r, region)
             return
 
         if rarity == 'five':
@@ -867,7 +867,7 @@ class SenpaiGacha:
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
-                await context.invoke(self.releasedupes, [r, region])
+                await context.invoke(self.releasedupes, r, region)
             return
 
         if rarity == 'five':
