@@ -788,6 +788,7 @@ class SenpaiGacha:
         if rarity is None:
             await context.send("`Usage:`\n```!senpai fullrelease rarity [region]```")
             return
+        str_region = region
         if region == 'kanto':
             region = KANTO
         elif region == 'johto':
@@ -809,7 +810,7 @@ class SenpaiGacha:
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
-                await context.invoke(self.fullrelease, r, region)
+                await context.invoke(self.fullrelease, r, str_region)
             return
 
         if rarity == 'five':
@@ -828,7 +829,7 @@ class SenpaiGacha:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.full_remove_inventory(context.message.author.id, rarity, region)
             if rows == 0:
-                await context.send("There is nothing to release...")
+                await context.send("There is no {}⭐ pokémon to release...".format(rarity))
                 return
             await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...".format(str(balance), rows, rarity, str_region))
             if rarity == '3':
@@ -886,6 +887,9 @@ class SenpaiGacha:
             else:
                 str_region = "the " + region[0] + " region"
             rows = database_helper.remove_dupes(context.message.author.id, rarity, region)
+            if rows == 0:
+                await context.send("There is no {}⭐ pokémon to release...".format(rarity))
+                return
             await context.send(
                 "You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...".format(str(balance), rows,
                                                                                                 rarity, str_region))
