@@ -806,6 +806,12 @@ class SenpaiGacha:
             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
             return
 
+        if rarity == 'all':
+            rarities = ['3', '4', 'five']
+            for r in rarities:
+                await self.fullrelease.reinvoke(context, r, region)
+            return
+
         if rarity == 'five':
             rarity = '5'
         elif rarity == '5':
@@ -856,6 +862,12 @@ class SenpaiGacha:
         #     region = ALOLA
         elif region is not None:
             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
+            return
+
+        if rarity == 'all':
+            rarities = ['3', '4', 'five']
+            for r in rarities:
+                await self.releasedupes.reinvoke(context, r, region)
             return
 
         if rarity == 'five':
@@ -1063,8 +1075,8 @@ class SenpaiGacha:
         else:
             await context.send(username + " has " + str(balance) + " pikapoints saved in their bank")
 
-    @commands.command(name="account")
-    async def account(self, context, user_id=None):
+    @commands.command(name="points")
+    async def points(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
         user = self.bot.get_user(int(user_id))
@@ -1078,6 +1090,12 @@ class SenpaiGacha:
         title = "{}'s Account".format(username)
         description = "Balance: {} pikapoints\nSavings: {} pikapoints".format(balance, savings)
         await context.send(embed=discord.Embed(title=title, description=description, color=0xffff99))
+
+    @commands.command(name="account")
+    async def account(self, context, user_id=None):
+        user_details = [self.box, self.bag, self.points]
+        for user_detail in user_details:
+            await user_detail.reinvoke(context, user_id)
 
     @commands.command(name="deposit")
     async def deposit(self, context, amount=None):
