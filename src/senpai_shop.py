@@ -943,7 +943,10 @@ class SenpaiGacha:
         username = user.name
 
         favs = database_helper.get_favs(user_id)
-        if pokemon[0] in favs:
+        fav_list = []
+        for fav in favs:
+            fav_list.append(fav[0])
+        if pokemon[0] in fav_list:
             await context.send("You already have this pokémon favourited!")
             return
 
