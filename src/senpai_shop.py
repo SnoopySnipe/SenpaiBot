@@ -864,6 +864,9 @@ class SenpaiGacha:
             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
             return
 
+        print(rarity)
+        print(region)
+
         if rarity == 'all':
             rarities = ['3', '4', 'five']
             for r in rarities:
