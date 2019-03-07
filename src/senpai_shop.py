@@ -956,7 +956,7 @@ class SenpaiGacha:
     @commands.command(name="unfav")
     async def unfav(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai fav pokemon_name```")
+            await context.send("`Usage:`\n```!senpai unfav pokemon_name```")
             return
 
         pokemon = database_helper.get_pokemon(name)
