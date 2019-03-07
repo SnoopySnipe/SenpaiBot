@@ -953,7 +953,7 @@ class SenpaiGacha:
         database_helper.add_fav(user_id, pokemon[0])
         await context.send("Successfully favourited {}!".format(name))
 
-    @commands.command(name="fav")
+    @commands.command(name="unfav")
     async def unfav(self, context, name=None):
         if name is None:
             await context.send("`Usage:`\n```!senpai fav pokemon_name```")
