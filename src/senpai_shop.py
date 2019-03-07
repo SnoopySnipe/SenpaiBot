@@ -965,8 +965,7 @@ class SenpaiGacha:
         title = "{}'s Favourite Pokémon:".format(username)
         description = ''
         for fav in favs:
-            print(fav[0])
-            description = description + "\n" + database_helper.get_pokemon_name(fav[0])
+            description = description + "\n" + database_helper.get_pokemon_name(fav[0])[0]
 
         await context.send(embed=discord.Embed(title=title, description=description, color=0xffa500))
 
