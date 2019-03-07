@@ -255,6 +255,16 @@ def remove_dupes(conn, user_id, rarity, region=None):
     except Error as e:
         print(e)
 
+def get_favs(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT poke_id FROM favs WHERE user_id = $user_id"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 def get_from_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()
@@ -421,6 +431,7 @@ sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer 
 sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL, contribution integer DEFAULT 0)"""
 sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ball integer NOT NULL, bag_id integer PRIMARY KEY)"""
 sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
+sql_create_fav = """CREATE TABLE IF NOT EXISTS favs (user_id integer NOT NULL, poke_id integer NOT NULL, fav_id integer PRIMARY KEY) """
 
 def load_pikadata(path):
     data = {}
@@ -438,6 +449,7 @@ def initialize(conn):
     create_table(conn, sql_create_jackpot)
     create_table(conn, sql_create_bag)
     create_table(conn, sql_create_bank)
+    create_table(conn, sql_create_fav)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:

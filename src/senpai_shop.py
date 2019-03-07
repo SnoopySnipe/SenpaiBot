@@ -927,6 +927,23 @@ class SenpaiGacha:
         else:
             await context.send("Invalid Pokémon name!")
 
+    @commands.command(name="favs")
+    async def favs(self, context, user_id=None):
+        if user_id is None:
+            user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+
+        favs = database_helper.get_favs(user_id)
+
+        title = "{}'s Favourite Pokémon:".format(username)
+        description = ''
+        for fav in favs:
+            description = description + "\n" + database_helper.get_pokemon_name(fav)
+
+        await context.send(embed=discord.Embed(title=title, description=description, color=0xffa500))
+
+
     @commands.command(name="newfocus")
     async def newfocus(self, context, *args):
         if context.message.author.id == SNOOPY_ID:
