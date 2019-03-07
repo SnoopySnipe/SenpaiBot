@@ -953,6 +953,32 @@ class SenpaiGacha:
         database_helper.add_fav(user_id, pokemon[0])
         await context.send("Successfully favourited {}!".format(name))
 
+    @commands.command(name="fav")
+    async def unfav(self, context, name=None):
+        if name is None:
+            await context.send("`Usage:`\n```!senpai fav pokemon_name```")
+            return
+
+        pokemon = database_helper.get_pokemon(name)
+        if pokemon is None:
+            await context.send("Invalid Pokémon name!")
+            return
+
+        user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+
+        favs = database_helper.get_favs(user_id)
+        fav_list = []
+        for fav in favs:
+            fav_list.append(fav[0])
+        if pokemon[0] not in fav_list:
+            await context.send("You don't have this pokémon favourited!")
+            return
+
+        database_helper.del_fav(user_id, pokemon[0])
+        await context.send("Successfully unfavourited {}!".format(name))
+
     @commands.command(name="favs")
     async def favs(self, context, user_id=None):
         if user_id is None:
