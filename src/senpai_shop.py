@@ -357,17 +357,24 @@ class SenpaiGacha:
     @commands.command(name="pokedex")
     async def pokedex(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai pokedex pokemon_name```")
+            await context.send("`Usage:`\n```!senpai pokedex pokemon_name_or_id```")
             return
         poke_id = database_helper.get_pokemon(name)
+        poke_name = database_helper.get_pokemon_name(name)
         if poke_id is not None:
             str_id = "{:03}".format(poke_id[0])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             dex = discord.Embed(title="ID: {}\nName: {}".format(str(poke_id[0]), name), color=0xffb6c1)
             dex.set_image(url=url)
             await context.send(embed=dex)
+        elif poke_name is not None:
+            str_id = "{:03}".format(name)
+            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+            dex = discord.Embed(title="ID: {}\nName: {}".format(str(name), poke_name[0]), color=0xffb6c1)
+            dex.set_image(url=url)
+            await context.send(embed=dex)
         else:
-            await context.send("Invalid Pokémon name!")
+            await context.send("Pokémon name or ID doesn't exist!")
 
     @commands.command(name="trade")
     async def trade(self, context, pokemon1=None, pokemon2=None, id2=None):
