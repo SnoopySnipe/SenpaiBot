@@ -1070,38 +1070,38 @@ class SenpaiGacha:
                 four.append(unit[0])
             elif unit[1] == 3:
                 three.append(unit[0])
-        title = "**__Focus Units:__**\n"
+        title = "Focus Units: \n"
         description = ''
         for unit in focus:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-        title = "**__Mythic Units:__**\n"
+        title = "Mythic Units: \n"
         description = ''
         for unit in seven:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-        title = "**__Legendary Units:__**\n"
+        title = "Legendary Units: \n"
         description = ''
         for unit in six:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-        title = "**__5⭐ Units:__**\n"
+        title = "5⭐ Units: \n"
         description = ''
         for unit in five:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-        title = "**__4⭐ Units:__**\n"
+        title = "4⭐ Units: \n"
         description = ''
         for unit in four:
             description = description + "\n" + unit
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
 
-        title = "**__3⭐ Units:__**\n"
+        title = "3⭐ Units: \n"
         description = ''
         for unit in three:
             description = description + "\n" + unit
