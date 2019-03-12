@@ -484,7 +484,7 @@ class SenpaiGacha:
             await context.send(bag_list)
             for ball in bag_list:
                 await context.invoke(self.open, ball)
-                return
+            return
 
         user_id = context.message.author.id
         user = self.bot.get_user(user_id)
