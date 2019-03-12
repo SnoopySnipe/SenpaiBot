@@ -658,8 +658,7 @@ class SenpaiGacha:
             pt_prize = random.randint(pt_range[0], pt_range[1])
             database_helper.adjust_points(user_id, pt_prize)
             balance = database_helper.get_pikapoints(user_id)
-            await
-            context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str,
+            await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str,
                                                                                                      pt_prize, balance))
         elif option == 1:
             if ball_id == 1:
