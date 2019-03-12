@@ -93,7 +93,7 @@ class SenpaiGacha:
         if user_id is None:
             await context.send("user_id cannot be None!")
             return
-        user = self.bot.get_user(user_id)
+        user = self.bot.get_user(int(user_id))
         username = user.name
         database_helper.adjust_pity(user_id)
         details = database_helper.get_user_details(user_id)
@@ -636,7 +636,7 @@ class SenpaiGacha:
         elif ball == 'masterball':
             ball_id = 4
 
-        user = self.bot.get_user(user_id)
+        user = self.bot.get_user(int(user_id))
         username = user.name
 
         database_helper.use_item(user_id, ball_id)
@@ -1101,7 +1101,7 @@ class SenpaiGacha:
                 await context.invoke(self.forcerelease, user_id, r)
             return
 
-        user = self.bot.get_user(user_id)
+        user = self.bot.get_user(int(user_id))
         username = user.name
         balance = database_helper.get_pikapoints(user_id)
         region = None
