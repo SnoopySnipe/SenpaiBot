@@ -481,7 +481,7 @@ class SenpaiGacha:
                         bag_list.append('ultraball')
                     elif item[0] == 4:
                         bag_list.append('masterball')
-
+            await contex.send(bag_list)
             for ball in bag_list:
                 await context.invoke(self.open, ball)
                 return
