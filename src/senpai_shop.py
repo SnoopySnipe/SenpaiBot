@@ -456,8 +456,8 @@ class SenpaiGacha:
             await context.send("`Usage:`\n```!senpai open ball_name```")
             return
 
-        if ball not in ('pokeball', 'greatball', 'ultraball', 'masterball'):
-            await context.send("Ball name must be in ('pokeball', 'greatball', 'ultraball', 'masterball')")
+        if ball not in ('pokeball', 'greatball', 'ultraball', 'masterball', 'all'):
+            await context.send("Ball name must be in ('pokeball', 'greatball', 'ultraball', 'masterball', 'all')")
             return
 
         if ball == 'pokeball':
@@ -468,6 +468,23 @@ class SenpaiGacha:
             ball_id = 3
         elif ball == 'masterball':
             ball_id = 4
+        elif ball == 'all':
+            bag = database_helper.get_bag(context.message.author.id)
+            bag_list = []
+            for item in bag:
+                for i in range(item[1]):
+                    if item[0] == 1:
+                        bag_list.append('pokeball')
+                    elif item[0] == 2:
+                        bag_list.append('greatball')
+                    elif item[0] == 3:
+                        bag_list.append('ultraball')
+                    elif item[0] == 4:
+                        bag_list.append('masterball')
+
+            for ball in bag_list:
+                await context.invoke(self.open, ball)
+                return
 
         user_id = context.message.author.id
         user = self.bot.get_user(user_id)
