@@ -86,8 +86,11 @@ class SenpaiGacha:
     @commands.command(name="fullroll")
     async def fullroll(self, context, region=None, no_rolls=None):
         PRICE = 30
-        database_helper.adjust_pity(context.message.author.id)
-        details = database_helper.get_user_details(context.message.author.id)
+        user_id = context.message.author.id
+        user = self.bot.get_user(user_id)
+        username = user.name
+        database_helper.adjust_pity(user_id)
+        details = database_helper.get_user_details(user_id)
         if details is None:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
@@ -143,43 +146,43 @@ class SenpaiGacha:
                 return
 
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
-            database_helper.adjust_points(context.message.author.id, -(PRICE*rolls))
+            database_helper.adjust_points(user_id, -(PRICE*rolls))
             for i in range(rolls):
-                details = database_helper.get_user_details(context.message.author.id)
+                details = database_helper.get_user_details(user_id)
                 r = random.randint(0, 1003)
                 if r == 0:
                     options = database_helper.get_roll(7, region)
-                    database_helper.adjust_pity(context.message.author.id, True)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, True)
+                    database_helper.update_jackpot(user_id, False)
                 elif 1001 <= r <= 1003:
                     options = database_helper.get_roll(6, region)
-                    database_helper.adjust_pity(context.message.author.id, True)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, True)
+                    database_helper.update_jackpot(user_id, False)
                 elif 1 <= r <= details[1]:
                     options = database_helper.get_roll(3, region)
-                    database_helper.adjust_pity(context.message.author.id, False)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, False)
+                    database_helper.update_jackpot(user_id, False)
                 elif details[1] < r <= details[1] + details[2]:
                     options = database_helper.get_roll(4, region)
-                    database_helper.adjust_pity(context.message.author.id, False)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, False)
+                    database_helper.update_jackpot(user_id, False)
                 elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
                     options = database_helper.get_roll(5, region)
-                    database_helper.adjust_pity(context.message.author.id, True)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, True)
+                    database_helper.update_jackpot(user_id, False)
                 elif details[1] + details[2] + details[3] < r <= 1000:
                     options = database_helper.get_roll(1, region)
-                    database_helper.adjust_pity(context.message.author.id, True)
-                    database_helper.update_jackpot(context.message.author.id, False)
+                    database_helper.adjust_pity(user_id, True)
+                    database_helper.update_jackpot(user_id, False)
                 gacha = options[random.randint(0, len(options) - 1)]
-                title = "{} Summoned: \n".format(context.message.author.name)
+                title = "{} Summoned: \n".format(username)
                 if gacha[2] <= 5:
                     description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
                 elif gacha[2] == 6:
                     description = gacha[0] + "\nRarity: Legendary"
                 elif gacha[2] == 7:
                     description = gacha[0] + "\nRarity: Mythic"
-                database_helper.add_inventory(context.message.author.id, gacha[1])
+                database_helper.add_inventory(user_id, gacha[1])
                 embed = discord.Embed(title=title, description=description, color=0x9370db)
                 str_id = "{:03}".format(gacha[1])
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
@@ -195,7 +198,7 @@ class SenpaiGacha:
                             str_rarity = 'Mythic'
                         await context.send(
                             '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(
-                                context.message.author.name, str_rarity, jackpot))
+                                username, str_rarity, jackpot))
                         continue
 
                     ball = random.randint(1, 10000)
@@ -215,7 +218,7 @@ class SenpaiGacha:
                         ball_str = 'Poké Ball'
                         ball_id = 1
 
-                    msg = context.message.author.name + ' summoned a '
+                    msg = username + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
                         msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
@@ -231,9 +234,9 @@ class SenpaiGacha:
                             database_helper.add_item(contributor[0], ball_id)
                             msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                     msg = msg + '```'
-                    database_helper.update_jackpot(context.message.author.id, True)
+                    database_helper.update_jackpot(user_id, True)
                     await context.send(msg)
-            balance = database_helper.get_pikapoints(context.message.author.id)
+            balance = database_helper.get_pikapoints(user_id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
@@ -241,8 +244,11 @@ class SenpaiGacha:
     @commands.command(name="roll")
     async def roll(self, context, region=None):
         PRICE = 30
-        database_helper.adjust_pity(context.message.author.id)
-        details = database_helper.get_user_details(context.message.author.id)
+        user_id = context.message.author.id
+        user = self.bot.get_user(user_id)
+        username = user.name
+        database_helper.adjust_pity(user_id)
+        details = database_helper.get_user_details(user_id)
         if details is None:
             await context.send("You have no pikapoints! Join voice and start earning!")
         elif PRICE <= details[0]:
@@ -267,39 +273,39 @@ class SenpaiGacha:
 
             if r == 0:
                 options = database_helper.get_roll(7, region)
-                database_helper.adjust_pity(context.message.author.id, True)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, True)
+                database_helper.update_jackpot(user_id, False)
             elif 1001 <= r <= 1003:
                 options = database_helper.get_roll(6, region)
-                database_helper.adjust_pity(context.message.author.id, True)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, True)
+                database_helper.update_jackpot(user_id, False)
             elif 1 <= r <= details[1]:
                 options = database_helper.get_roll(3, region)
-                database_helper.adjust_pity(context.message.author.id, False)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, False)
+                database_helper.update_jackpot(user_id, False)
             elif details[1] < r <= details[1] + details[2]:
                 options = database_helper.get_roll(4, region)
-                database_helper.adjust_pity(context.message.author.id, False)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, False)
+                database_helper.update_jackpot(user_id, False)
             elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
                 options = database_helper.get_roll(5, region)
-                database_helper.adjust_pity(context.message.author.id, True)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, True)
+                database_helper.update_jackpot(user_id, False)
             elif details[1] + details[2] + details[3] < r <= 1000:
                 options = database_helper.get_roll(1, region)
-                database_helper.adjust_pity(context.message.author.id, True)
-                database_helper.update_jackpot(context.message.author.id, False)
+                database_helper.adjust_pity(user_id, True)
+                database_helper.update_jackpot(user_id, False)
             gacha = options[random.randint(0, len(options) - 1)]
-            title = "{} Summoned: \n".format(context.message.author.name)
+            title = "{} Summoned: \n".format(username)
             if gacha[2] <= 5:
                 description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
             elif gacha[2] == 6:
                 description = gacha[0] + "\nRarity: Legendary"
             elif gacha[2] == 7:
                 description = gacha[0] + "\nRarity: Mythic"
-            database_helper.adjust_points(context.message.author.id, -PRICE)
-            balance = database_helper.get_pikapoints(context.message.author.id)
-            database_helper.add_inventory(context.message.author.id, gacha[1])
+            database_helper.adjust_points(user_id, -PRICE)
+            balance = database_helper.get_pikapoints(user_id)
+            database_helper.add_inventory(user_id, gacha[1])
             embed = discord.Embed(title=title, description=description, color=0x9370db)
             str_id = "{:03}".format(gacha[1])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
@@ -313,7 +319,7 @@ class SenpaiGacha:
                         str_rarity = 'Legendary'
                     elif gacha[2] == 7:
                         str_rarity = 'Mythic'
-                    await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(context.message.author.name, str_rarity, jackpot))
+                    await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(username, str_rarity, jackpot))
                     return
 
                 ball = random.randint(1, 10000)
@@ -333,7 +339,7 @@ class SenpaiGacha:
                     ball_str = 'Poké Ball'
                     ball_id = 1
 
-                msg = context.message.author.name + ' summoned a '
+                msg = username + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
                     msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
@@ -349,7 +355,7 @@ class SenpaiGacha:
                         database_helper.add_item(contributor[0], ball_id)
                         msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                 msg = msg + '```'
-                database_helper.update_jackpot(context.message.author.id, True)
+                database_helper.update_jackpot(user_id, True)
                 await context.send(msg)
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
@@ -510,7 +516,7 @@ class SenpaiGacha:
                 ball_str = 'Master Ball'
             pt_prize = random.randint(pt_range[0], pt_range[1])
             database_helper.adjust_points(user_id, pt_prize)
-            balance = database_helper.get_pikapoints(context.message.author.id)
+            balance = database_helper.get_pikapoints(user_id)
             await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str, pt_prize, balance))
         elif option == 1:
             if ball_id == 1:
