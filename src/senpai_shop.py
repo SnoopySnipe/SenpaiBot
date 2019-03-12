@@ -727,8 +727,7 @@ class SenpaiGacha:
             str_id = "{:03}".format(gacha[1])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
-            await
-            context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
+            await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
 
     @commands.command(name="open")
     async def open(self, context, ball=None):
