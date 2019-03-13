@@ -1371,7 +1371,7 @@ class SenpaiGacha:
                 msg = ""
                 for row in result:
                     for column in row:
-                        msg = msg + column + "\t"
+                        msg = msg + str(column) + "\t"
                     msg = msg + "\n"
                 await context.send(msg)
             else:
