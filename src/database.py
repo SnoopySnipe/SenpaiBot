@@ -58,11 +58,11 @@ def adjust_pikapity(conn, user_id, got_five=None):
     except Error as e:
         print(e)
 
-def setup_pikagacha(conn, id, name, rarity, focus):
+def setup_pikagacha(conn, id, name, rarity, focus, bst):
     try:
         c = conn.cursor()
-        sql_setup_pikagacha = """INSERT OR IGNORE INTO pikagacha(id, name, rarity, focus) VALUES($id, $name, $rarity, $focus)"""
-        placeholders = {"id": id, "name": name, "rarity": rarity, "focus": focus}
+        sql_setup_pikagacha = """INSERT OR IGNORE INTO pikagacha(id, name, rarity, focus, bst) VALUES($id, $name, $rarity, $focus, $bst)"""
+        placeholders = {"id": id, "name": name, "rarity": rarity, "focus": focus, "bst": bst}
         c.execute(sql_setup_pikagacha, placeholders)
         conn.commit()
     except Error as e:
@@ -198,7 +198,7 @@ def add_item(conn, user_id, item_id):
 def get_pokemon(conn, name):
     try:
         c = conn.cursor()
-        sql = """SELECT id, rarity FROM pikagacha WHERE name = $name"""
+        sql = """SELECT id, rarity, bst FROM pikagacha WHERE name = $name"""
         placeholders = {"name": name}
         c.execute(sql, placeholders)
         return c.fetchone()
@@ -208,7 +208,7 @@ def get_pokemon(conn, name):
 def get_pokemon_name(conn, id):
     try:
         c = conn.cursor()
-        sql = """SELECT name FROM pikagacha WHERE id = $id"""
+        sql = """SELECT name, bst FROM pikagacha WHERE id = $id"""
         placeholders = {"id": id}
         c.execute(sql, placeholders)
         return c.fetchone()
@@ -445,7 +445,7 @@ sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
                                     points integer DEFAULT 0,
                                     streak integer DEFAULT 0)"""
-sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL)"""
+sql_create_pikagacha_table = """CREATE TABLE IF NOT EXISTS pikagacha (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rarity integer NOT NULL, focus integer NOT NULL, bst integer NOT NULL)"""
 sql_create_pikapity_table = """CREATE TABLE IF NOT EXISTS pikapity (id integer PRIMARY KEY, three integer NOT NULL, four integer NOT NULL, five integer NOT NULL, focus integer NOT NULL)"""
 sql_create_inventory = """CREATE TABLE IF NOT EXISTS inventory (user_id integer NOT NULL, poke_id integer NOT NULL, inventory_id integer PRIMARY KEY)"""
 sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL, contribution integer DEFAULT 0)"""
@@ -458,7 +458,7 @@ def load_pikadata(path):
     with open(path, mode='r') as file:
         for line in file:
             line_data = line.split("\t")
-            data[int(line_data[0])] = (line_data[1], int(line_data[2]), int(line_data[3]))
+            data[int(line_data[0])] = (line_data[1], int(line_data[2]), int(line_data[3]), int(line_data[4]))
     return data
 
 def initialize(conn):
@@ -473,4 +473,4 @@ def initialize(conn):
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
-        setup_pikagacha(conn, key, pokemon[key][0], pokemon[key][1], pokemon[key][2])
+        setup_pikagacha(conn, key, pokemon[key][0], pokemon[key][1], pokemon[key][2], pokemon[key][3])
