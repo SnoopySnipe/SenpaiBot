@@ -325,6 +325,14 @@ def run_sql(conn, query):
     except Error as e:
         print(e)
 
+def get_sql(conn, query):
+    try:
+        c = conn.cursor()
+        c.execute(query)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 def get_streak(conn, user_id):
     try:
         c = conn.cursor()

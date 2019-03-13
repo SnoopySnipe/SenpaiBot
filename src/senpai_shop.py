@@ -1363,6 +1363,21 @@ class SenpaiGacha:
         else:
             await context.send("You're not Snoopy-san...")
 
+    @commands.command(name="get")
+    async def get(self, context, query):
+        if context.message.author.id == SNOOPY_ID:
+            result = database_helper.get_sql(query)
+            if len(result) > 0:
+                msg = ""
+                for row in result:
+                    for column in row:
+                        msg = msg + column + "\t"
+                    msg = msg + "\n"
+            else:
+                await context.send("That query yielded no results...")
+        else:
+            await context.send("You're not Snoopy-san...")
+
 
     @commands.command(name="units")
     async def units(self, context, region=None):
