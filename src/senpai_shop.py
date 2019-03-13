@@ -1611,6 +1611,8 @@ class SenpaiGacha:
             if not 3 < datetime.datetime.now().hour < 12: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 649) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
+                if r in (29, 32):
+                    pokemon = 'nidoran'
                 str_id = "{:03}".format(r)
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
@@ -1618,7 +1620,7 @@ class SenpaiGacha:
                 await channel.send(embed=quiz)
 
                 def check(m):
-                    return m.content == pokemon and m.channel == channel
+                    return m.content.lower() == pokemon.lower() and m.channel == channel
 
                 try:
                     msg = await self.bot.wait_for('message', timeout=300.0, check=check)
