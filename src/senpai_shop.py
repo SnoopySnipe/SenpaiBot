@@ -1642,7 +1642,7 @@ class SenpaiGacha:
                     shutdown_msg = ''
                     if shutdown > 0:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
-                    await channel.send('Congratulations {.author}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg, shutdown_msg, str(gain), str(balance), new_streak))
+                    await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak))
 
 
 def setup(bot):
