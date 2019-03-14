@@ -1713,7 +1713,7 @@ class SenpaiGacha:
 
         await self.do_battle(user1, user2, pokemon1, pokemon2)
 
-    async def do_battle(self, user1, user2, pokemon1, pokemon2):
+    async def do_battle(self, context, user1, user2, pokemon1, pokemon2):
         id1 = user1.id
         id2 = user2.id
         username1 = user1.name
