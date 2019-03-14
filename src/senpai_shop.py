@@ -1795,16 +1795,16 @@ class SenpaiGacha:
         if poke2_bst_bonus > 0:
             str_poke2_bst_bonus = ' +{}'.format(poke2_bst_bonus)
 
-        p1_win_payout = (100 / poke1_odds) * wager
-        p2_win_payout = (100 / poke2_odds) * wager
+        p1_win_payout = math.floor((100 / poke1_odds) * wager)
+        p2_win_payout = math.floor((100 / poke2_odds) * wager)
         p1_balance = database_helper.get_pikapoints(id1)
         p2_balance = database_helper.get_pikapoints(id2)
 
         title = "Battle!"
-        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints. {} currently has {} pikapoints.\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
+        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints. {} currently has {} pikapoints.\n\nBase Wager: {}\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
             username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
             username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
-            username1, p1_balance, username2, p2_balance, username1, p1_win_payout, username2, p2_win_payout)
+            username1, p1_balance, username2, p2_balance, wager, username1, p1_win_payout, username2, p2_win_payout)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
         await msg.add_reaction('✅')
         await msg.add_reaction('❌')
@@ -1815,7 +1815,7 @@ class SenpaiGacha:
             return ((user == user1 or user == user2) and str(reaction.emoji) == '✅') or ((user == user1 or user == user2) and str(reaction.emoji) == '❌')
         while not timed_out:
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
             except asyncio.TimeoutError:
                 await context.send("Battle confirmation timed out...")
                 timed_out = True
@@ -1831,7 +1831,27 @@ class SenpaiGacha:
         if timed_out and not battling:
             return
 
+        r = random.randint(1, 10000)
+        if 1 <= r <= poke1_odds * 100:
+            winner = user1
+            loser = user2
+            loser_pokemon = pokemon2
+            payout = p1_win_payout
+        else:
+            winner = user2
+            loser = user1
+            loser_pokemon = pokemon1
+            payout = p2_win_payout
+        database_helper.adjust_points(winner.id, payout)
+        database_helper.adjust_points(loser.id, -payout)
+
         await context.send("Battling...")
+        await asyncio.sleep(5)
+        await context.send("{}'s {} fainted!".format(loser.name, loser_pokemon))
+        await asyncio.sleep(3)
+        await context.send("{} won the battle and {} paid them {} pikapoints!\n{} now has {} pikapoints.\n{} now has {} pikapoints.".format(
+            winner.name, loser.name, payout, username1, database_helper.get_pikapoints(id1), username2, database_helper.get_pikapoints(id2)
+        ))
 
 
     async def get_multiplier(self, rarity, dupes):
