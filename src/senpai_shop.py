@@ -596,6 +596,15 @@ class SenpaiGacha:
             await context.send("Pokémon's rarities must match!")
             return
 
+        user1 = self.bot.get_user(int(id1))
+        user2 = self.bot.get_user(int(id2))
+        username1 = user1.name
+        username2 = user2.name
+
+        if user1 == user2:
+            await context.send("You cannot trade with yourself!")
+            return
+
         balance1 = database_helper.get_pikapoints(id1)
         balance2 = database_helper.get_pikapoints(id2)
         if balance1 < cost:
@@ -604,11 +613,6 @@ class SenpaiGacha:
         if balance2 < cost:
             await context.send("They don't have enough pikapoints to perform this trade! This trade requires both users to have {} pikapoints.\nYou have {} pikapoints. They have {} pikapoints.".format(str(cost), str(balance1), str(balance2)))
             return
-
-        user1 = self.bot.get_user(int(id1))
-        user2 = self.bot.get_user(int(id2))
-        username1 = user1.name
-        username2 = user2.name
 
         title = "Trade Request"
         description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
@@ -1654,6 +1658,10 @@ class SenpaiGacha:
         username1 = user1.name
         user2 = self.bot.get_user(id2)
         username2 = user2.name
+
+        if user1 == user2:
+            await context.send("You cannot battle yourself!")
+            return
 
         MIN_POINTS = -100
         balance1 = database_helper.get_pikapoints(id1)
