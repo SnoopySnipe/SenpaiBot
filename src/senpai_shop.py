@@ -1652,7 +1652,7 @@ class SenpaiGacha:
         try:
             msg = await self.bot.wait_for('message', timeout=15.0, check=check)
         except asyncio.TimeoutError:
-            await channel.send("{} didn't choose their pokémon in time...".format(username1))
+            await context.send("{} didn't choose their pokémon in time...".format(username1))
             timed_out = True
         else:
             pokemon1 = msg.content
@@ -1665,7 +1665,7 @@ class SenpaiGacha:
         try:
             msg = await self.bot.wait_for('message', timeout=15.0, check=check)
         except asyncio.TimeoutError:
-            await channel.send("{} didn't choose their pokémon in time...".format(username2))
+            await context.send("{} didn't choose their pokémon in time...".format(username2))
             timed_out = True
         else:
             pokemon2 = msg.content
