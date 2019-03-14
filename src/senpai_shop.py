@@ -1722,7 +1722,7 @@ class SenpaiGacha:
         poke1_id = poke1_details[0]
         poke1_rarity = poke1_details[1]
         poke1_bst = poke1_details[2]
-        poke1_count = database_helper.get_poke_count(id1, poke1_id)
+        poke1_count = database_helper.get_poke_count(id1, poke1_id)[0]
         poke1_dupes = poke1_count - 1
         poke1_multiplier, poke1_plus = self.get_multiplier(poke1_rarity, poke1_dupes)
         poke1_new_bst = floor(poke1_bst * poke1_multiplier)
@@ -1732,7 +1732,7 @@ class SenpaiGacha:
         poke2_id = poke2_details[0]
         poke2_rarity = poke2_details[1]
         poke2_bst = poke2_details[2]
-        poke2_count = database_helper.get_poke_count(id2, poke2_id)
+        poke2_count = database_helper.get_poke_count(id2, poke2_id)[0]
         poke2_dupes = poke2_count - 1
         poke2_multiplier, poke2_plus = self.get_multiplier(poke2_rarity, poke2_dupes)
         poke2_new_bst = floor(poke2_bst * poke2_multiplier)
