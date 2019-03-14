@@ -1647,9 +1647,9 @@ class SenpaiGacha:
         await context.send("Successfully withdrew {} pikapoints from the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
 
     @commands.command(name="battle")
-    async def battle(self, context, id2=None):
-        if id2 is None:
-            await context.send("`Usage:`\n```!senpai battle their_id```")
+    async def battle(self, context, id2=None, wager=None):
+        if id2 is None or wager is None:
+            await context.send("`Usage:`\n```!senpai battle their_id wager```")
             return
 
         if database_helper.get_stadium():
@@ -1657,6 +1657,18 @@ class SenpaiGacha:
             return
         else:
             database_helper.update_stadium(True)
+
+        try:
+            wager = int(wager)
+            is_int = True
+            if wager <= 0:
+                is_int = False
+        except:
+            is_int = False
+        if not is_int:
+            await context.send("Please enter a positive integer for your wager!")
+            database_helper.update_stadium(False)
+            return
 
         id2 = int(id2)
         id1 = int(context.message.author.id)
@@ -1732,10 +1744,10 @@ class SenpaiGacha:
             database_helper.update_stadium(False)
             return
 
-        await self.do_battle(context, user1, user2, pokemon1, pokemon2)
+        await self.do_battle(context, user1, user2, pokemon1, pokemon2, wager)
         database_helper.update_stadium(False)
 
-    async def do_battle(self, context, user1, user2, pokemon1, pokemon2):
+    async def do_battle(self, context, user1, user2, pokemon1, pokemon2, wager):
         id1 = user1.id
         id2 = user2.id
         username1 = user1.name
@@ -1783,11 +1795,44 @@ class SenpaiGacha:
         if poke2_bst_bonus > 0:
             str_poke2_bst_bonus = ' +{}'.format(poke2_bst_bonus)
 
+        p1_win_payout = (100 / poke1_odds) * wager
+        p2_win_payout = (100 / poke2_odds) * wager
+        p1_balance = database_helper.get_pikapoints(id1)
+        p2_balance = database_helper.get_pikapoints(id2)
+
         title = "Battle!"
-        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%".format(
+        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints. {} currently has {} pikapoints.\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
             username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
-            username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds)
-        await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+            username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
+            username1, p1_balance, username2, p2_balance, username1, p1_win_payout, username2, p2_win_payout)
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+        await msg.add_reaction('✅')
+        await msg.add_reaction('❌')
+        timed_out = False
+        accepted = []
+        battling = False
+        def check(reaction, user):
+            return ((user == user1 or user == user2) and str(reaction.emoji) == '✅') or ((user == user1 or user == user2) and str(reaction.emoji) == '❌')
+        while not timed_out:
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=10.0, check=check)
+            except asyncio.TimeoutError:
+                await context.send("Battle confirmation timed out...")
+                timed_out = True
+            else:
+                if str(reaction.emoji) == '❌':
+                    await context.send("{} declined the battle.".format(user.name))
+                    timed_out = True
+                elif str(reaction.emoji) == '✅':
+                    accepted.append(user)
+                    if user1 in accepted and user2 in accepted:
+                        timed_out = True
+                        battling = True
+        if timed_out and not battling:
+            return
+
+        await context.send("Battling...")
+
 
     async def get_multiplier(self, rarity, dupes):
         inc = (rarity - 2) / 100
