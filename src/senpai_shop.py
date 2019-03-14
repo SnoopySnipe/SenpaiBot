@@ -1655,7 +1655,7 @@ class SenpaiGacha:
             await channel.send("{} didn't choose their pokémon in time...".format(username1))
             timed_out = True
         else:
-            pokemon1 = msg
+            pokemon1 = msg.content
         if timed_out:
             return
 
@@ -1668,7 +1668,7 @@ class SenpaiGacha:
             await channel.send("{} didn't choose their pokémon in time...".format(username2))
             timed_out = True
         else:
-            pokemon2 = msg
+            pokemon2 = msg.content
         if timed_out:
             return
 
