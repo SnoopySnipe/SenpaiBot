@@ -1711,7 +1711,7 @@ class SenpaiGacha:
         if timed_out:
             return
 
-        await self.do_battle(user1, user2, pokemon1, pokemon2)
+        await self.do_battle(context, user1, user2, pokemon1, pokemon2)
 
     async def do_battle(self, context, user1, user2, pokemon1, pokemon2):
         id1 = user1.id
