@@ -583,22 +583,25 @@ class SenpaiGacha:
         description = "{} wants to trade: {}\nFor {}'s: {}".format(username1, pokemon1, username2, pokemon2)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0xff0000))
         await msg.add_reaction('✅')
-
+        await msg.add_reaction('❌')
         def check(reaction, user):
-            return user == user2 and str(reaction.emoji) == '✅'
+            return (user == user2 and str(reaction.emoji) == '✅') or ((user == user1 or user == user2) and str(reaction.emoji) == '❌')
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Trade timed out...")
         else:
-            database_helper.perform_trade(id1, id2, pokemon1_id[0], pokemon2_id[0])
-            database_helper.adjust_points(id1, -cost)
-            database_helper.adjust_points(id2, -cost)
-            new_balance1 = database_helper.get_pikapoints(id1)
-            new_balance2 = database_helper.get_pikapoints(id2)
-            await context.send("{} has {} pikapoints. {} has {} pikapoints.\nPerforming trade...\nTrade successful! {} now has {} pikapoints. {} now has {} pikapoints.".format(
-                username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
-            ))
+            if str(reaction.emoji) == '❌':
+                await context.send("Trade declined...")
+            elif str(reaction.emoji) == '✅':
+                database_helper.perform_trade(id1, id2, pokemon1_id[0], pokemon2_id[0])
+                database_helper.adjust_points(id1, -cost)
+                database_helper.adjust_points(id2, -cost)
+                new_balance1 = database_helper.get_pikapoints(id1)
+                new_balance2 = database_helper.get_pikapoints(id2)
+                await context.send("{} has {} pikapoints. {} has {} pikapoints.\nPerforming trade...\nTrade successful! {} now has {} pikapoints. {} now has {} pikapoints.".format(
+                    username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
+                ))
 
     @commands.command(name="forceopen")
     async def forceopen(self, context, user_id=None, ball=None):
@@ -1635,14 +1638,19 @@ class SenpaiGacha:
         description = "{} is challenged by {}!".format(username2, username1)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
         await msg.add_reaction('✅')
+        await msg.add_reaction('❌')
         timed_out = False
         def check(reaction, user):
-            return user == user2 and str(reaction.emoji) == '✅'
+            return (user == user2 and str(reaction.emoji) == '✅') or ((user == user1 or user == user2) and str(reaction.emoji) == '❌')
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("{} got away safely!".format(username2))
             timed_out = True
+        else:
+            if str(reaction.emoji) == '❌':
+                await context.send("{} got away safely!".format(username2))
+                timed_out = True
         if timed_out:
             return
 
