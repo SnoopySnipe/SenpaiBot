@@ -9,6 +9,7 @@ import time
 from PIL import Image
 import requests
 from io import BytesIO
+import math
 
 SNOOPY_ID = 103634047929962496
 KANTO = ('Kanto', 1, 151)
