@@ -1608,6 +1608,74 @@ class SenpaiGacha:
         savings = database_helper.get_savings(user_id)
         await context.send("Successfully withdrew {} pikapoints from the bank!\nNew balance: {} pikapoints\nNew savings: {} pikapoints".format(amount, balance, savings))
 
+    @commands.command(name="battle")
+    async def battle(self, context, id2=None):
+        if id2 is None:
+            await context.send("`Usage:`\n```!senpai battle their_id```")
+            return
+        id2 = int(id2)
+        id1 = int(context.message.author.id)
+
+        user1 = self.bot.get_user(id1)
+        username1 = user1.name
+        user2 = self.bot.get_user(id2)
+        username2 = user2.name
+
+        MIN_POINTS = -100
+        balance1 = database_helper.get_pikapoints(id1)
+        balance2 = database_helper.get_pikapoints(id2)
+        if balance1 < MIN_POINTS:
+            await context.send("You don't have enough pikapoints to battle!\nYou have {} pikapoints".format(balance1))
+            return
+        if balance2 < MIN_POINTS:
+            await context.send("{} doesn't have enough pikapoints to battle!\n{} has {} pikapoints".format(username2, username2, balance1))
+            return
+
+        title = "Battle Challenge"
+        description = "{} is challenged by {}!".format(username2, username1)
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+        await msg.add_reaction('✅')
+        timed_out = False
+        def check(reaction, user):
+            return user == user2 and str(reaction.emoji) == '✅'
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await context.send("{} got away safely!".format(username2))
+            timed_out = True
+        if timed_out:
+            return
+
+        await context.send("{}, Choose a Pokémon!".format(username1))
+        def check(m):
+            return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id1, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user1
+        try:
+            msg = await self.bot.wait_for('message', timeout=15.0, check=check)
+        except asyncio.TimeoutError:
+            await channel.send("{} didn't choose their pokémon in time...".format(username1))
+            timed_out = True
+        else:
+            pokemon1 = msg
+        if timed_out:
+            return
+
+        await context.send("{}, Choose a Pokémon!".format(username2))
+        def check(m):
+            return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id2, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user2
+        try:
+            msg = await self.bot.wait_for('message', timeout=15.0, check=check)
+        except asyncio.TimeoutError:
+            await channel.send("{} didn't choose their pokémon in time...".format(username2))
+            timed_out = True
+        else:
+            pokemon2 = msg
+        if timed_out:
+            return
+
+        title = "Battle!"
+        description = "{}'s {}\nVS\n{}'s {}".format(username1, pokemon1, username2, pokemon2)
+        await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+
     async def background_quiz(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
