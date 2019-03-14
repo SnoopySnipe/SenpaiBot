@@ -1728,7 +1728,7 @@ class SenpaiGacha:
         poke1_multiplier_details = await self.get_multiplier(poke1_rarity, poke1_dupes)
         poke1_multiplier = poke1_multiplier_details[0]
         poke1_plus = poke1_multiplier_details[1]
-        poke1_new_bst = floor(poke1_bst * poke1_multiplier)
+        poke1_new_bst = math.floor(poke1_bst * poke1_multiplier)
         poke1_bst_bonus = poke1_new_bst - poke1_bst
 
         poke2_details = database_helper.get_pokemon(pokemon2)
@@ -1740,7 +1740,7 @@ class SenpaiGacha:
         poke2_multiplier_details = await self.get_multiplier(poke2_rarity, poke2_dupes)
         poke2_multiplier = poke2_multiplier_details[0]
         poke2_plus = poke2_multiplier_details[1]
-        poke2_new_bst = floor(poke2_bst * poke2_multiplier)
+        poke2_new_bst = math.floor(poke2_bst * poke2_multiplier)
         poke2_bst_bonus = poke2_new_bst - poke2_bst
 
         bst_total = poke1_new_bst + poke2_new_bst
