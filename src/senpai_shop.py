@@ -1668,6 +1668,7 @@ class SenpaiGacha:
 
         if user1 == user2:
             await context.send("You cannot battle yourself!")
+            database_helper.update_stadium(False)
             return
 
         MIN_POINTS = -100
@@ -1675,9 +1676,11 @@ class SenpaiGacha:
         balance2 = database_helper.get_pikapoints(id2)
         if balance1 < MIN_POINTS:
             await context.send("You don't have enough pikapoints to battle!\nYou have {} pikapoints".format(balance1))
+            database_helper.update_stadium(False)
             return
         if balance2 < MIN_POINTS:
             await context.send("{} doesn't have enough pikapoints to battle!\n{} has {} pikapoints".format(username2, username2, balance1))
+            database_helper.update_stadium(False)
             return
 
         title = "Battle Challenge"
@@ -1698,6 +1701,7 @@ class SenpaiGacha:
                 await context.send("{} got away safely!".format(username2))
                 timed_out = True
         if timed_out:
+            database_helper.update_stadium(False)
             return
 
         await context.send("{}, Choose a Pokémon!".format(username1))
@@ -1711,6 +1715,7 @@ class SenpaiGacha:
         else:
             pokemon1 = msg.content
         if timed_out:
+            database_helper.update_stadium(False)
             return
 
         await context.send("{}, Choose a Pokémon!".format(username2))
@@ -1724,6 +1729,7 @@ class SenpaiGacha:
         else:
             pokemon2 = msg.content
         if timed_out:
+            database_helper.update_stadium(False)
             return
 
         await self.do_battle(context, user1, user2, pokemon1, pokemon2)
