@@ -106,6 +106,21 @@ def get_poke_count(user_id, poke_id):
         conn.close()
         return result
 
+def get_stadium():
+    conn = sqlite3.connect(db)
+    result = False
+    if(conn is not None):
+        if database.get_stadium(conn) is not None:
+            result = True
+        conn.close()
+    return result
+
+def update_stadium(insert):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_stadiun(conn, insert)
+        conn.close()
+
 def get_bag(user_id):
     conn = sqlite3.connect(db)
     result = None

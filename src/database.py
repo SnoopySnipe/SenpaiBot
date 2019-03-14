@@ -458,6 +458,27 @@ def use_item(conn, user_id, ball_id):
     except Error as e:
         print(e)
 
+def get_stadium(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM stadium"""
+        c.execute(sql)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def update_stadiun(conn, insert):
+    try:
+        c = conn.cursor()
+        if insert:
+            sql = """INSERT INTO stadium (battle) VALUES (1)"""
+        else:
+            sql = """DELETE FROM stadium"""
+        c.execute(sql)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
@@ -470,6 +491,7 @@ sql_create_jackpot = """CREATE TABLE IF NOT EXISTS jackpot (id integer NOT NULL,
 sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ball integer NOT NULL, bag_id integer PRIMARY KEY)"""
 sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
 sql_create_fav = """CREATE TABLE IF NOT EXISTS favs (user_id integer NOT NULL, poke_id integer NOT NULL, fav_id integer PRIMARY KEY) """
+sql_create_stadium = """CREATE TABLE IF NOT EXISTS stadium (battle integer PRIMARY KEY DEFAULT 0)"""
 
 def load_pikadata(path):
     data = {}
@@ -488,6 +510,7 @@ def initialize(conn):
     create_table(conn, sql_create_bag)
     create_table(conn, sql_create_bank)
     create_table(conn, sql_create_fav)
+    create_table(conn, sql_create_stadium)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:

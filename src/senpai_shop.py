@@ -1651,6 +1651,13 @@ class SenpaiGacha:
         if id2 is None:
             await context.send("`Usage:`\n```!senpai battle their_id```")
             return
+
+        if database_helper.get_stadium():
+            await context.send("The Pokémon Stadium is currently occupied!")
+            return
+        else:
+            database_helper.update_stadium(True)
+
         id2 = int(id2)
         id1 = int(context.message.author.id)
 
@@ -1720,6 +1727,7 @@ class SenpaiGacha:
             return
 
         await self.do_battle(context, user1, user2, pokemon1, pokemon2)
+        database_helper.update_stadium(False)
 
     async def do_battle(self, context, user1, user2, pokemon1, pokemon2):
         id1 = user1.id
