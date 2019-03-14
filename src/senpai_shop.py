@@ -514,13 +514,43 @@ class SenpaiGacha:
         if poke_id is not None:
             str_id = "{:03}".format(poke_id[0])
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}".format(str(poke_id[0]), name, poke_id[2]), color=0xffb6c1)
+            id = int(str_id)
+            if 1 <= id <= 151:
+                region = 'Kanto'
+            elif 152 <= id <= 251:
+                region = 'Johto'
+            elif 252 <= id <= 386:
+                region = 'Hoenn'
+            elif 387 <= id <= 493:
+                region = 'Sinnoh'
+            elif 494 <= id <= 649:
+                region = 'Unova'
+            elif 650 <= id <= 721:
+                region = 'Kalos'
+            elif 722 <= id <= 809:
+                region = 'Alola'
+            dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(poke_id[0]), name, poke_id[2], region), color=0xffb6c1)
             dex.set_image(url=url)
             await context.send(embed=dex)
         elif poke_name is not None:
             str_id = "{:03}".format(int(name))
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}".format(str(name), poke_name[0], poke_name[1]), color=0xffb6c1)
+            id = int(str_id)
+            if 1 <= id <= 151:
+                region = 'Kanto'
+            elif 152 <= id <= 251:
+                region = 'Johto'
+            elif 252 <= id <= 386:
+                region = 'Hoenn'
+            elif 387 <= id <= 493:
+                region = 'Sinnoh'
+            elif 494 <= id <= 649:
+                region = 'Unova'
+            elif 650 <= id <= 721:
+                region = 'Kalos'
+            elif 722 <= id <= 809:
+                region = 'Alola'
+            dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(name), poke_name[0], poke_name[1], region), color=0xffb6c1)
             dex.set_image(url=url)
             await context.send(embed=dex)
         else:
