@@ -1710,9 +1710,71 @@ class SenpaiGacha:
         if timed_out:
             return
 
+        self.do_battle(user1, user2, pokemon1, pokemon2)
+
+    async def do_battle(self, user1, user2, pokemon1, pokemon2):
+        id1 = user1.id
+        id2 = user2.id
+        username1 = user1.name
+        username2 = user2.name
+
+        poke1_details = database_helper.get_pokemon(pokemon1)
+        poke1_id = poke1_details[0]
+        poke1_rarity = poke1_details[1]
+        poke1_bst = poke1_details[2]
+        poke1_count = database_helper.get_poke_count(id1, poke1_id)
+        poke1_dupes = poke1_count - 1
+        poke1_multiplier, poke1_plus = self.get_multiplier(poke1_rarity, poke1_dupes)
+        poke1_new_bst = floor(poke1_bst * poke1_multiplier)
+        poke1_bst_bonus = poke1_new_bst - poke1_bst
+
+        poke2_details = database_helper.get_pokemon(pokemon2)
+        poke2_id = poke2_details[0]
+        poke2_rarity = poke2_details[1]
+        poke2_bst = poke2_details[2]
+        poke2_count = database_helper.get_poke_count(id2, poke2_id)
+        poke2_dupes = poke2_count - 1
+        poke2_multiplier, poke2_plus = self.get_multiplier(poke2_rarity, poke2_dupes)
+        poke2_new_bst = floor(poke2_bst * poke2_multiplier)
+        poke2_bst_bonus = poke2_new_bst - poke2_bst
+
+        bst_total = poke1_new_bst + poke2_new_bst
+        poke1_odds = round((poke1_new_bst / bst_total) * 100, 2)
+        poke2_odds = round((poke2_new_bst / bst_total) * 100, 2)
+
+        str_poke1_plus = ''
+        if poke1_plus > 0:
+            str_poke1_plus = ' +{}'.format(poke1_plus)
+        str_poke2_plus = ''
+        if poke2_plus > 0:
+            str_poke2_plus = ' +{}'.format(poke2_plus)
+
+        str_poke1_bst_bonus = ''
+        if poke1_bst_bonus > 0:
+            str_poke1_bst_bonus = ' +{}'.format(poke1_bst_bonus)
+        str_poke2_bst_bonus = ''
+        if poke2_bst_bonus > 0:
+            str_poke2_bst_bonus = ' +{}'.format(poke2_bst_bonus)
+
         title = "Battle!"
-        description = "{}'s {}\nVS\n{}'s {}".format(username1, pokemon1, username2, pokemon2)
+        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%".format(
+            username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
+            username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds)
         await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+
+    async def get_multiplier(self, rarity, dupes):
+        inc = (rarity - 2) / 100
+
+        count = 1
+        bonus = 1
+        while dupes >= count:
+            bonus += inc
+            dupes -= count
+            count += 1
+        return bonus, count - 1
+
+
+
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()

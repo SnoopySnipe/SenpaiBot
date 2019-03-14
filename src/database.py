@@ -165,6 +165,16 @@ def get_inventory(conn, user_id, region=None):
     except Error as e:
         print(e)
 
+def get_poke_count(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT count(*) FROM inventory WHERE user_id = $user_id AND poke_id = $poke_id"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def get_bag(conn, user_id):
     try:
         c = conn.cursor()
