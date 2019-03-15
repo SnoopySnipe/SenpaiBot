@@ -1661,22 +1661,32 @@ class SenpaiGacha:
         try:
             wager = int(wager)
             is_int = True
-            if wager <= 0:
+            if not 1 <= wager <= 100:
                 is_int = False
         except:
             is_int = False
         if not is_int:
-            await context.send("Please enter a positive integer for your wager!")
+            await context.send("Wager must be between 1 and 100 pikapoints!")
             database_helper.update_stadium(False)
             return
 
-        id2 = int(id2)
         id1 = int(context.message.author.id)
-
         user1 = self.bot.get_user(id1)
         username1 = user1.name
-        user2 = self.bot.get_user(id2)
-        username2 = user2.name
+
+        try:
+            id2 = int(id2)
+            user2 = self.bot.get_user(id2)
+            username2 = user2.name
+        except:
+            await context.send("Player 2's ID is invalid!")
+            database_helper.update_stadium(False)
+            return
+        else:
+            if database_helper.get_pikapoints(id2) is None:
+                await context.send("Player 2's ID is invalid!")
+                database_helper.update_stadium(False)
+                return
 
         if user1 == user2:
             await context.send("You cannot battle yourself!")
@@ -1691,7 +1701,7 @@ class SenpaiGacha:
             database_helper.update_stadium(False)
             return
         if balance2 < MIN_POINTS:
-            await context.send("{} doesn't have enough pikapoints to battle!\n{} has {} pikapoints".format(username2, username2, balance1))
+            await context.send("{} doesn't have enough pikapoints to battle!\n{} has {} pikapoints".format(username2, username2, balance2))
             database_helper.update_stadium(False)
             return
 
@@ -1717,10 +1727,11 @@ class SenpaiGacha:
             return
 
         await context.send("{}, Choose a Pokémon!".format(username1))
+        await context.invoke(self.box, id1)
         def check(m):
             return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id1, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user1
         try:
-            msg = await self.bot.wait_for('message', timeout=15.0, check=check)
+            msg = await self.bot.wait_for('message', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("{} didn't choose their pokémon in time...".format(username1))
             timed_out = True
@@ -1731,10 +1742,11 @@ class SenpaiGacha:
             return
 
         await context.send("{}, Choose a Pokémon!".format(username2))
+        await context.invoke(self.box, id2)
         def check(m):
             return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id2, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user2
         try:
-            msg = await self.bot.wait_for('message', timeout=15.0, check=check)
+            msg = await self.bot.wait_for('message', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("{} didn't choose their pokémon in time...".format(username2))
             timed_out = True
@@ -1801,7 +1813,7 @@ class SenpaiGacha:
         p2_balance = database_helper.get_pikapoints(id2)
 
         title = "Battle!"
-        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints. {} currently has {} pikapoints.\n\nBase Wager: {}\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
+        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints\n{} currently has {} pikapoints\n\nBase Wager: {}\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
             username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
             username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
             username1, p1_balance, username2, p2_balance, wager, username1, p1_win_payout, username2, p2_win_payout)
