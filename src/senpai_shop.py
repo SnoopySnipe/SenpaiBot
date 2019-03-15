@@ -87,7 +87,7 @@ class SenpaiGacha:
     @commands.command(name="forceroll")
     async def forceroll(self, context, region=None, user_id=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
             return
 
         PRICE = 30
@@ -641,7 +641,7 @@ class SenpaiGacha:
     @commands.command(name="forceopen")
     async def forceopen(self, context, user_id=None, ball=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
             return
 
         if user_id is None:
@@ -1126,7 +1126,7 @@ class SenpaiGacha:
     @commands.command(name="forcerelease")
     async def forcerelease(self, context, user_id=None, rarity=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
             return
 
         if user_id is None:
@@ -1392,14 +1392,14 @@ class SenpaiGacha:
                     description = description + "\n    " + unit[0]
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
 
     @commands.command(name="sql")
     async def sql(self, context, query):
         if context.message.author.id == SNOOPY_ID:
             database_helper.run_sql(query)
         else:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
 
     @commands.command(name="get")
     async def get(self, context, query):
@@ -1415,7 +1415,7 @@ class SenpaiGacha:
             else:
                 await context.send("That query yielded no results...")
         else:
-            await context.send("You're not Snoopy-san...")
+            await context.send(":pikakick:")
 
 
     @commands.command(name="units")
