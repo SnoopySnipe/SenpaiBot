@@ -1727,7 +1727,6 @@ class SenpaiGacha:
             return
 
         await context.send("{}, Choose a Pokémon!".format(username1))
-        await context.invoke(self.box, id1)
         def check(m):
             return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id1, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user1
         try:
@@ -1742,7 +1741,6 @@ class SenpaiGacha:
             return
 
         await context.send("{}, Choose a Pokémon!".format(username2))
-        await context.invoke(self.box, id2)
         def check(m):
             return database_helper.get_pokemon(m.content) is not None and database_helper.get_from_inventory(id2, database_helper.get_pokemon(m.content)[0]) and m.channel == context.message.channel and m.author == user2
         try:
