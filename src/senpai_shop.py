@@ -1876,7 +1876,7 @@ class SenpaiGacha:
 
     @commands.command(name="register")
     async def register(self, context, name=None):
-        if name is None:
+        if name is None or name.strip() == "":
             await context.send("`Usage:`\n```!senpai register name```")
             return
 
@@ -1906,8 +1906,12 @@ class SenpaiGacha:
             await context.send("There is no registered Pokémon Trainer with the name {}!".format(name))
             return
 
-        title = "{}'s Trainer Card"
-        description = "{} {}\n\n".format(trainer[2], trainer[1])
+        user_id = trainer[0]
+        user = self.bot.get_user(user_id)
+        username = user.name
+
+        title = "{}'s Trainer Card".format(username)
+        description = "{} {}\nID: {}\n\n".format(trainer[2], trainer[1], trainer[0])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
