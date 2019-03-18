@@ -293,6 +293,14 @@ def get_jackpot(sum):
         conn.close()
         return result
 
+def get_contribution(id):
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_contribution(conn, id)
+        conn.close()
+        return result
+
 def get_jackpot_rewards():
     conn = sqlite3.connect(db)
     result = None
@@ -322,3 +330,9 @@ def get_trainers():
         result = database.get_trainers(conn)
         conn.close()
     return result
+
+def increment_stat(id, stat):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.increment_stat(conn, id, stat)
+        conn.close()

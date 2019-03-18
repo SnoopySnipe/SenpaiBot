@@ -333,6 +333,7 @@ class SenpaiGacha:
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
+                database_helper.increment_stat(user_id, "rolls")
                 if gacha[2] > 5:
                     jackpot = database_helper.get_jackpot(True)[0]
                     no_contributors = len(database_helper.get_jackpot_rewards())
@@ -377,12 +378,15 @@ class SenpaiGacha:
                         if contributor[1] >= 3:
                             database_helper.adjust_points(contributor[0], payout)
                             database_helper.add_item(contributor[0], ball_id)
+                            database_helper.increment_stat(contributor[0], "jackpots")
                             msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                     msg = msg + '```'
                     database_helper.update_jackpot(user_id, True)
                     await context.send(msg)
             balance = database_helper.get_pikapoints(user_id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
+            if rolls >= 50 and database_helper.get_contribution(user_id) >= 50:
+                database_helper.increment_stat(user_id, "bricks")
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
@@ -456,6 +460,7 @@ class SenpaiGacha:
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
+            database_helper.increment_stat(user_id, "rolls")
             if gacha[2] > 5:
                 jackpot = database_helper.get_jackpot(True)[0]
                 no_contributors = len(database_helper.get_jackpot_rewards())
@@ -498,6 +503,7 @@ class SenpaiGacha:
                     if contributor[1] >= 3:
                         database_helper.adjust_points(contributor[0], payout)
                         database_helper.add_item(contributor[0], ball_id)
+                        database_helper.increment_stat(contributor[0], "jackpots")
                         msg = msg + '\n' + self.bot.get_user(contributor[0]).name
                 msg = msg + '```'
                 database_helper.update_jackpot(user_id, True)
@@ -637,6 +643,8 @@ class SenpaiGacha:
                 await context.send("{} has {} pikapoints. {} has {} pikapoints.\nPerforming trade...\nTrade successful! {} now has {} pikapoints. {} now has {} pikapoints.".format(
                     username1, str(balance1), username2, str(balance2), username1, str(new_balance1), username2, str(new_balance2)
                 ))
+                database_helper.increment_stat(id1, "trades")
+                database_helper.increment_stat(id2, "trades")
 
     @commands.command(name="forceopen")
     async def forceopen(self, context, user_id=None, ball=None):
@@ -897,6 +905,7 @@ class SenpaiGacha:
             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
+            database_helper.increment_stat(user_id, "opens")
 
 
 
@@ -929,7 +938,7 @@ class SenpaiGacha:
             timed_out = False
             while (not timed_out):
                 try:
-                    reaction, user = await self.bot.wait_for('reaction_add', timeout=20.0, check=check)
+                    reaction, user = await self.bot.wait_for('reaction_add', timeout=5.0, check=check)
                 except asyncio.TimeoutError:
                     timed_out = True
                 else:
@@ -1220,6 +1229,8 @@ class SenpaiGacha:
             database_helper.adjust_points(context.message.author.id, gain*rows)
             total_gain = gain*rows
             await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...\nYou got {} pikapoints!\nYou now have {} pikapoints.".format(str(balance), rows, rarity, str_region, total_gain, database_helper.get_pikapoints(context.message.author.id)))
+            for i in range(rows):
+                database_helper.increment_stat(context.message.author.id, "releases")
 
     @commands.command(name="releasedupes")
     async def releasedupes(self, context, rarity=None, region=None):
@@ -1280,6 +1291,8 @@ class SenpaiGacha:
             await context.send("You currently have {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...\nYou got {} pikapoints!\nYou now have {} pikapoints.".format(str(balance), rows, rarity, str_region, total_gain,
                                                                                             database_helper.get_pikapoints(
                                                                                                 context.message.author.id)))
+            for i in range(rows):
+                database_helper.increment_stat(context.message.author.id, "releases")
 
     @commands.command(name="release")
     async def release(self, context, name=None):
@@ -1302,6 +1315,7 @@ class SenpaiGacha:
                     gain = 60
                 database_helper.adjust_points(context.message.author.id, gain)
                 await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
+                database_helper.increment_stat(context.message.author.id, "releases")
             else:
                 await context.send("You do not have that Pokémon!")
         else:
@@ -1862,6 +1876,16 @@ class SenpaiGacha:
         await context.send("{} won the battle and {} paid them {} pikapoints!\n{} now has {} pikapoints.\n{} now has {} pikapoints.".format(
             winner.name, loser.name, payout, username1, database_helper.get_pikapoints(id1), username2, database_helper.get_pikapoints(id2)
         ))
+        database_helper.increment_stat(winner.id, "battles")
+        database_helper.increment_stat(loser.id, "battles")
+        database_helper.increment_stat(winner.id, "wins")
+        database_helper.increment_stat(loser.id, "losses")
+        if poke1_odds <= 30 or poke2_odds <= 30:
+            database_helper.increment_stat(winner.id, "underdogs")
+            database_helper.increment_stat(loser.id, "neverlucky")
+        if wager >= 85:
+            database_helper.increment_stat(winner.id, "highstakewins")
+            database_helper.increment_stat(loser.id, "highstakeloss")
 
     async def get_multiplier(self, rarity, dupes):
         inc = (rarity - 2) / 100
@@ -1943,7 +1967,7 @@ class SenpaiGacha:
         description = ""
         for trainer in trainers:
             username = self.bot.get_user(trainer[0]).name
-            description += "\n{} - {} {}".format(username, trainer[2], trainer[1])
+            description += "\n**{}** - {} {}".format(username, trainer[2], trainer[1])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
 
@@ -1999,6 +2023,11 @@ class SenpaiGacha:
                     if shutdown > 0:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
                     await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak))
+                    database_helper.increment_stat(msg.author.id, "quizzes")
+                    if new_streak == 5:
+                        database_helper.increment_stat(msg.author.id, "streaks")
+                    if shutdown >= 40:
+                        database_helper.increment_stat(msg.author.id, "shutdowns")
 
 
 def setup(bot):

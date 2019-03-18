@@ -397,6 +397,16 @@ def get_from_jackpot(conn, id):
     except Error as e:
         print(e)
 
+def get_contribution(conn, id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT contribution FROM jackpot where id = $id"""
+        placeholders = {"id": id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def update_jackpot(conn, id, reset, new=False):
     try:
         c = conn.cursor()
@@ -530,6 +540,48 @@ def get_trainers(conn):
         return c.fetchall()
     except Error as e:
         print(e)
+
+def increment_stat(conn, id, stat):
+    try:
+        c = conn.cursor()
+        if stat == 'rolls':
+            sql = """UPDATE trainer SET rolls = rolls + 1 WHERE id = $id"""
+        elif stat == 'bricks':
+            sql = """UPDATE trainer SET bricks = bricks + 1 WHERE id = $id"""
+        elif stat == 'jackpots':
+            sql = """UPDATE trainer SET jackpots = jackpots + 1 WHERE id = $id"""
+        elif stat == 'opens':
+            sql = """UPDATE trainer SET opens = opens + 1 WHERE id = $id"""
+        elif stat == 'releases':
+            sql = """UPDATE trainer SET releases = releases + 1 WHERE id = $id"""
+        elif stat == 'trades':
+            sql = """UPDATE trainer SET trades = trades + 1 WHERE id = $id"""
+        elif stat == 'quizzes':
+            sql = """UPDATE trainer SET quizzes = quizzes + 1 WHERE id = $id"""
+        elif stat == 'streaks':
+            sql = """UPDATE trainer SET streaks = streaks + 1 WHERE id = $id"""
+        elif stat == 'shutdowns':
+            sql = """UPDATE trainer SET shutdowns = shutdowns + 1 WHERE id = $id"""
+        elif stat == 'battles':
+            sql = """UPDATE trainer SET battles = battles + 1 WHERE id = $id"""
+        elif stat == 'wins':
+            sql = """UPDATE trainer SET wins = wins + 1 WHERE id = $id"""
+        elif stat == 'underdogs':
+            sql = """UPDATE trainer SET underdogs = underdogs + 1 WHERE id = $id"""
+        elif stat == 'highstakewins':
+            sql = """UPDATE trainer SET highstakewins = highstakewins + 1 WHERE id = $id"""
+        elif stat == 'losses':
+            sql = """UPDATE trainer SET losses = losses + 1 WHERE id = $id"""
+        elif stat == 'neverlucky':
+            sql = """UPDATE trainer SET neverlucky = neverlucky + 1 WHERE id = $id"""
+        elif stat == 'highstakeloss':
+            sql = """UPDATE trainer SET highstakeloss = highstakeloss + 1 WHERE id = $id"""
+        placeholders = {"id": id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
