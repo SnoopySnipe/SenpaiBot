@@ -300,3 +300,25 @@ def get_jackpot_rewards():
         result = database.get_jackpot_rewards(conn)
         conn.close()
         return result
+
+def register(id, name):
+    conn = sqlite3.connect(db)
+    if(conn is not None):
+        return database.register(conn, id, name)
+        conn.close()
+
+def get_trainer(name):
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        result = database.get_trainer(conn, name)
+        conn.close()
+    return result
+
+def get_trainers():
+    conn = sqlite3.connect(db)
+    result = []
+    if (conn is not None):
+        result = database.get_trainers(conn)
+        conn.close()
+    return result

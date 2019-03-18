@@ -479,6 +479,58 @@ def update_stadiun(conn, insert):
     except Error as e:
         print(e)
 
+def register(conn, id, name):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM trainer WHERE name = $name"""
+        placeholders = {"name": name}
+        c.execute(sql, placeholders)
+        result = c.fetchone()
+        if result is None:
+            sql = """SELECT * FROM trainer WHERE id = $id"""
+            placeholders = {"id": id}
+            c.execute(sql, placeholders)
+            result = c.fetchone()
+            if result is None:
+                sql = """INSERT INTO trainer (id, name) VALUES ($id, $name)"""
+                placeholders = {"id": id, "name": name}
+                c.execute(sql, placeholders)
+                conn.commit()
+                return 0
+            else:
+                sql = """UPDATE trainer SET name = $name WHERE id = $id"""
+                placeholders = {"id": id, "name": name}
+                c.execute(sql, placeholders)
+                conn.commit()
+                return 1
+        else:
+            if result[0] != id:
+                return 3
+            else:
+                return 2
+    except Error as e:
+        print(e)
+        return 4
+
+def get_trainer(conn, name):
+    try:
+        c = conn.cursor()
+        sql = """SELECT * FROM trainer WHERE name = $name"""
+        placeholders = {"name": name}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def get_trainers(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id, name, rank FROM trainer ORDER BY name ASC"""
+        c.execute(sql)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
@@ -492,6 +544,7 @@ sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ba
 sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
 sql_create_fav = """CREATE TABLE IF NOT EXISTS favs (user_id integer NOT NULL, poke_id integer NOT NULL, fav_id integer PRIMARY KEY) """
 sql_create_stadium = """CREATE TABLE IF NOT EXISTS stadium (battle integer PRIMARY KEY DEFAULT 0)"""
+sql_create_trainer = """CREATE TABLE IF NOT EXISTS trainer (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rank text DEFAULT 'Pokémon Trainer', rolls integer DEFAULT 0, bricks integer DEFAULT 0, jackpots integer DEFAULT 0, opens integer DEFAULT 0, releases integer DEFAULT 0, trades integer DEFAULT 0, quizzes integer DEFAULT 0, streaks integer DEFAULT 0, shutdowns integer DEFAULT 0, battles integer DEFAULT 0, wins integer DEFAULT 0, underdogs integer DEFAULT 0, highstakewins integer DEFAULT 0, losses integer DEFAULT 0, neverlucky integer DEFAULT 0, highstakeloss integer DEFAULT 0)"""
 
 def load_pikadata(path):
     data = {}
@@ -511,6 +564,7 @@ def initialize(conn):
     create_table(conn, sql_create_bank)
     create_table(conn, sql_create_fav)
     create_table(conn, sql_create_stadium)
+    create_table(conn, sql_create_trainer)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:

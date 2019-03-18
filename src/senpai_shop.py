@@ -1863,7 +1863,6 @@ class SenpaiGacha:
             winner.name, loser.name, payout, username1, database_helper.get_pikapoints(id1), username2, database_helper.get_pikapoints(id2)
         ))
 
-
     async def get_multiplier(self, rarity, dupes):
         inc = (rarity - 2) / 100
 
@@ -1875,7 +1874,63 @@ class SenpaiGacha:
             count += 1
         return bonus, count - 1
 
+    @commands.command(name="register")
+    async def register(self, context, name=None):
+        if name is None:
+            await context.send("`Usage:`\n```!senpai register name```")
+            return
 
+        user_id = context.message.author.id
+        user = self.bot.get_user(user_id)
+        username = user.name
+
+        result = database_helper.register(user_id, name)
+
+        if result == 0:
+            await context.send("Successfully registered {} as Pokémon Trainer {}!".format(username, name))
+        elif result == 1:
+            await context.send("Successfully changed name to {}!".format(name))
+        elif result == 2:
+            await context.send("You are already registered with the name {}!".format(name))
+        elif result == 3:
+            await context.send("Someone already has the name {}!".format(name))
+
+    @commands.command("trainer")
+    async def trainer(self, context, name=None):
+        if name is None:
+            await context.send("`Usage:`\n```!senpai trainer name```")
+            return
+
+        trainer = database_helper.get_trainer(name)
+        if trainer is None:
+            await context.send("There is no registered Pokémon Trainer with the name {}!".format(name))
+            return
+
+        title = "{}'s Trainer Card"
+        description = "{} {}\n\n".format(trainer[2], trainer[1])
+        description += "**__Summoning Stats__**\n"
+        description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
+        description += "**__Quiz Stats__**\n"
+        description += "Quizzes Answered: {}\nHot Streaks: {}\nHot Streak Shutdowns: {}\n\n".format(trainer[9], trainer[10], trainer[11])
+        description += "**__Battle Stats__**\n"
+        description += "Total Battles: {}\nTotal Wins: {}\nUnderdog Wins: {}\nHigh Stake Wins: {}\nTotal Losses: {}\nNever Lucky Losses: {}\nHigh Stake Losses: {}".format(trainer[12], trainer[13], trainer[14], trainer[15], trainer[16], trainer[17], trainer[18])
+        embed = discord.Embed(title=title, description=description, color=0xffffff)
+        embed.set_thumbnail(url=self.bot.get_user(trainer[0]).avatar_url)
+        await context.send(embed=embed)
+
+    @commands.command("trainers")
+    async def trainers(self, context):
+        trainers = database_helper.get_trainers()
+        if len(trainers) < 1:
+            await context.send("There are no Pokémon Trainers registered yet!")
+            return
+        title = "All Registered Pokémon Trainers"
+        description = ""
+        for trainer in trainers:
+            username = self.bot.get_user(trainer[0]).name
+            description += "\n{} - {} {}".format(username, trainer[2], trainer[1])
+        embed = discord.Embed(title=title, description=description, color=0xdddddd)
+        await context.send(embed=embed)
 
 
     async def background_quiz(self):
