@@ -1880,6 +1880,14 @@ class SenpaiGacha:
             await context.send("`Usage:`\n```!senpai register name```")
             return
 
+        name = name.strip()
+        if " " in name:
+            await context.send("name cannot contain whitespace!")
+            return
+        if not 4 <= len(name) <= 16:
+            await context.send("name length must be between 4 and 16 characters!")
+            return
+
         user_id = context.message.author.id
         user = self.bot.get_user(user_id)
         username = user.name
@@ -1933,7 +1941,7 @@ class SenpaiGacha:
         for trainer in trainers:
             username = self.bot.get_user(trainer[0]).name
             description += "\n{} - {} {}".format(username, trainer[2], trainer[1])
-        embed = discord.Embed(title=title, description=description, color=0xdddddd)
+        embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
 
 
