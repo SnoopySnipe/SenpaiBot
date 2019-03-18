@@ -87,7 +87,7 @@ class SenpaiGacha:
     @commands.command(name="forceroll")
     async def forceroll(self, context, region=None, user_id=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send(":pikakick:")
+            await context.send("<:pikakick:556260734044995602>")
             return
 
         PRICE = 30
