@@ -1884,8 +1884,8 @@ class SenpaiGacha:
         if " " in name:
             await context.send("name cannot contain whitespace!")
             return
-        if not 4 <= len(name) <= 16:
-            await context.send("name length must be between 4 and 16 characters!")
+        if not 4 <= len(name) <= 20:
+            await context.send("name length must be between 4 and 20 characters!")
             return
 
         user_id = context.message.author.id
