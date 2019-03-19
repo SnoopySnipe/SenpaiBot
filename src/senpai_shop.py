@@ -2175,13 +2175,11 @@ class SenpaiGacha:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
                     await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak))
                     database_helper.increment_stat(msg.author.id, "quizzes")
-                    database_helper.update_exp(msg.author.id, 2)
+                    database_helper.update_exp(msg.author.id, 1)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
                     if shutdown >= 40:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
-                    if new_streak >= 5:
-                        database_helper.update_exp(msg.author.id, 3)
 
 
 def setup(bot):
