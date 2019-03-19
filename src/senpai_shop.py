@@ -2005,13 +2005,41 @@ class SenpaiGacha:
     @commands.command("join")
     async def join(self, context):
         title = "Team Invitation"
-        description = "You have been invited by 3 different teams to join their ranks! However, you can only choose one. Choose wisely - if you switch teams in the future, you lose all your progress!"
+        description = "You have been invited by 3 different teams to join their ranks - Team Electroction, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress!**"
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
         await msg.add_reaction(':electrocution:496081109558362134')
         await msg.add_reaction(':lensflare:496138997391687710')
         await msg.add_reaction(':hyperjoy:431882995289554978')
+        def check(reaction, user):
+            return user == context.message.author and str(reaction.emoji) in (':electrocution:496081109558362134', ':lensflare:496138997391687710', ':hyperjoy:431882995289554978')
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await context.send("Team invitation timed out...")
+        else:
+            if str(reaction.emoji) == ':electrocution:496081109558362134':
+                team = 'Team Electrocution'
+                thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+            elif str(reaction.emoji) == ':lensflare:496138997391687710':
+                team = 'Team Lensflare'
+                thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
+            elif str(reaction.emoji) == ':hyperjoy:431882995289554978':
+                team = 'Team Hyperjoy'
+                thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
 
-
+            title = 'Accept Team Invitation Confirmation'
+            description = "Are you sure you want to accept the invitation to join {}?\n\n**Accepting an invitation to join another team in the future will force you to leave this team as well as lose all progress including rank and exp!**".format(team)
+            embed = discord.Embed(title=title, description=description, color=0x4b0082)
+            embed.set_thumbnail(url=thumb)
+            await context.send(embed=embed)
+            def check(reaction, user):
+                return user == context.message.author and str(reaction.emoji) in ('✅', '❌')
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+            except asyncio.TimeoutError:
+                await context.send("Team invitation declined...")
+            else:
+                await context.send("Joining {}...".format(team))
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
