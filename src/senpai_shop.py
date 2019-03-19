@@ -87,7 +87,7 @@ class SenpaiGacha:
     @commands.command(name="forceroll")
     async def forceroll(self, context, region=None, user_id=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send("<:pikakick:556260734044995602>")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
             return
 
         PRICE = 30
@@ -649,7 +649,7 @@ class SenpaiGacha:
     @commands.command(name="forceopen")
     async def forceopen(self, context, user_id=None, ball=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send(":pikakick:")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
             return
 
         if user_id is None:
@@ -1027,8 +1027,8 @@ class SenpaiGacha:
             for pokemon in inventory:
                 num_pokemon += pokemon[4]
             (save_location, curr_index, remain_num) = self.draw_box(context, inventory, 0, 0)
-            file = discord.File(save_location, filename='team.png')
-            msg = await context.channel.send(username+"'s team (page " + str(page_num) +")", file=file)
+            file = discord.File(save_location, filename='party.png')
+            msg = await context.channel.send(username+"'s party (page " + str(page_num) +")", file=file)
             await msg.add_reaction("⬅")
             await msg.add_reaction("➡")
             def check(reaction, user):
@@ -1050,9 +1050,9 @@ class SenpaiGacha:
                         if(page_num not in page_indices):
                             page_indices[page_num] = (curr_index, remain_num)
                         (save_location, curr_index, remain_num) = self.draw_box(context, inventory, curr_index, remain_num)
-                        file = discord.File(save_location, filename='team.png')
+                        file = discord.File(save_location, filename='party.png')
                         await msg.delete()
-                        msg = await context.channel.send(username+"'s team (page " + str(page_num) +")", file=file)
+                        msg = await context.channel.send(username+"'s party (page " + str(page_num) +")", file=file)
                         await msg.add_reaction("⬅")
                         await msg.add_reaction("➡")
     def draw_box(self, context, inventory, index, remain_num):
@@ -1095,10 +1095,10 @@ class SenpaiGacha:
         if(remain_overflow > 0):
             index-=1
         return (save_location, index, remain_overflow)
-    @commands.command(name="team")
-    async def team(self, context, region=None, user_id=None):
+    @commands.command(name="party")
+    async def party(self, context, region=None, user_id=None):
         if region is None:
-            await context.send("`Usage:`\n```!senpai team region [user_id]```")
+            await context.send("`Usage:`\n```!senpai party region [user_id]```")
             return
         if region == 'kanto':
             region = KANTO
@@ -1119,7 +1119,7 @@ class SenpaiGacha:
         if user_id is None:
             user_id = context.message.author.id
         username = self.bot.get_user(int(user_id)).name
-        title = "{}'s {} Team: \n".format(username, region[0])
+        title = "{}'s {} Party: \n".format(username, region[0])
         description = ""
         inventory = database_helper.get_inventory(user_id, region)
         description = description + "\n**__" + region[0] + "__**"
@@ -1135,7 +1135,7 @@ class SenpaiGacha:
     @commands.command(name="forcerelease")
     async def forcerelease(self, context, user_id=None, rarity=None):
         if context.message.author.id != SNOOPY_ID:
-            await context.send(":pikakick:")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
             return
 
         if user_id is None:
@@ -1406,14 +1406,14 @@ class SenpaiGacha:
                     description = description + "\n    " + unit[0]
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
-            await context.send(":pikakick:")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
 
     @commands.command(name="sql")
     async def sql(self, context, query):
         if context.message.author.id == SNOOPY_ID:
             database_helper.run_sql(query)
         else:
-            await context.send(":pikakick:")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
 
     @commands.command(name="get")
     async def get(self, context, query):
@@ -1429,7 +1429,7 @@ class SenpaiGacha:
             else:
                 await context.send("That query yielded no results...")
         else:
-            await context.send(":pikakick:")
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
 
 
     @commands.command(name="units")
@@ -1880,7 +1880,7 @@ class SenpaiGacha:
         database_helper.increment_stat(loser.id, "battles")
         database_helper.increment_stat(winner.id, "wins")
         database_helper.increment_stat(loser.id, "losses")
-        if poke1_odds <= 30 or poke2_odds <= 30:
+        if (poke1_odds <= 30 and winner == user1) or (poke2_odds <= 30 and winner == user2):
             database_helper.increment_stat(winner.id, "underdogs")
             database_helper.increment_stat(loser.id, "neverlucky")
         if wager >= 85:
