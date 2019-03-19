@@ -334,6 +334,7 @@ class SenpaiGacha:
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
                 database_helper.increment_stat(user_id, "rolls")
+                database_helper.update_exp(user_id, 1)
                 if gacha[2] > 5:
                     jackpot = database_helper.get_jackpot(True)[0]
                     no_contributors = len(database_helper.get_jackpot_rewards())
@@ -461,6 +462,7 @@ class SenpaiGacha:
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
             database_helper.increment_stat(user_id, "rolls")
+            database_helper.update_exp(user_id, 1)
             if gacha[2] > 5:
                 jackpot = database_helper.get_jackpot(True)[0]
                 no_contributors = len(database_helper.get_jackpot_rewards())
@@ -1861,11 +1863,13 @@ class SenpaiGacha:
             loser = user2
             loser_pokemon = pokemon2
             payout = p1_win_payout
+            winner_odds = poke1_odds / 100
         else:
             winner = user2
             loser = user1
             loser_pokemon = pokemon1
             payout = p2_win_payout
+            winner_odds = poke2_odds / 100
         database_helper.adjust_points(winner.id, payout)
         database_helper.adjust_points(loser.id, -payout)
 
@@ -1886,6 +1890,7 @@ class SenpaiGacha:
         if wager >= 85:
             database_helper.increment_stat(winner.id, "highstakewins")
             database_helper.increment_stat(loser.id, "highstakeloss")
+        database_helper.update_exp(winner.id, math.ceil((payout * (1 - winner_odds)) / 5))
 
     async def get_multiplier(self, rarity, dupes):
         inc = (rarity - 2) / 100
@@ -1950,6 +1955,7 @@ class SenpaiGacha:
             trainer_team += ' '
         title = "{}'s Trainer Card".format(username)
         description = "{}{} {}\nID: {}\n\n".format(trainer_team, trainer[2], trainer[1], trainer[0])
+        description += "Total EXP Gained: {}\nEXP Until Promotion: {}\n\n".format(trainer[20, trainer[21]])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
@@ -2169,10 +2175,13 @@ class SenpaiGacha:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
                     await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak))
                     database_helper.increment_stat(msg.author.id, "quizzes")
+                    database_helper.update_exp(msg.author.id, 2)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
                     if shutdown >= 40:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
+                    if new_streak >= 5:
+                        database_helper.update_exp(msg.author.id, 3)
 
 
 def setup(bot):
