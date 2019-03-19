@@ -595,7 +595,7 @@ def get_team(conn, team):
 def get_trainer_team(conn, id):
     try:
         c = conn.cursor()
-        sql = """SELECT team FROM trainer WHERE id = $id"""
+        sql = """SELECT team, name FROM trainer WHERE id = $id"""
         placeholders = {"id": id}
         c.execute(sql, placeholders)
         return c.fetchone()

@@ -2054,7 +2054,7 @@ class SenpaiGacha:
                 elif str(reaction.emoji) == '✅':
                     database_helper.update_team(context.message.author.id, team)
                     database_helper.update_rank(context.message.author.id, 'Recruit')
-                    await context.send("{} has ")
+                    await context.send("{} has successfully joined {}!".format(database_helper.get_trainer_team(context.message.author.id)[1], team))
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
