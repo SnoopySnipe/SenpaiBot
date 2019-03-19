@@ -1981,13 +1981,13 @@ class SenpaiGacha:
             await context.send("team_emoji must be in (':electrocution:', ':lensflare:', ':hyperjoy:')")
             return
 
-        if team_emoji == ':electrocution:':
+        if ':electrocution:' in team_emoji:
             team = 'Team Electrocution'
             thumb = "https://tenor.com/xWBO.gif"
-        elif team_emoji == ':lensflare:':
+        elif ':lensflare:' in team_emoji:
             team = 'Team Lensflare'
             thumb = 'https://cdn.discordapp.com/attachments/218898501805801472/557585759041749045/received_1977381079225471.jpeg'
-        elif team_emoji == ':hyperjoy:':
+        elif ':hyperjoy:' in team_emoji:
             team = 'Team Hyperjoy'
             thumb = 'https://i.imgur.com/3kHs8Xn.jpg'
 
