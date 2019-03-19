@@ -364,3 +364,9 @@ def update_rank(id, rank):
     if (conn is not None):
         database.update_rank(conn, id, rank)
         conn.close()
+
+def update_exp(id, inc, reset=False):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_exp(conn, id, inc, reset)
+        conn.close()

@@ -622,6 +622,19 @@ def update_rank(conn, id, rank):
     except Error as e:
         print(e)
 
+def update_exp(conn, id, inc, reset):
+    try:
+        c = conn.cursor()
+        if reset:
+            sql = """UPDATE trainer SET totalxp = 0, currxp = 0 WHERE id = $id"""
+            placeholders = {"id": id}
+        else:
+            sql = """UPDATE trainer SET totalxp = totalxp + $inc, currxp = currxp + $inc WHERE id = $id"""
+            placeholders = {"id": id, "inc": inc}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
 
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (

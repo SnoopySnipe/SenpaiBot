@@ -2008,6 +2008,64 @@ class SenpaiGacha:
         embed.set_thumbnail(url=thumb)
         await context.send(embed=embed)
 
+    @commands.command("switch")
+    async def switch(self, context):
+        curr_team = database_helper.get_trainer_team(context.message.author.id)[0]
+        if curr_team == '':
+            await context.send("You have not joined a team yet!")
+            return
+
+        title = "Team Switch"
+        description = "Which team would you like to switch to?\n\n**Remember, switching teams causes you to lose all your progress!**"
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
+        await msg.add_reaction(':electrocution:496081109558362134')
+        await msg.add_reaction(':lensflare:496138997391687710')
+        await msg.add_reaction(':hyperjoy:431882995289554978')
+
+        def check(reaction, user):
+            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution') and reaction.emoji.id in (496081109558362134, 496138997391687710, 431882995289554978)
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await context.send("Team switch timed out...")
+        else:
+            if reaction.emoji.name == 'electrocution' and reaction.emoji.id == 496081109558362134:
+                team = 'Team Electrocution'
+                thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+            elif reaction.emoji.name == 'lensflare' and reaction.emoji.id == 496138997391687710:
+                team = 'Team Lensflare'
+                thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
+            elif reaction.emoji.name == 'hyperjoy' and reaction.emoji.id == 431882995289554978:
+                team = 'Team Hyperjoy'
+                thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
+
+            if curr_team == team:
+                await context.send("You are already a member of {}!".format(curr_team))
+
+            title = 'Accept Team Switch Confirmation'
+            description = "Are you sure you want to switch to {}?\n\n**Switch teams will force you to leave your current team as well as lose all progress including rank and exp!**".format(team)
+            embed = discord.Embed(title=title, description=description, color=0x4b0082)
+            embed.set_thumbnail(url=thumb)
+            msg = await context.send(embed=embed)
+            await msg.add_reaction('✅')
+            await msg.add_reaction('❌')
+
+            def check(reaction, user):
+                return user == context.message.author and str(reaction.emoji) in ('✅', '❌')
+
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+            except asyncio.TimeoutError:
+                await context.send("Team switch timed out...")
+            else:
+                if str(reaction.emoji) == '❌':
+                    await context.send("Team switch declined...")
+                elif str(reaction.emoji) == '✅':
+                    database_helper.update_team(context.message.author.id, team)
+                    database_helper.update_rank(context.message.author.id, 'Recruit')
+                    database_helper.update_exp(context.message.author.id, 0, True)
+                    await context.send("{} has successfully left {} and joined {}!".format(database_helper.get_trainer_team(context.message.author.id)[1], curr_team, team))
+
     @commands.command("join")
     async def join(self, context):
         curr_team = database_helper.get_trainer_team(context.message.author.id)[0]
