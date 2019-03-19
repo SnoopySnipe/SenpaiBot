@@ -2053,7 +2053,7 @@ class SenpaiGacha:
                     await context.send("Team invitation declined...")
                 elif str(reaction.emoji) == '✅':
                     database_helper.update_team(context.message.author.id, team)
-                    database_helper.update_rank(context.message.author.id, rank)
+                    database_helper.update_rank(context.message.author.id, 'Recruit')
                     await context.send("{} has ")
 
     async def background_quiz(self):
