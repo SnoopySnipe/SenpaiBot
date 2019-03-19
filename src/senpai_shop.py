@@ -2011,19 +2011,19 @@ class SenpaiGacha:
         await msg.add_reaction(':lensflare:496138997391687710')
         await msg.add_reaction(':hyperjoy:431882995289554978')
         def check(reaction, user):
-            return user == context.message.author and str(reaction.emoji) in (':electrocution:496081109558362134', ':lensflare:496138997391687710', ':hyperjoy:431882995289554978')
+            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution')
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Team invitation timed out...")
         else:
-            if str(reaction.emoji) == ':electrocution:496081109558362134':
+            if reaction.emoji.name == 'electrocution':
                 team = 'Team Electrocution'
                 thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
-            elif str(reaction.emoji) == ':lensflare:496138997391687710':
+            elif reaction.emoji.name == 'lensflare':
                 team = 'Team Lensflare'
                 thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
-            elif str(reaction.emoji) == ':hyperjoy:431882995289554978':
+            elif reaction.emoji.name == 'hyperjoy':
                 team = 'Team Hyperjoy'
                 thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
 
