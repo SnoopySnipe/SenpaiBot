@@ -1973,7 +1973,7 @@ class SenpaiGacha:
             trainer_team = trainer[3]
             if trainer[3] != '':
                 trainer_team += ' '
-            description += "\n**{}** - {}{} {}".format(username, trainer[3], trainer[2], trainer[1])
+            description += "\n**{}** - {}{} {}".format(username, trainer_team, trainer[2], trainer[1])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
 
