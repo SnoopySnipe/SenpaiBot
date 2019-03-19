@@ -1971,6 +1971,33 @@ class SenpaiGacha:
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
 
+    @commands.command("team")
+    async def team(self, context, team_emoji=None):
+        if team_emoji is None:
+            await context.send("`Usage:`\n```!senpai team team_emoji```")
+            return
+
+        if not team_emoji in (':electrocution:', ':lensflare:', ':hyperjoy:'):
+            await context.send("team_emoji must be in (':electrocution:', ':lensflare:', ':hyperjoy:')")
+            return
+
+        if team_emoji == ':electrocution:':
+            team = 'Team Electrocution'
+            thumb = "https://tenor.com/xWBO.gif"
+        elif team_emoji == ':lensflare:':
+            team = 'Team Lensflare'
+            thumb = 'https://cdn.discordapp.com/attachments/218898501805801472/557585759041749045/received_1977381079225471.jpeg'
+        elif team_emoji == ':hyperjoy:':
+            team = 'Team Hyperjoy'
+            thumb = 'https://i.imgur.com/3kHs8Xn.jpg'
+
+        members = database_helper.get_team(team)
+        description = ''
+        for member in members:
+            description += "\n{} - {}".format(member[0], member[1])
+        embed = discord.Embed(title=team, description=description, color=0x4b0082)
+        embed.set_thumbnail(url=thumb)
+        await context.send(embed=embed)
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()

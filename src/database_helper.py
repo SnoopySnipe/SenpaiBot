@@ -336,3 +336,11 @@ def increment_stat(id, stat):
     if (conn is not None):
         database.increment_stat(conn, id, stat)
         conn.close()
+
+def get_team(team):
+    conn = sqlite3.connect(db)
+    result = []
+    if (conn is not None):
+        result = database.get_team(conn, team)
+        conn.close()
+    return result

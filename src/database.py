@@ -582,6 +582,16 @@ def increment_stat(conn, id, stat):
     except Error as e:
         print(e)
 
+def get_team(conn, team):
+    try:
+        c = conn.cursor()
+        sql = """SELECT trainer.name, trainer.rank FROM trainer INNER JOIN rank ON trainer.rank = rank.rank WHERE trainer.team = $team ORDER BY rank.id DESC, trainer.name ASC"""
+        placeholders = {"team": team}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
@@ -596,7 +606,9 @@ sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ba
 sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
 sql_create_fav = """CREATE TABLE IF NOT EXISTS favs (user_id integer NOT NULL, poke_id integer NOT NULL, fav_id integer PRIMARY KEY) """
 sql_create_stadium = """CREATE TABLE IF NOT EXISTS stadium (battle integer PRIMARY KEY DEFAULT 0)"""
-sql_create_trainer = """CREATE TABLE IF NOT EXISTS trainer (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rank text DEFAULT 'Pokémon Trainer', rolls integer DEFAULT 0, bricks integer DEFAULT 0, jackpots integer DEFAULT 0, opens integer DEFAULT 0, releases integer DEFAULT 0, trades integer DEFAULT 0, quizzes integer DEFAULT 0, streaks integer DEFAULT 0, shutdowns integer DEFAULT 0, battles integer DEFAULT 0, wins integer DEFAULT 0, underdogs integer DEFAULT 0, highstakewins integer DEFAULT 0, losses integer DEFAULT 0, neverlucky integer DEFAULT 0, highstakeloss integer DEFAULT 0)"""
+sql_create_trainer = """CREATE TABLE IF NOT EXISTS trainer (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rank text DEFAULT 'Pokémon Trainer', rolls integer DEFAULT 0, bricks integer DEFAULT 0, jackpots integer DEFAULT 0, opens integer DEFAULT 0, releases integer DEFAULT 0, trades integer DEFAULT 0, quizzes integer DEFAULT 0, streaks integer DEFAULT 0, shutdowns integer DEFAULT 0, battles integer DEFAULT 0, wins integer DEFAULT 0, underdogs integer DEFAULT 0, highstakewins integer DEFAULT 0, losses integer DEFAULT 0, neverlucky integer DEFAULT 0, highstakeloss integer DEFAULT 0, team text NOT NULL DEFAULT '', totalxp integer DEFAULT 0, currxp integer DEFAULT 0)"""
+sql_create_ranks = """CREATE TABLE IF NOT EXISTS rank (id integer PRIMARY KEY, rank text NOT NULL UNIQUE, xp integer NOT NULL)"""
+sql_create_team = """CREATE TABLE IF NOT EXISTS team (id integer PRIMARY KEY, name text NOT NULL UNIQUE)"""
 
 def load_pikadata(path):
     data = {}
@@ -605,6 +617,28 @@ def load_pikadata(path):
             line_data = line.split("\t")
             data[int(line_data[0])] = (line_data[1], int(line_data[2]), int(line_data[3]), int(line_data[4]))
     return data
+
+def initialize_teams(conn, team_names):
+    try:
+        c = conn.cursor()
+        for name in team_names:
+            sql = """INSERT OR IGNORE INTO team (name) VALUES ($name)"""
+            placeholders = {"name": name}
+            c.execute(sql, placeholders)
+            conn.commit()
+    except Error as e:
+        print(e)
+
+def initialize_ranks(conn, ranks):
+    try:
+        c = conn.cursor()
+        for rank in ranks:
+            sql = """INSERT OR IGNORE INTO rank (rank, xp) VALUES ($rank, $xp)"""
+            placeholders = {"rank": rank[0], "xp": rank[1]}
+            c.execute(sql, placeholders)
+            conn.commit()
+    except Error as e:
+        print(e)
 
 def initialize(conn):
     create_table(conn, sql_create_pikapoints_table)
@@ -621,3 +655,11 @@ def initialize(conn):
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
         setup_pikagacha(conn, key, pokemon[key][0], pokemon[key][1], pokemon[key][2], pokemon[key][3])
+
+    teams = ['Team Electrocution', 'Team Lensflare', 'Team Hyperjoy']
+    initialize_teams(conn, teams)
+
+    ranks = [('Recruit', 0), ('Crook', 1000), ('Grunt', 2000), ('Thug', 3000), ('Associate', 5000), ('Hitman', 8000),
+             ('Officer', 13000), ('Sergeant', 21000), ('Captain', 34000), ('Lieutenant', 55000), ('Admin', 89000),
+             ('Commander', 144000), ('Boss', 233000)]
+    initialize_ranks(conn, ranks)
