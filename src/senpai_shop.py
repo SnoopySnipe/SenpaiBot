@@ -1980,18 +1980,18 @@ class SenpaiGacha:
         team = ''
         thumb = ''
 
-        if ":electrocution:" in team_emoji:
+        if ":electrocution:" in team_emoji and ":lensflare:" not in team_emoji and ":hyperjoy:" not in team_emoji:
             team = 'Team Electrocution'
-            thumb = "https://tenor.com/xWBO.gif"
-        elif ":lensflare:" in team_emoji:
+            thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+        elif ":electrocution:" not in team_emoji and ":lensflare:" in team_emoji and ":hyperjoy:" not in team_emoji:
             team = 'Team Lensflare'
-            thumb = 'https://cdn.discordapp.com/attachments/218898501805801472/557585759041749045/received_1977381079225471.jpeg'
-        elif ":hyperjoy:" in team_emoji:
+            thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
+        elif ":electrocution:" not in team_emoji and ":lensflare:" not in team_emoji and ":hyperjoy:" in team_emoji:
             team = 'Team Hyperjoy'
-            thumb = 'https://i.imgur.com/3kHs8Xn.jpg'
+            thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
 
         if team == '' and thumb == '':
-            await context.send("team_emoji must be in (':electrocution:', ':lensflare:', ':hyperjoy:')")
+            await context.send("team_emoji must be in only one of ('electrocution', 'lensflare', 'hyperjoy')")
             return
 
         members = database_helper.get_team(team)
@@ -2001,6 +2001,17 @@ class SenpaiGacha:
         embed = discord.Embed(title=team, description=description, color=0x4b0082)
         embed.set_thumbnail(url=thumb)
         await context.send(embed=embed)
+
+    @commands.command("join")
+    async def join(self, context):
+        title = "Team Invitation"
+        description = "You have been invited by 3 different teams to join their ranks! However, you can only choose one. Choose wisely - if you switch teams in the future, you lose all your progress!"
+        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
+        await msg.add_reaction(':electrocution:496081109558362134')
+        await msg.add_reaction(':lensflare:496138997391687710')
+        await msg.add_reaction(':hyperjoy:431882995289554978')
+
+
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
