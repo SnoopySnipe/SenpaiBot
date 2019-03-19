@@ -1977,9 +1977,8 @@ class SenpaiGacha:
             await context.send("`Usage:`\n```!senpai team team_emoji```")
             return
 
-        if not team_emoji in (':electrocution:', ':lensflare:', ':hyperjoy:'):
-            await context.send("team_emoji must be in (':electrocution:', ':lensflare:', ':hyperjoy:')")
-            return
+        team = ''
+        thumb = ''
 
         if ":electrocution:" in team_emoji:
             team = 'Team Electrocution'
@@ -1990,6 +1989,10 @@ class SenpaiGacha:
         elif ":hyperjoy:" in team_emoji:
             team = 'Team Hyperjoy'
             thumb = 'https://i.imgur.com/3kHs8Xn.jpg'
+
+        if team == '' and thumb == '':
+            await context.send("team_emoji must be in (':electrocution:', ':lensflare:', ':hyperjoy:')")
+            return
 
         members = database_helper.get_team(team)
         description = ''
