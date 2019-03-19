@@ -2013,7 +2013,7 @@ class SenpaiGacha:
             await context.send("You are already a member of {}!".format(curr_team))
             return
         title = "Team Invitation"
-        description = "You have been invited by 3 different teams to join their ranks - Team Electroction, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress!**"
+        description = "You have been invited by 3 different teams to join their ranks - Team Electrocution, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress!**"
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
         await msg.add_reaction(':electrocution:496081109558362134')
         await msg.add_reaction(':lensflare:496138997391687710')
