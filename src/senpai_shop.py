@@ -2031,7 +2031,9 @@ class SenpaiGacha:
             description = "Are you sure you want to accept the invitation to join {}?\n\n**Accepting an invitation to join another team in the future will force you to leave this team as well as lose all progress including rank and exp!**".format(team)
             embed = discord.Embed(title=title, description=description, color=0x4b0082)
             embed.set_thumbnail(url=thumb)
-            await context.send(embed=embed)
+            msg = await context.send(embed=embed)
+            await msg.add_reaction('✅')
+            await msg.add_reaction('❌')
             def check(reaction, user):
                 return user == context.message.author and str(reaction.emoji) in ('✅', '❌')
             try:
