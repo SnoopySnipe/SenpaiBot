@@ -1945,10 +1945,11 @@ class SenpaiGacha:
         user = self.bot.get_user(user_id)
         username = user.name
 
+        trainer_team = trainer[19]
         if trainer[19] != '':
-            trainer[19] += ' '
+            trainer_team += ' '
         title = "{}'s Trainer Card".format(username)
-        description = "{}{} {}\nID: {}\n\n".format(trainer[19], trainer[2], trainer[1], trainer[0])
+        description = "{}{} {}\nID: {}\n\n".format(trainer_team, trainer[2], trainer[1], trainer[0])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
@@ -1969,8 +1970,9 @@ class SenpaiGacha:
         description = ""
         for trainer in trainers:
             username = self.bot.get_user(trainer[0]).name
+            trainer_team = trainer[3]
             if trainer[3] != '':
-                trainer[3] += ' '
+                trainer_team += ' '
             description += "\n**{}** - {}{} {}".format(username, trainer[3], trainer[2], trainer[1])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
