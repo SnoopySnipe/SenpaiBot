@@ -651,6 +651,8 @@ def initialize(conn):
     create_table(conn, sql_create_fav)
     create_table(conn, sql_create_stadium)
     create_table(conn, sql_create_trainer)
+    create_table(conn, sql_create_ranks)
+    create_table(conn, sql_create_team)
 
     pokemon = load_pikadata('pokedata.csv')
     for key in pokemon:
