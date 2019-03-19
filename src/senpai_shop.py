@@ -2041,9 +2041,10 @@ class SenpaiGacha:
 
             if curr_team == team:
                 await context.send("You are already a member of {}!".format(curr_team))
+                return
 
             title = 'Accept Team Switch Confirmation'
-            description = "Are you sure you want to switch to {}?\n\n**Switch teams will force you to leave your current team as well as lose all progress including rank and exp!**".format(team)
+            description = "Are you sure you want to switch to {}?\n\n**Switching teams will force you to leave your current team as well as lose all progress including rank and exp!**".format(team)
             embed = discord.Embed(title=title, description=description, color=0x4b0082)
             embed.set_thumbnail(url=thumb)
             msg = await context.send(embed=embed)
