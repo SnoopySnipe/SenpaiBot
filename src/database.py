@@ -535,7 +535,7 @@ def get_trainer(conn, name):
 def get_trainers(conn):
     try:
         c = conn.cursor()
-        sql = """SELECT id, name, rank FROM trainer ORDER BY name ASC"""
+        sql = """SELECT id, name, rank, team FROM trainer ORDER BY name ASC"""
         c.execute(sql)
         return c.fetchall()
     except Error as e:
@@ -589,6 +589,36 @@ def get_team(conn, team):
         placeholders = {"team": team}
         c.execute(sql, placeholders)
         return c.fetchall()
+    except Error as e:
+        print(e)
+
+def get_trainer_team(conn, id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT team FROM trainer WHERE id = $id"""
+        placeholders = {"id": id}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
+def update_team(conn, id, team):
+    try:
+        c = conn.cursor()
+        sql = """UPDATE trainer SET team = $team WHERE id = $id"""
+        placeholders = {"id": id, "team": team}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def update_rank(conn, id, rank):
+    try:
+        c = conn.cursor()
+        sql = """UPDATE trainer SET rank = $rank WHERE id = $id"""
+        placeholders = {"id": id, "rank": rank}
+        c.execute(sql, placeholders)
+        conn.commit()
     except Error as e:
         print(e)
 

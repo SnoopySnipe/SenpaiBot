@@ -344,3 +344,23 @@ def get_team(team):
         result = database.get_team(conn, team)
         conn.close()
     return result
+
+def get_trainer_team(id):
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        result = database.get_trainer_team(conn, id)
+        conn.close()
+    return result
+
+def update_team(id, team):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_team(conn, id, team)
+        conn.close()
+
+def update_rank(id, rank):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_rank(conn, id, rank)
+        conn.close()

@@ -1945,8 +1945,10 @@ class SenpaiGacha:
         user = self.bot.get_user(user_id)
         username = user.name
 
+        if trainer[19] != '':
+            trainer[19] += ' '
         title = "{}'s Trainer Card".format(username)
-        description = "{} {}\nID: {}\n\n".format(trainer[2], trainer[1], trainer[0])
+        description = "{}{} {}\nID: {}\n\n".format(trainer[19], trainer[2], trainer[1], trainer[0])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
@@ -1967,7 +1969,9 @@ class SenpaiGacha:
         description = ""
         for trainer in trainers:
             username = self.bot.get_user(trainer[0]).name
-            description += "\n**{}** - {} {}".format(username, trainer[2], trainer[1])
+            if trainer[3] != '':
+                trainer[3] += ' '
+            description += "\n**{}** - {}{} {}".format(username, trainer[3], trainer[2], trainer[1])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         await context.send(embed=embed)
 
@@ -2004,6 +2008,10 @@ class SenpaiGacha:
 
     @commands.command("join")
     async def join(self, context):
+        curr_team = database_helper.get_trainer_team(context.message.author.id)[0]
+        if curr_team != '':
+            await context.send("You are already a member of {}!".format(curr_team))
+            return
         title = "Team Invitation"
         description = "You have been invited by 3 different teams to join their ranks - Team Electroction, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress!**"
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
@@ -2039,9 +2047,14 @@ class SenpaiGacha:
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
             except asyncio.TimeoutError:
-                await context.send("Team invitation declined...")
+                await context.send("Team invitation timed out...")
             else:
-                await context.send("Joining {}...".format(team))
+                if str(reaction.emoji) == '❌':
+                    await context.send("Team invitation declined...")
+                elif str(reaction.emoji) == '✅':
+                    database_helper.update_team(context.message.author.id, team)
+                    database_helper.update_rank(context.message.author.id, rank)
+                    await context.send("{} has ")
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()

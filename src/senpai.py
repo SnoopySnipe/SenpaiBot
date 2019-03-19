@@ -92,7 +92,7 @@ def tally_time(member):
 @bot.event
 async def on_message(message : str):
     try:
-        if ":electrocution:" in message.content:
+        if ":electrocution:" in message.content and "!senpai team" not in message.content:
             r = random.randint(1, 420)
             if 1 <= r <= 69:
                 await message.channel.send('https://tenor.com/xWBO.gif')
