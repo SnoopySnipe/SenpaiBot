@@ -384,3 +384,11 @@ def prestige(id, reset=False):
     if (conn is not None):
         database.prestige(conn, id, reset)
         conn.close()
+
+def promote(id):
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        result = database.promote(conn, id)
+        conn.close()
+    return result

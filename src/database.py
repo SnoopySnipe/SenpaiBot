@@ -595,7 +595,7 @@ def get_team(conn, team):
 def get_trainer_team(conn, id):
     try:
         c = conn.cursor()
-        sql = """SELECT team, name, rank, prestige FROM trainer WHERE id = $id"""
+        sql = """SELECT team, name, rank, prestige, currxp FROM trainer WHERE id = $id"""
         placeholders = {"id": id}
         c.execute(sql, placeholders)
         return c.fetchone()
@@ -659,6 +659,32 @@ def prestige(conn, id, reset):
             placeholders = {"id": id}
             c.execute(sql, placeholders)
             conn.commit()
+    except Error as e:
+        print(e)
+
+def promote(conn, id):
+    try:
+        trainer = get_trainer_team(conn, id)
+        if trainer is None:
+            return None
+        name = trainer[1]
+        team = trainer[0]
+        rank = trainer[2]
+        if rank in ('Pokémon Trainer', 'Boss'):
+            return None
+        next_rank = get_next_rank(conn, rank)
+        next_rank_name = next_rank[0]
+        next_rank_xp = next_rank[1]
+        curr_xp = trainer[4]
+        if curr_xp < next_rank_xp:
+            return None
+
+        c = conn.cursor()
+        sql = """UPDATE trainer SET rank = $new_rank, currxp = currxp - $next_rank_xp WHERE id = $id"""
+        placeholders = {"new_rank": next_rank_name, "next_rank_xp": next_rank_xp, "id": id}
+        c.execute(sql, placeholders)
+        conn.commit()
+        return "{} has been promoted from {} {} to {} {}!".format(name, team, rank, team, next_rank_name)
     except Error as e:
         print(e)
 
