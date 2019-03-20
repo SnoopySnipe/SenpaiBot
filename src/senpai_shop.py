@@ -1972,7 +1972,7 @@ class SenpaiGacha:
         else:
             exp_until_promotion = max(0, database_helper.get_next_rank(trainer[2])[1] - trainer[21])
 
-        description += "Total EXP Gained: {}\nEXP Gained in Current Rank: {}\nEXP Until Promotion: {}Prestige: {}\n\n".format(trainer[20], trainer[21], exp_until_promotion, trainer[22])
+        description += "Total EXP Gained: {}\nEXP Gained in Current Rank: {}\nEXP Until Promotion: {}\nPrestige: {}\n\n".format(trainer[20], trainer[21], exp_until_promotion, trainer[22])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
