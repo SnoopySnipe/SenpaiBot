@@ -290,6 +290,8 @@ class SenpaiGacha:
                 await context.send("There is nothing to roll...")
                 return
 
+            brick = True
+
             await context.send("You currently have {} pikapoints.\nRolling {} times...".format(str(balance), str(rolls)))
             database_helper.adjust_points(user_id, -(PRICE*rolls))
             for i in range(rolls):
@@ -299,10 +301,14 @@ class SenpaiGacha:
                     options = database_helper.get_roll(7, region)
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
+                    if rolls >= 50:
+                        brick = False
                 elif 1001 <= r <= 1003:
                     options = database_helper.get_roll(6, region)
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
+                    if rolls >= 50:
+                        brick = False
                 elif 1 <= r <= details[1]:
                     options = database_helper.get_roll(3, region)
                     database_helper.adjust_pity(user_id, False)
@@ -386,7 +392,7 @@ class SenpaiGacha:
                     await context.send(msg)
             balance = database_helper.get_pikapoints(user_id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
-            if rolls >= 50 and database_helper.get_contribution(user_id)[0] >= 50:
+            if brick:
                 database_helper.increment_stat(user_id, "bricks")
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
@@ -2075,6 +2081,9 @@ class SenpaiGacha:
 
     @commands.command("join")
     async def join(self, context):
+        if database_helper.get_trainer_team(context.message.author.id) is None:
+            await context.send("You have not registered yourself as a Pokémon Trainer yet!")
+            return
         curr_team = database_helper.get_trainer_team(context.message.author.id)[0]
         if curr_team != '':
             await context.send("You are already a member of {}!".format(curr_team))
