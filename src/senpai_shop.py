@@ -1427,6 +1427,9 @@ class SenpaiGacha:
     async def get(self, context, query):
         if context.message.author.id == SNOOPY_ID:
             result = database_helper.get_sql(query)
+            if result is None:
+                await context.send("That query yielded no results...")
+                return
             if len(result) > 0:
                 msg = ""
                 for row in result:
