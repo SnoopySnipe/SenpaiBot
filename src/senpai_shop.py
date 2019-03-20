@@ -1899,7 +1899,7 @@ class SenpaiGacha:
         database_helper.increment_stat(loser.id, "battles")
         database_helper.increment_stat(winner.id, "wins")
         database_helper.increment_stat(loser.id, "losses")
-        if (poke1_odds <= 30 and winner == user1) or (poke2_odds <= 30 and winner == user2):
+        if (poke1_odds <= 35 and winner == user1) or (poke2_odds <= 35 and winner == user2):
             database_helper.increment_stat(winner.id, "underdogs")
             database_helper.increment_stat(loser.id, "neverlucky")
         if wager >= 85:
