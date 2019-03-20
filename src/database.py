@@ -636,6 +636,16 @@ def update_exp(conn, id, inc, reset):
     except Error as e:
         print(e)
 
+def get_next_rank(conn, rank):
+    try:
+        c = conn.cursor()
+        sql = """SELECT rank, xp FROM rank WHERE id = (SELECT id FROM rank WHERE rank = $rank) + 1"""
+        placeholders = {"rank": rank}
+        c.execute(sql, placeholders)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,

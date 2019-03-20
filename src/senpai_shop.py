@@ -1964,7 +1964,8 @@ class SenpaiGacha:
             trainer_team += ' '
         title = "{}'s Trainer Card".format(username)
         description = "{}{} {}\nID: {}\n\n".format(trainer_team, trainer[2], trainer[1], trainer[0])
-        description += "Total EXP Gained: {}\nEXP Until Promotion: {}\n\n".format(trainer[20], trainer[21])
+        exp_until_promotion = database_helper.get_next_rank(trainer[2])
+        description += "Total EXP Gained: {}\nEXP Gained in Current Rank: {}\nEXP Until Promotion: {}\n\n".format(trainer[20], trainer[21], exp_until_promotion)
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"

@@ -370,3 +370,11 @@ def update_exp(id, inc, reset=False):
     if (conn is not None):
         database.update_exp(conn, id, inc, reset)
         conn.close()
+
+def get_next_rank(rank):
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        result = database.get_next_rank(conn, rank)
+        conn.close()
+    return result
