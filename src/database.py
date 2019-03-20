@@ -756,7 +756,7 @@ def initialize(conn):
     teams = ['Team Electrocution', 'Team Lensflare', 'Team Hyperjoy']
     initialize_teams(conn, teams)
 
-    ranks = [('Recruit', 0), ('Crook', 250), ('Grunt', 750), ('Thug', 1500), ('Associate', 2500), ('Hitman', 3750),
-             ('Officer', 5250), ('Sergeant', 7000), ('Captain', 9000), ('Lieutenant', 11250), ('Admin', 13750),
-             ('Commander', 16500), ('Boss', 20000)]
+    ranks = [('Recruit', 0), ('Crook', 250), ('Grunt', 500), ('Thug', 750), ('Associate', 1000), ('Hitman', 1250),
+             ('Officer', 1500), ('Sergeant', 1750), ('Captain', 2000), ('Lieutenant', 2250), ('Admin', 2500),
+             ('Commander', 2750), ('Boss', 3500)]
     initialize_ranks(conn, ranks)
