@@ -1964,8 +1964,15 @@ class SenpaiGacha:
             trainer_team += ' '
         title = "{}'s Trainer Card".format(username)
         description = "{}{} {}\nID: {}\n\n".format(trainer_team, trainer[2], trainer[1], trainer[0])
-        exp_until_promotion = database_helper.get_next_rank(trainer[2])[1] - trainer[21]
-        description += "Total EXP Gained: {}\nEXP Gained in Current Rank: {}\nEXP Until Promotion: {}\n\n".format(trainer[20], trainer[21], exp_until_promotion)
+
+        if trainer_team == '':
+            exp_until_promotion = 'N/A'
+        elif database_helper.get_next_rank(trainer[2]) is None:
+            exp_until_promotion = 'Eligible for Prestige!'
+        else:
+            exp_until_promotion = max(0, database_helper.get_next_rank(trainer[2])[1] - trainer[21])
+
+        description += "Total EXP Gained: {}\nEXP Gained in Current Rank: {}\nEXP Until Promotion: {}Prestige: {}\n\n".format(trainer[20], trainer[21], exp_until_promotion, trainer[22])
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
@@ -2081,6 +2088,7 @@ class SenpaiGacha:
                     database_helper.update_team(context.message.author.id, team)
                     database_helper.update_rank(context.message.author.id, 'Recruit')
                     database_helper.update_exp(context.message.author.id, 0, True)
+                    database_helper.prestige(context.message.author.id, True)
                     await context.send("{} has successfully left {} and joined {}!".format(database_helper.get_trainer_team(context.message.author.id)[1], curr_team, team))
 
     @commands.command("join")
@@ -2135,6 +2143,44 @@ class SenpaiGacha:
                     database_helper.update_team(context.message.author.id, team)
                     database_helper.update_rank(context.message.author.id, 'Recruit')
                     await context.send("{} has successfully joined {}!".format(database_helper.get_trainer_team(context.message.author.id)[1], team))
+
+    @commands.command(name="prestige")
+    async def prestige(self, context):
+        trainer = database_helper.get_trainer_team(context.message.author.id)
+        trainer_rank = trainer[2]
+        trainer_team = trainer[0]
+        if trainer_rank != 'Boss':
+            await context.send("You are ineligible to prestige!")
+            return
+
+        title = 'Prestige Confirmation'
+        description = 'Are you sure you want to prestige? Your rank will be reset but you get to flex on those below you.'
+        if trainer_team == 'Team Electrocution':
+            thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+        elif trainer_team == 'Team Lensflare':
+            thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
+        elif trainer_team == 'Team Hyperjoy':
+            thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
+        embed = discord.Embed(title=title, description=description, color=0x4b0082)
+        embed.set_thumbnail(url=thumb)
+        msg = await context.send(embed=embed)
+        await msg.add_reaction('✅')
+        await msg.add_reaction('❌')
+
+        def check(reaction, user):
+            return user == context.message.author and str(reaction.emoji) in ('✅', '❌')
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await context.send("Prestige confirmation timed out...")
+        else:
+            if str(reaction.emoji) == '❌':
+                await context.send("Prestige confirmation declined...")
+            elif str(reaction.emoji) == '✅':
+                database_helper.prestige(context.message.author.id)
+                result = database_helper.get_trainer_team(context.message.author.id)
+                await context.send("{} has prestiged and is now Prestige Level {}!".format(result[1], result[3]))
+
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()

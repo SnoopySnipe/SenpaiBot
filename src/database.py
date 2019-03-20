@@ -595,7 +595,7 @@ def get_team(conn, team):
 def get_trainer_team(conn, id):
     try:
         c = conn.cursor()
-        sql = """SELECT team, name FROM trainer WHERE id = $id"""
+        sql = """SELECT team, name, rank, prestige FROM trainer WHERE id = $id"""
         placeholders = {"id": id}
         c.execute(sql, placeholders)
         return c.fetchone()
@@ -643,6 +643,22 @@ def get_next_rank(conn, rank):
         placeholders = {"rank": rank}
         c.execute(sql, placeholders)
         return c.fetchone()
+    except Error as e:
+        print(e)
+
+def prestige(conn, id, reset):
+    try:
+        c = conn.cursor()
+        if reset:
+            sql = """UPDATE trainer SET prestige = 0 WHERE id = $id"""
+            placeholders = {"id": id}
+            c.execute(sql, placeholders)
+            conn.commit()
+        else:
+            sql = """UPDATE trainer SET prestige = prestige + 1, currxp = 0, rank = 'Recruit' WHERE id = $id"""
+            placeholders = {"id": id}
+            c.execute(sql, placeholders)
+            conn.commit()
     except Error as e:
         print(e)
 

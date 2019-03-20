@@ -378,3 +378,9 @@ def get_next_rank(rank):
         result = database.get_next_rank(conn, rank)
         conn.close()
     return result
+
+def prestige(id, reset=False):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.prestige(conn, id, reset)
+        conn.close()
