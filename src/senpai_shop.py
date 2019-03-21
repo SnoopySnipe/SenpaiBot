@@ -184,7 +184,7 @@ class SenpaiGacha:
                         elif gacha[2] == 7:
                             str_rarity = 'Mythic'
                         await context.send(
-                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(
+                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(
                                 username, str_rarity, jackpot))
                         continue
 
@@ -208,11 +208,11 @@ class SenpaiGacha:
                     msg = username + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
-                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                             jackpot, payout, ball_str)
                     elif gacha[2] == 7:
                         payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                             jackpot, jackpot * 2, payout, ball_str)
                     contributors = database_helper.get_jackpot(False)
                     for contributor in contributors:
@@ -353,7 +353,7 @@ class SenpaiGacha:
                         elif gacha[2] == 7:
                             str_rarity = 'Mythic'
                         await context.send(
-                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(
+                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(
                                 username, str_rarity, jackpot))
                         continue
 
@@ -377,11 +377,11 @@ class SenpaiGacha:
                     msg = username + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
-                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                             jackpot, payout, ball_str)
                     elif gacha[2] == 7:
                         payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                             jackpot, jackpot * 2, payout, ball_str)
                     contributors = database_helper.get_jackpot(False)
                     for contributor in contributors:
@@ -483,7 +483,7 @@ class SenpaiGacha:
                         str_rarity = 'Legendary'
                     elif gacha[2] == 7:
                         str_rarity = 'Mythic'
-                    await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 points to the jackpot, therefore the jackpot will not be reset.'.format(username, str_rarity, jackpot))
+                    await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(username, str_rarity, jackpot))
                     return
 
                 ball = random.randint(1, 10000)
@@ -506,11 +506,11 @@ class SenpaiGacha:
                 msg = username + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
-                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                         jackpot, payout, ball_str)
                 elif gacha[2] == 7:
                     payout = (jackpot * 2) // no_contributors
-                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 points to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                         jackpot, jackpot * 2, payout, ball_str)
                 contributors = database_helper.get_jackpot(False)
                 for contributor in contributors:
@@ -2189,6 +2189,64 @@ class SenpaiGacha:
                 database_helper.prestige(context.message.author.id)
                 result = database_helper.get_trainer_team(context.message.author.id)
                 await context.send("{} has prestiged and is now Prestige Level {}!".format(result[1], result[3]))
+
+    @commands.command(name="gachahelp")
+    async def gachahelp(self, context):
+        summon_help = {
+            "focus": "View all units that have a focus summoning rate",
+            "fullrelease": "Release all pokémon you have of a given rarity (and region) other than those that have been favourited",
+            "fullroll": "Summon pokémon from an optionally specified region either until you no longer can or for a specified number of times",
+            "open": "Open a ball",
+            "pity": "View your pity rate",
+            "release": "Release a pokémon for pikapoints",
+            "releasedupes": "See fullroll, but will let you kepp one pokémon of every species",
+            "roll": "Summon a pokémon from an optionally specified region"
+        }
+        account_help = {
+            "account": "See points, bag, and box",
+            "bag": "View the items in your bag",
+            "balance": "View how many usable pikapoints you have right now",
+            "bank": "View how many pikapoints you have saved in the bank",
+            "box": "View all the pokémon you have",
+            "deposit": "Deposit pikapoints into the bank",
+            "fav": "Mark a pokémon as favourited so they will not be released when calling fullrelease or releasedupes",
+            "favs": "View your favourited pokémon",
+            "party": "View the pokémon you have from a specified region in text form",
+            "points": "View how many pikapoints you have both on you and in your bank",
+            "unfav": "Unfavourite a pokémon",
+            "withdraw": "Withdraw pikapoints from the bank"
+        }
+        general_help = {
+            "jackpot": "View the current status of the jackpot",
+            "pokedex": "View the details of a given pokémon (you may specify a name or ID)",
+            "units": "View all pokémon and their rarities from a specified region"
+        }
+        other_help = {
+            "battle": "Challenge another player to a pokémon battle for a wager",
+            "trade": "Trade pokémon with another player (both players will be charged pikapoints depending on the rarities of the traded pokémon)"
+        }
+        profile_help = {
+            "join": "Join a team",
+            "prestige": "Prestige your pokémon trainer",
+            "register": "Register as a pokémon trainer",
+            "switch": "Switch teams",
+            "team": "View the members of a team",
+            "trainer": "View a trainer's details and statistics",
+            "trainers": "View all registered trainers"
+        }
+        help_menu = {
+            "Summoning Management Help": summon_help,
+            "Player & Pokémon Management Help": account_help,
+            "Trainer Profile Management Help": profile_help,
+            "General Help": general_help,
+            "Other Help": other_help
+        }
+        msg = ""
+        for help in help_menu:
+            msg += "\n\n**__{}__**".format(help)
+            for command in help_menu[help]:
+                msg += "\n**{}** - {}".format(command, help_menu[help][command])
+        await context.send(msg)
 
 
     async def background_quiz(self):
