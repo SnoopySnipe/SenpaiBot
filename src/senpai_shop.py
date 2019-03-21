@@ -395,7 +395,7 @@ class SenpaiGacha:
                     await context.send(msg)
             balance = database_helper.get_pikapoints(user_id)
             await context.send("You now have {} pikapoints.".format(str(balance)))
-            if brick:
+            if brick and rolls >= 50:
                 database_helper.increment_stat(user_id, "bricks")
         else:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
