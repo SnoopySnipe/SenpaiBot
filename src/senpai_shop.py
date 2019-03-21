@@ -105,7 +105,7 @@ class SenpaiGacha:
             rolls = balance // 30
 
             if region is None:
-                await context.send("`Usage:`\n```!senpai forceroll region user_id````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+                await context.send("`Usage:`\n\n```!senpai forceroll region user_id```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
                 return
 
             if region == 'kanto':
@@ -243,7 +243,7 @@ class SenpaiGacha:
             rolls = balance // 30
 
             if region is None:
-                await context.send("`Usage:`\n```!senpai fullroll region [no_rolls]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+                await context.send("`Usage:`\n\n```!senpai fullroll region [no_rolls]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
                 return
 
             if region == 'kanto':
@@ -528,7 +528,7 @@ class SenpaiGacha:
     @commands.command(name="pokedex")
     async def pokedex(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai pokedex pokemon_name_or_id````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai pokedex pokemon_name_or_id```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         poke_id = database_helper.get_pokemon(name)
         poke_name = database_helper.get_pokemon_name(name)
@@ -580,7 +580,7 @@ class SenpaiGacha:
     @commands.command(name="trade")
     async def trade(self, context, pokemon1=None, pokemon2=None, id2=None):
         if pokemon1 is None or pokemon2 is None or id2 is None:
-            await context.send("`Usage:`\n```!senpai trade your_pokemon their_pokemon their_id````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai trade your_pokemon their_pokemon their_id```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         id1 = context.message.author.id
 
@@ -667,7 +667,7 @@ class SenpaiGacha:
             return
 
         if user_id is None:
-            await context.send("`Usage:`\n```!senpai forceopen user_id````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai forceopen user_id```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if ball is None:
@@ -792,7 +792,7 @@ class SenpaiGacha:
     @commands.command(name="open")
     async def open(self, context, ball=None):
         if ball is None:
-            await context.send("`Usage:`\n```!senpai open ball_name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai open ball_name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if ball not in ('pokeball', 'greatball', 'ultraball', 'masterball', 'all'):
@@ -1112,7 +1112,7 @@ class SenpaiGacha:
     @commands.command(name="party")
     async def party(self, context, region=None, user_id=None):
         if region is None:
-            await context.send("`Usage:`\n```!senpai party region [user_id]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai party region [user_id]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         if region == 'kanto':
             region = KANTO
@@ -1153,7 +1153,7 @@ class SenpaiGacha:
             return
 
         if user_id is None:
-            await context.send("`Usage:`\n```!senpai forcerelease user_id````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai forcerelease user_id```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if rarity is None:
@@ -1189,7 +1189,7 @@ class SenpaiGacha:
     @commands.command(name="fullrelease")
     async def fullrelease(self, context, rarity=None, region=None):
         if rarity is None:
-            await context.send("`Usage:`\n```!senpai fullrelease rarity [region]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai fullrelease rarity [region]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         region_str = region
         if region == 'kanto':
@@ -1219,7 +1219,7 @@ class SenpaiGacha:
         if rarity == 'five':
             rarity = '5'
         elif rarity == '5':
-            await context.send("`Usage:`\n```!senpai fullrelease five [region]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai fullrelease five [region]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if rarity not in ('3', '4', '5'):
@@ -1249,7 +1249,7 @@ class SenpaiGacha:
     @commands.command(name="releasedupes")
     async def releasedupes(self, context, rarity=None, region=None):
         if rarity is None:
-            await context.send("`Usage:`\n```!senpai releasedupes rarity [region]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai releasedupes rarity [region]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         region_str = region
         if region == 'kanto':
@@ -1279,7 +1279,7 @@ class SenpaiGacha:
         if rarity == 'five':
             rarity = '5'
         elif rarity == '5':
-            await context.send("`Usage:`\n```!senpai releasedupes five [region]````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai releasedupes five [region]```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if rarity not in ('3', '4', '5'):
@@ -1311,7 +1311,7 @@ class SenpaiGacha:
     @commands.command(name="release")
     async def release(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai release pokemon_name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai release pokemon_name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         pokemon = database_helper.get_pokemon(name)
         if pokemon is not None:
@@ -1338,7 +1338,7 @@ class SenpaiGacha:
     @commands.command(name="fav")
     async def fav(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai fav pokemon_name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai fav pokemon_name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         pokemon = database_helper.get_pokemon(name)
@@ -1364,7 +1364,7 @@ class SenpaiGacha:
     @commands.command(name="unfav")
     async def unfav(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai unfav pokemon_name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai unfav pokemon_name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         pokemon = database_helper.get_pokemon(name)
@@ -1452,7 +1452,7 @@ class SenpaiGacha:
     @commands.command(name="units")
     async def units(self, context, region=None):
         if region is None:
-            await context.send("`Usage:`\n```!senpai units region````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai units region```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         if region == 'kanto':
             region = KANTO
@@ -1600,7 +1600,7 @@ class SenpaiGacha:
     @commands.command(name="deposit")
     async def deposit(self, context, amount=None):
         if amount is None:
-            await context.send("`Usage:`\n```!senpai deposit amount````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai deposit amount```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         user_id = context.message.author.id
@@ -1640,7 +1640,7 @@ class SenpaiGacha:
     @commands.command(name="withdraw")
     async def withdraw(self, context, amount=None):
         if amount is None:
-            await context.send("`Usage:`\n```!senpai withdraw amount````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai withdraw amount```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         user_id = context.message.author.id
@@ -1680,7 +1680,7 @@ class SenpaiGacha:
     @commands.command(name="battle")
     async def battle(self, context, id2=None, wager=None):
         if id2 is None or wager is None:
-            await context.send("`Usage:`\n```!senpai battle their_id wager````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai battle their_id wager```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         if database_helper.get_stadium():
@@ -1924,7 +1924,7 @@ class SenpaiGacha:
     @commands.command(name="register")
     async def register(self, context, name=None):
         if name is None or name.strip() == "":
-            await context.send("`Usage:`\n```!senpai register name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai register name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         name = name.strip()
@@ -1956,7 +1956,7 @@ class SenpaiGacha:
     @commands.command("trainer")
     async def trainer(self, context, name=None):
         if name is None:
-            await context.send("`Usage:`\n```!senpai trainer name````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai trainer name```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         trainer = database_helper.get_trainer(name)
@@ -2012,7 +2012,7 @@ class SenpaiGacha:
     @commands.command("team")
     async def team(self, context, team_emoji=None):
         if team_emoji is None:
-            await context.send("`Usage:`\n```!senpai team team_emoji````Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!senpai team team_emoji```\n`Use !senpai gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
         team = ''
