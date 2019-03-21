@@ -2191,7 +2191,7 @@ class SenpaiGacha:
                 await context.send("{} has prestiged and is now Prestige Level {}!".format(result[1], result[3]))
 
     @commands.command(name="gachahelp")
-    async def gachahelp(self, context):
+    async def gachahelp(self, context, page=0):
         summon_help = {
             "focus": "View all units that have a focus summoning rate",
             "fullrelease": "Release all pokémon you have of a given rarity (and region) other than those that have been favourited",
@@ -2234,20 +2234,39 @@ class SenpaiGacha:
             "trainer": "View a trainer's details and statistics",
             "trainers": "View all registered trainers"
         }
-        help_menu = {
-            "Summoning Management Help": summon_help,
-            "Player & Pokémon Management Help": account_help,
-            "Trainer Profile Management Help": profile_help,
-            "General Help": general_help,
-            "Other Help": other_help
-        }
-        msg = ""
-        for help in help_menu:
-            msg += "\n\n**__{}__**".format(help)
-            for command in help_menu[help]:
-                msg += "\n**{}** - {}".format(command, help_menu[help][command])
-        await context.send(msg)
+        help_menu = [
+            ("Summoning Management Help", summon_help),
+            ("Player & Pokémon Management Help", account_help),
+            ("Trainer Profile Management Help", profile_help),
+            ("General Help", general_help),
+            ("Other Help", other_help)
+        ]
+        page_title = help_menu[page][0]
+        commands = help_menu[page][1]
+        title = "**__{}__**".format(page_title)
+        description = ''
+        for command in commands:
+            description += "\n**{}** - {}".format(command, commands[command])
+        description += "\n\n**Note that some commands can be called with a user id to view that user's details instead of your own**"
+        sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000000))
+        if 1 <= page <= 4:
+            await msg.add_reaction("⬅")
+        if 0 <= page <= 3:
+            await msg.add_reaction("➡")
 
+        def check(reaction, user):
+            return user == context.message.author and str(reaction.emoji) in ('⬅', '➡')
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+        except asyncio.TimeoutError:
+            return
+        else:
+            if str(reaction.emoji) == '⬅' and 1 <= page <= 4:
+                await sent_msg.delete()
+                await context.invoke(self.gachahelp, page - 1)
+            elif str(reaction.emoji) == '➡' and 0 <= page <= 3:
+                await sent_msg.delete()
+                await context.invoke(self.gachahelp, page + 1)
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
