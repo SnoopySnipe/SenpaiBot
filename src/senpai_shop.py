@@ -2250,9 +2250,9 @@ class SenpaiGacha:
         description += "\n\n**Note that some commands can be called with a user id to view that user's details instead of your own**"
         sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000000))
         if 1 <= page <= 4:
-            await msg.add_reaction("⬅")
+            await sent_msg.add_reaction("⬅")
         if 0 <= page <= 3:
-            await msg.add_reaction("➡")
+            await sent_msg.add_reaction("➡")
 
         def check(reaction, user):
             return user == context.message.author and str(reaction.emoji) in ('⬅', '➡')
