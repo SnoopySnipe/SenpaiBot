@@ -2255,7 +2255,7 @@ class SenpaiGacha:
             await sent_msg.add_reaction("➡")
 
         def check(reaction, user):
-            return user == context.message.author and str(reaction.emoji) in ('⬅', '➡')
+            return user == context.message.author and ((str(reaction.emoji) == '⬅' and 1 <= page <= 4) or (str(reaction.emoji) == '➡' and 0 <= page <= 3))
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
         except asyncio.TimeoutError:
