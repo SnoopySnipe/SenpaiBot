@@ -585,7 +585,7 @@ def increment_stat(conn, id, stat):
 def get_team(conn, team):
     try:
         c = conn.cursor()
-        sql = """SELECT trainer.name, trainer.rank FROM trainer INNER JOIN rank ON trainer.rank = rank.rank WHERE trainer.team = $team ORDER BY rank.id DESC, trainer.name ASC"""
+        sql = """SELECT trainer.name, trainer.rank, trainer.id FROM trainer INNER JOIN rank ON trainer.rank = rank.rank WHERE trainer.team = $team ORDER BY rank.id DESC, trainer.name ASC"""
         placeholders = {"team": team}
         c.execute(sql, placeholders)
         return c.fetchall()
@@ -685,6 +685,58 @@ def promote(conn, id):
         c.execute(sql, placeholders)
         conn.commit()
         return "{} has been promoted from {} {} to {} {}!".format(name, team, rank, team, next_rank_name)
+    except Error as e:
+        print(e)
+
+def team_split(conn, id1, id2, shutdown, gain):
+    try:
+        c = conn.cursor()
+        sql = """SELECT team FROM trainer WHERE id = $id"""
+        ph = {"id": id1}
+        c.execute(sql, ph)
+        p1_team = c.fetchone()
+        if p1_team is None:
+            return None
+        elif p1_team[0] == '':
+            return None
+        else:
+            p1_team = p1_team[0]
+
+        ph = {"id": id2}
+        c.execute(sql, ph)
+        p2_team = c.fetchone()
+
+        sql = """SELECT count(*) FROM trainer WHERE team = $team"""
+        ph = {"team": p1_team}
+        c.execute(sql, ph)
+        team1_size = c.fetchone()
+        team1_size = team1_size[0]
+
+        if p2_team is None:
+            team_multiplier = 1
+        elif p2_team[0] == '':
+            team_multiplier = 1
+        else:
+            p2_team = p2_team[0]
+            if p1_team == p2_team:
+                shutdown = 1
+
+            ph = {"team": p2_team}
+            c.execute(sql, ph)
+            team2_size = c.fetchone()
+            team2_size = team2_size[0]
+
+            team_multiplier = team2_size/team1_size
+
+        sql = """SELECT rank.id, trainer.prestige FROM rank INNER JOIN trainer ON rank.rank = trainer.rank WHERE trainer.id = $id"""
+        ph = {"id": id1}
+        c.execute(sql, ph)
+        trainer_details = c.fetchone()
+        trainer_rank = trainer_details[0]
+        trainer_prestige = trainer_details[1]
+
+        return min(round((((max(10, trainer_rank - 1 + 12 * trainer_prestige)) * team_multiplier) + (5 * (shutdown - 1))) / (team1_size - 1)), gain)
+
     except Error as e:
         print(e)
 

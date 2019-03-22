@@ -2331,7 +2331,15 @@ class SenpaiGacha:
                     elif new_streak % 5 == 0 and new_streak >= 20:
                         database_helper.add_item(msg.author.id, 4)
                         ball_msg = "You got a Master Ball!"
-                    await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}\n{}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak, ball_msg))
+                    team_split = database_helper.team_split(msg.author.id, streak_user, streak, gain)
+                    team_split_msg = ''
+                    if team_split is not None:
+                        team_name = database_helper.get_trainer_team(msg.author.id)[0]
+                        team = database_helper.get_team(team_name)
+                        for member in team:
+                            database_helper.adjust_points(member[2], team_split)
+                        team_split_msg = "All other {} members received {} pikapoints!".format(team_name, team_split)
+                    await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\n\nStreak: {}\n{}\n\n{}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak, ball_msg, team_split_msg))
                     database_helper.increment_stat(msg.author.id, "quizzes")
                     database_helper.update_exp(msg.author.id, 1)
                     promote = database_helper.promote(msg.author.id)

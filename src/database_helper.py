@@ -392,3 +392,11 @@ def promote(id):
         result = database.promote(conn, id)
         conn.close()
     return result
+
+def team_split(id1, id2, shutdown, gain):
+    conn = sqlite3.connect(db)
+    result = None
+    if (conn is not None):
+        result = database.team_split(conn, id1, id2, shutdown, gain)
+        conn.close()
+    return result
