@@ -2299,7 +2299,7 @@ class SenpaiGacha:
                     return m.content == pokemon and m.channel == channel
 
                 try:
-                    msg = await self.bot.wait_for('message', timeout=300.0, check=check)
+                    msg = await self.bot.wait_for('message', timeout=600.0, check=check)
                 except asyncio.TimeoutError:
                     await channel.send("It's... {}!".format(pokemon))
                 else:
@@ -2309,8 +2309,8 @@ class SenpaiGacha:
                     streak = streaker[1]
                     shutdown = 0
                     if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
-                        shutdown = 10 * (streak - 1)
-                    gain = min(30 + 15 * curr_streak, 90) + shutdown
+                        shutdown = 5 * (streak - 1)
+                    gain = min(20 + 10 * curr_streak, 60) + shutdown
                     database_helper.adjust_points(msg.author.id, gain)
                     balance = database_helper.get_pikapoints(msg.author.id)
                     database_helper.update_streak(msg.author.id)
@@ -2318,7 +2318,20 @@ class SenpaiGacha:
                     shutdown_msg = ''
                     if shutdown > 0:
                         shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
-                    await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak))
+                    ball_msg = ''
+                    if new_streak == 5:
+                        database_helper.add_item(msg.author.id, 1)
+                        ball_msg = "You got a Poké Ball!"
+                    elif new_streak == 10:
+                        database_helper.add_item(msg.author.id, 2)
+                        ball_msg = "You got a Great Ball!"
+                    elif new_streak == 15:
+                        database_helper.add_item(msg.author.id, 3)
+                        ball_msg = "You got a an Ultra Ball!"
+                    elif new_streak % 5 == 0 and new_streak >= 20:
+                        database_helper.add_item(msg.author.id, 4)
+                        ball_msg = "You got a Master Ball!"
+                    await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\nStreak: {}\n{}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak, ball_msg))
                     database_helper.increment_stat(msg.author.id, "quizzes")
                     database_helper.update_exp(msg.author.id, 1)
                     promote = database_helper.promote(msg.author.id)
@@ -2326,7 +2339,7 @@ class SenpaiGacha:
                         await context.send(promote)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
-                    if shutdown >= 40:
+                    if shutdown >= 20:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
 
 
