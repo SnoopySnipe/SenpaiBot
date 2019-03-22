@@ -2309,7 +2309,7 @@ class SenpaiGacha:
                     streak = streaker[1]
                     shutdown = 0
                     if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
-                        shutdown = 5 * (streak - 1)
+                        shutdown = 10 * (streak - 1)
                     gain = min(20 + 10 * curr_streak, 60) + shutdown
                     database_helper.adjust_points(msg.author.id, gain)
                     balance = database_helper.get_pikapoints(msg.author.id)
@@ -2339,7 +2339,7 @@ class SenpaiGacha:
                         await context.send(promote)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
-                    if shutdown >= 20:
+                    if shutdown >= 40:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
 
 
