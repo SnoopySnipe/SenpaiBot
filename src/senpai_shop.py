@@ -2192,48 +2192,48 @@ class SenpaiGacha:
 
     @commands.command(name="gachahelp")
     async def gachahelp(self, context, page=0):
-        summon_help = {
-            "focus": "View all units that have a focus summoning rate",
-            "fullrelease": "Release all pokémon you have of a given rarity (and region) other than those that have been favourited",
-            "fullroll": "Summon pokémon from an optionally specified region either until you no longer can or for a specified number of times",
-            "open": "Open a ball",
-            "pity": "View your pity rate",
-            "release": "Release a pokémon for pikapoints",
-            "releasedupes": "See fullroll, but will let you kepp one pokémon of every species",
-            "roll": "Summon a pokémon from an optionally specified region"
-        }
-        account_help = {
-            "account": "See points, bag, and box",
-            "bag": "View the items in your bag",
-            "balance": "View how many usable pikapoints you have right now",
-            "bank": "View how many pikapoints you have saved in the bank",
-            "box": "View all the pokémon you have",
-            "deposit": "Deposit pikapoints into the bank",
-            "fav": "Mark a pokémon as favourited so they will not be released when calling fullrelease or releasedupes",
-            "favs": "View your favourited pokémon",
-            "party": "View the pokémon you have from a specified region in text form",
-            "points": "View how many pikapoints you have both on you and in your bank",
-            "unfav": "Unfavourite a pokémon",
-            "withdraw": "Withdraw pikapoints from the bank"
-        }
-        general_help = {
-            "jackpot": "View the current status of the jackpot",
-            "pokedex": "View the details of a given pokémon (you may specify a name or ID)",
-            "units": "View all pokémon and their rarities from a specified region"
-        }
-        other_help = {
-            "battle": "Challenge another player to a pokémon battle for a wager",
-            "trade": "Trade pokémon with another player (both players will be charged pikapoints depending on the rarities of the traded pokémon)"
-        }
-        profile_help = {
-            "join": "Join a team",
-            "prestige": "Prestige your pokémon trainer",
-            "register": "Register as a pokémon trainer",
-            "switch": "Switch teams",
-            "team": "View the members of a team",
-            "trainer": "View a trainer's details and statistics",
-            "trainers": "View all registered trainers"
-        }
+        summon_help = [
+            ("focus", "View all pokémon that have a focus summoning rate"),
+            ("fullrelease", "Release all pokémon you have of a given rarity (and region) other than those that have been favourited"),
+            ("fullroll", "Summon pokémon from an optionally specified region either until you no longer can or for a specified number of times"),
+            ("open", "Open a specified ball from your bag"),
+            ("pity", "View your pity rates"),
+            ("release", "Release a pokémon for pikapoints"),
+            ("releasedupes", "See fullroll, but will let you keep one pokémon of every species"),
+            ("roll", "Summon a pokémon from an optionally specified region")
+        ]
+        account_help = [
+            ("account", "See points, bag, and box"),
+            ("bag", "View the items in your bag"),
+            ("balance", "View how many usable pikapoints you have right now"),
+            ("bank", "View how many pikapoints you have saved in the bank"),
+            ("box", "View all the pokémon you have"),
+            ("deposit", "Deposit pikapoints into the bank"),
+            ("fav", "Mark a pokémon as favourited so they will not be released when calling fullrelease or releasedupes"),
+            ("favs", "View your favourited pokémon"),
+            ("party", "View the pokémon you have from a specified region in text form"),
+            ("points", "View how many pikapoints you have both on you and in your bank"),
+            ("unfav", "Unfavourite a pokémon"),
+            ("withdraw", "Withdraw pikapoints from the bank")
+        ]
+        general_help = [
+            ("jackpot", "View the current status of the jackpot"),
+            ("pokedex", "View the details of a given pokémon (you may specify a name or ID)"),
+            ("units", "View all pokémon and their rarities from a specified region")
+        ]
+        other_help = [
+            ("battle", "Challenge another player to a pokémon battle for a wager of pikapoints"),
+            ("trade", "Trade pokémon with another player (both players will be charged pikapoints depending on the rarities of the traded pokémon)")
+        ]
+        profile_help = [
+            ("join", "Join a team"),
+            ("prestige", "Prestige your pokémon trainer"),
+            ("register", "Register as a pokémon trainer"),
+            ("switch", "Switch teams"),
+            ("team", "View the members of a team"),
+            ("trainer", "View a trainer's details and statistics"),
+            ("trainers", "View all registered trainers")
+        ]
         help_menu = [
             ("Summoning Management Help", summon_help),
             ("Player & Pokémon Management Help", account_help),
@@ -2246,7 +2246,7 @@ class SenpaiGacha:
         title = "**__{}__**".format(page_title)
         description = ''
         for command in commands:
-            description += "\n**{}** - {}".format(command, commands[command])
+            description += "\n**{}** - {}".format(command[0], command[1])
         description += "\n\n**Note that some commands can be called with a user id to view that user's details instead of your own**"
         sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000000))
         if 1 <= page <= 4:
