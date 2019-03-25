@@ -2289,7 +2289,7 @@ class SenpaiGacha:
         if(channel is None):
             return
         while True:
-            t = random.randint(30, 30)
+            t = random.randint(600, 1800)
             high_streak = database_helper.get_high_streak()
             if high_streak is not None:
                 next_quiz = datetime.datetime.now() + datetime.timedelta(seconds=t)
