@@ -41,7 +41,7 @@ class Senpai8ball:
     # Answers question with a yes or no
     @commands.command(name="8ball")
     async def _8ball(self, context):
-        offset = len("!senpai 8ball")
+        offset = len("!8ball")
 
         question = context.message.content[offset+1:]
 

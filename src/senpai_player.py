@@ -192,7 +192,7 @@ class SenpaiPlayer:
             self.repeat = False
             await context.send("`repeat has been turned off`")
         else:
-            await context.send("`usage: !senpai repeat on/off`")
+            await context.send("`usage: !repeat on/off`")
 
 
     async def _vol_command(self, context, new_volume):
@@ -226,7 +226,7 @@ class SenpaiPlayer:
     @commands.command()
     async def playstream(self, context, url=None):
         if (not url):
-            await context.send("`usage: !senpai playstream youtube-link`")
+            await context.send("`usage: !playstream youtube-link`")
             return
 
         if (not context.message.author.voice):
@@ -256,7 +256,7 @@ class SenpaiPlayer:
     @commands.command(name="play")
     async def playlocal(self, context, url=None):
         if (not url):
-            await context.send("`usage: !senpai play youtube-link`")
+            await context.send("`usage: !play youtube-link`")
             return
 
         if (not context.message.author.voice):

@@ -11,18 +11,18 @@ class SenpaiPolls:
 
     @commands.group(invoke_without_command=True)
     async def poll(self, context, *arg):
-        offset = len("!senpai poll")
+        offset = len("!poll")
         details = context.message.content[offset + 1:]
         if len(details) == 0:
             await context.send("`Usage:\n" +
-                               "!senpai poll create [description]\n" +
-                               "!senpai poll create [description] [option1] [option2] ...\n" +
-                               "!senpai poll remove [poll_number]\n" +
-                               "!senpai poll remove [poll_number] [option_number]\n" +
-                               "!senpai poll add [poll_number] [option]\n" +
-                               "!senpai poll view\n" +
-                               "!senpai poll view [poll_number]\n" +
-                               "!senpai poll vote [poll_number] [option_number]`")
+                               "!poll create [description]\n" +
+                               "!poll create [description] [option1] [option2] ...\n" +
+                               "!poll remove [poll_number]\n" +
+                               "!poll remove [poll_number] [option_number]\n" +
+                               "!poll add [poll_number] [option]\n" +
+                               "!poll view\n" +
+                               "!poll view [poll_number]\n" +
+                               "!poll vote [poll_number] [option_number]`")
             return
 
         if arg[0] == "create":
@@ -36,7 +36,7 @@ class SenpaiPolls:
                     options.append(arg[i])
                 await context.send("New poll added: ", embed=self.poll_list.add_poll(arg[1], options=options))
             else:
-                await context.send("`Usage: !senpai poll create \"description\" \"option1\" \"option2\" ...`")
+                await context.send("`Usage: !poll create \"description\" \"option1\" \"option2\" ...`")
 
         else:
             await context.send("`Command not found`")
@@ -45,8 +45,8 @@ class SenpaiPolls:
     async def remove(self, context, index1=None, index2=None):
         if index1 is None and index2 is None:
             await context.send("`Usage:\n" +
-                               "!senpai poll remove [poll_number]\n" +
-                               "!senpai poll remove [poll_number] [option_number]`")
+                               "!poll remove [poll_number]\n" +
+                               "!poll remove [poll_number] [option_number]`")
             return
 
         if index1 and index2 is None:
@@ -67,7 +67,7 @@ class SenpaiPolls:
     @poll.command()
     async def add(self, context, index=None, option=None):
         if index is None or option is None:
-            await context.send ("`Usage: !senpai poll add [poll_number] [option]`")
+            await context.send ("`Usage: !poll add [poll_number] [option]`")
             return
 
         try:
@@ -80,7 +80,7 @@ class SenpaiPolls:
     @poll.command()
     async def vote(self, context, poll=None, option=None):
         if poll is None or option is None:
-            await context.send("`Usage: !senpai poll vote [poll_number] [option_number]`")
+            await context.send("`Usage: !poll vote [poll_number] [option_number]`")
             return
         try:
             poll_i = int(poll)
@@ -105,7 +105,7 @@ class SenpaiPolls:
     @poll.command()
     async def votekick(self, context, name=None):
         if name is None:
-            await context.send("`Usage: !senpai poll votekick [name]`")
+            await context.send("`Usage: !poll votekick [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Kick ' + name + '?'))
         await msg.add_reaction("✅")
@@ -114,7 +114,7 @@ class SenpaiPolls:
     @poll.command()
     async def votegay(self, context, name=None):
         if name is None:
-            await context.send("`Usage: !senpai poll votegay [name]`")
+            await context.send("`Usage: !poll votegay [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Is ' + name + ' gay?'))
         await msg.add_reaction("✅")
@@ -123,7 +123,7 @@ class SenpaiPolls:
     @poll.command()
     async def votereport(self, context, name=None):
         if name is None:
-            await context.send("`Usage: !senpai poll votereport [name]`")
+            await context.send("`Usage: !poll votereport [name]`")
             return
         msg = await context.send("New poll added: ", embed=self.poll_list.add_poll('Report ' + name + '?'))
         await msg.add_reaction("✅")

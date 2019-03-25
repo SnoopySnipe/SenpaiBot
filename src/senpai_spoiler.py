@@ -5,13 +5,13 @@ from discord.ext import commands
 class SenpaiSpoiler:
     @commands.command(name="spoiler")
     async def _spoiler(self, context, *arg):
-        offset = len("!senpai spoiler")
+        offset = len("!spoiler")
         msg = context.message.content[offset+1:]
 
         # check if there is a message
         if (len(msg) == 0 or len(arg) == 1):
             await context.send("`NO MESSAGE BAKA!!`")
-            await context.send("`Usage:\n" + "!senpai spoiler [title] [msg]`")
+            await context.send("`Usage:\n" + "!spoiler [title] [msg]`")
             return
         else:
             title = arg[0]

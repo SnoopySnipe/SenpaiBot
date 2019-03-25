@@ -27,7 +27,7 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ## Features
 
 ### Commands
-** all commands must prefix with !senpai **
+** all commands must prefix with !**
 ```
 !senpai
   8ball <question> : answers a yes/no question

@@ -20,7 +20,7 @@ LOGS_CHANNEL_ID = 540189209898647554
 DESCRIPTION = '''The senpai of the server.'''
 
 # initialize bot
-bot = commands.Bot(command_prefix="!senpai ", description=DESCRIPTION)
+bot = commands.Bot(command_prefix="!", description=DESCRIPTION)
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -92,7 +92,7 @@ def tally_time(member):
 @bot.event
 async def on_message(message : str):
     try:
-        if ":electrocution:" in message.content and "!senpai team" not in message.content:
+        if ":electrocution:" in message.content and "!team" not in message.content:
             r = random.randint(1, 420)
             if 1 <= r <= 69:
                 await message.channel.send('https://tenor.com/xWBO.gif')

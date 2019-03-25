@@ -11,15 +11,15 @@ class SenpaiEvents:
     # Manages events
     @commands.group(invoke_without_command=True)
     async def event(self, context, *arg):
-        offset = len("!senpai event")
+        offset = len("!event")
         question = context.message.content[offset+1:]
         # check for action arguments
         if (len(question) == 0):
             await context.send("`Usage:\n" +
-                                "!senpai event list\n" +
-                                "!senpai event create [event name] [event time]\n" +
-                                "!senpai event join [event number]\n" +
-                                "!senpai event leave [event number]`")
+                                "!event list\n" +
+                                "!event create [event name] [event time]\n" +
+                                "!event join [event number]\n" +
+                                "!event leave [event number]`")
             return
 
         res = "Something went wrong"
@@ -29,7 +29,7 @@ class SenpaiEvents:
                 embed_msg = new_event.to_embed_msg(index)
                 await context.send("New event added: ", embed=embed_msg)
             else:
-                await context.send("Usage: !senpai event create \"event name\" \"event time\"")
+                await context.send("Usage: !event create \"event name\" \"event time\"")
         else:
             await context.send("Command not found!")
 
@@ -41,7 +41,7 @@ class SenpaiEvents:
     @event.command()
     async def join(self, context, index=None):
         if (index is None):
-            await context.send("Usage: !senpai event join [event number]")
+            await context.send("Usage: !event join [event number]")
             return
 
         try:
@@ -55,7 +55,7 @@ class SenpaiEvents:
     @event.command()
     async def leave(self, context, index=None):
         if (index is None):
-            await context.send("Usage: !senpai event leave [event number]")
+            await context.send("Usage: !event leave [event number]")
             return
 
         try:
@@ -68,7 +68,7 @@ class SenpaiEvents:
     @event.command()
     async def remove(self, context, index=None):
         if (index is None):
-            await context.send("Usage: !senpai event remove [event number]")
+            await context.send("Usage: !event remove [event number]")
             return
 
         try:

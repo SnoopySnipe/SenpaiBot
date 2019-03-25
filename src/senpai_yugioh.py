@@ -13,13 +13,13 @@ class SenpaiYugioh:
 
     @commands.command()
     async def yugioh(self, context):
-        offset = len("!senpai yugioh")
+        offset = len("!yugioh")
 
         card_name = context.message.content[offset+1:].strip()
 
         # check if user actually asked a question
         if (len(card_name) == 0):
-            await context.send("`Usage: !senpai yugioh [card name]`")
+            await context.send("`Usage: !yugioh [card name]`")
             return
 
         tmp_list = card_name.split()

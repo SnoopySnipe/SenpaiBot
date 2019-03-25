@@ -13,7 +13,7 @@ class SenpaiWarframe:
 
     @commands.command()
     async def codex(self, context):
-        offset = len("!senpai codex")
+        offset = len("!codex")
 
         mod_name = context.message.content[offset+1:].strip()
 
