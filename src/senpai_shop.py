@@ -2043,12 +2043,18 @@ class SenpaiGacha:
     @commands.command("switch")
     async def switch(self, context):
         curr_team = database_helper.get_trainer_team(context.message.author.id)[0]
+        COST = 420
         if curr_team == '':
             await context.send("You have not joined a team yet!")
             return
 
+        balance = database_helper.get_pikapoints(context.message.author.id)
+        if balance < COST:
+            await context.send("Switching teams costs {} pikapoints! You currently only have {} pikapoints.".format(COST, balance))
+            return
+
         title = "Team Switch"
-        description = "Which team would you like to switch to?\n\n**Remember, switching teams causes you to lose all your progress!**"
+        description = "Which team would you like to switch to?\n\n**Remember, switching teams causes you to lose all your progress and costs {} pikapoints!**".format(COST)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
         await msg.add_reaction(':electrocution:496081109558362134')
         await msg.add_reaction(':lensflare:496138997391687710')
@@ -2076,7 +2082,7 @@ class SenpaiGacha:
                 return
 
             title = 'Accept Team Switch Confirmation'
-            description = "Are you sure you want to switch to {}?\n\n**Switching teams will force you to leave your current team as well as lose all progress including rank and exp!**".format(team)
+            description = "Are you sure you want to switch to {}?\n\n**Switching teams will force you to leave your current team as well as lose all progress including rank and exp! You will also be charged {} pikapoints.**".format(team, COST)
             embed = discord.Embed(title=title, description=description, color=0x4b0082)
             embed.set_thumbnail(url=thumb)
             msg = await context.send(embed=embed)
@@ -2098,7 +2104,8 @@ class SenpaiGacha:
                     database_helper.update_rank(context.message.author.id, 'Recruit')
                     database_helper.update_exp(context.message.author.id, 0, True)
                     database_helper.prestige(context.message.author.id, True)
-                    await context.send("{} has successfully left {} and joined {}!".format(database_helper.get_trainer_team(context.message.author.id)[1], curr_team, team))
+                    database_helper.adjust_points(context.message.author.id, -COST)
+                    await context.send("{} has successfully left {} and joined {}! They now have {} pikapoints.".format(database_helper.get_trainer_team(context.message.author.id)[1], curr_team, team, database_helper.get_pikapoints(context.message.author.id)))
 
     @commands.command("join")
     async def join(self, context):
@@ -2110,7 +2117,7 @@ class SenpaiGacha:
             await context.send("You are already a member of {}!".format(curr_team))
             return
         title = "Team Invitation"
-        description = "You have been invited by 3 different teams to join their ranks - Team Electrocution, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress!**"
+        description = "You have been invited by 3 different teams to join their ranks - Team Electrocution, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress and will be charged pikapoints!**"
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
         await msg.add_reaction(':electrocution:496081109558362134')
         await msg.add_reaction(':lensflare:496138997391687710')
@@ -2133,7 +2140,7 @@ class SenpaiGacha:
                 thumb = 'https://cdn.discordapp.com/emojis/431882995289554978.png?v=1'
 
             title = 'Accept Team Invitation Confirmation'
-            description = "Are you sure you want to accept the invitation to join {}?\n\n**Accepting an invitation to join another team in the future will force you to leave this team as well as lose all progress including rank and exp!**".format(team)
+            description = "Are you sure you want to accept the invitation to join {}?\n\n**Accepting an invitation to join another team in the future will force you to leave this team as well as lose all progress including rank and exp! You will also be charged pikapoints!**".format(team)
             embed = discord.Embed(title=title, description=description, color=0x4b0082)
             embed.set_thumbnail(url=thumb)
             msg = await context.send(embed=embed)
