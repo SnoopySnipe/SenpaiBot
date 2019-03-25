@@ -2190,6 +2190,12 @@ class SenpaiGacha:
                 result = database_helper.get_trainer_team(context.message.author.id)
                 await context.send("{} has prestiged and is now Prestige Level {}!".format(result[1], result[3]))
 
+    @commands.command(name="teams")
+    async def teams(self, context):
+        teams = [':electrocution:', ':lensflare:', ':hyperjoy:']
+        for team in teams:
+            await context.invoke(self.team, team)
+
     @commands.command(name="gachahelp")
     async def gachahelp(self, context, page=0):
         summon_help = [
@@ -2231,6 +2237,7 @@ class SenpaiGacha:
             ("register", "Register as a pokémon trainer"),
             ("switch", "Switch teams"),
             ("team", "View the members of a team"),
+            ("teams", "View all teams"),
             ("trainer", "View a trainer's details and statistics"),
             ("trainers", "View all registered trainers")
         ]
@@ -2337,7 +2344,8 @@ class SenpaiGacha:
                         team_name = database_helper.get_trainer_team(msg.author.id)[0]
                         team = database_helper.get_team(team_name)
                         for member in team:
-                            database_helper.adjust_points(member[2], team_split)
+                            if member[2] != msg.author.id:
+                                database_helper.adjust_points(member[2], team_split)
                         team_split_msg = "All other {} members received {} pikapoints!".format(team_name, team_split)
                     await channel.send('Congratulations {}! {}You win {} pikapoints!\nYou now have {} pikapoints.\n\nStreak: {}\n{}\n\n{}'.format(msg.author.name, shutdown_msg, str(gain), str(balance), new_streak, ball_msg, team_split_msg))
                     database_helper.increment_stat(msg.author.id, "quizzes")

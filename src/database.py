@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+import math
 def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
@@ -726,7 +727,10 @@ def team_split(conn, id1, id2, shutdown, gain):
             team2_size = c.fetchone()
             team2_size = team2_size[0]
 
-            team_multiplier = team2_size/team1_size
+            if shutdown <= 1:
+                team_multiplier = 1
+            else:
+                team_multiplier = team2_size/team1_size
 
         sql = """SELECT rank.id, trainer.prestige FROM rank INNER JOIN trainer ON rank.rank = trainer.rank WHERE trainer.id = $id"""
         ph = {"id": id1}
@@ -735,7 +739,7 @@ def team_split(conn, id1, id2, shutdown, gain):
         trainer_rank = trainer_details[0]
         trainer_prestige = trainer_details[1]
 
-        return min(round((((max(10, trainer_rank - 1 + 12 * trainer_prestige)) * team_multiplier) + (5 * (shutdown - 1))) / (team1_size - 1)), gain)
+        return min(math.ceil((((max(10, trainer_rank - 1 + 12 * trainer_prestige)) * team_multiplier) + (5 * (shutdown - 1))) / (team1_size - 1)), gain)
 
     except Error as e:
         print(e)
