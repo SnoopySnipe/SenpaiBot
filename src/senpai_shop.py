@@ -2196,7 +2196,8 @@ class SenpaiGacha:
             elif str(reaction.emoji) == '✅':
                 database_helper.prestige(context.message.author.id)
                 result = database_helper.get_trainer_team(context.message.author.id)
-                await context.send("{} has prestiged and is now Prestige Level {}!".format(result[1], result[3]))
+                database_helper.add_item(context.message.author.id, 4)
+                await context.send("{} has reached Prestige Level {} and got a Master Ball!".format(result[1], result[3]))
 
     @commands.command(name="teams")
     async def teams(self, context):

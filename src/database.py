@@ -685,7 +685,16 @@ def promote(conn, id):
         placeholders = {"new_rank": next_rank_name, "next_rank_xp": next_rank_xp, "id": id}
         c.execute(sql, placeholders)
         conn.commit()
-        return "{} has been promoted from {} {} to {} {}!".format(name, team, rank, team, next_rank_name)
+        if next_rank_name in ('Crook', 'Grunt', 'Thug', 'Associate', 'Hitman'):
+            ball = 'Poké Ball'
+            add_item(conn, id, 1)
+        elif next_rank_name in ('Officer', 'Sergeant', 'Captain', 'Lieutenant'):
+            ball = 'Great Ball'
+            add_item(conn, id, 2)
+        elif next_rank_name in ('Admin', 'Commander', 'Boss'):
+            ball = 'Ultra Ball'
+            add_item(conn, id, 3)
+        return "{} has been promoted from {} {} to {} {} and received a {}!".format(name, team, rank, team, next_rank_name, ball)
     except Error as e:
         print(e)
 
