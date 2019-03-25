@@ -400,3 +400,9 @@ def team_split(id1, id2, shutdown, gain):
         result = database.team_split(conn, id1, id2, shutdown, gain)
         conn.close()
     return result
+
+def update_high_streak(id, streak):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.update_high_streak(conn, id, streak)
+        conn.close()

@@ -1986,7 +1986,7 @@ class SenpaiGacha:
         description += "**__Summoning Stats__**\n"
         description += "Pokémon Rolled: {}\nBricks: {}\nJackpot Participation: {}\nBalls Opened: {}\nPokémon Released: {}\nPokémon Traded: {}\n\n".format(trainer[3], trainer[4], trainer[5], trainer[6], trainer[7], trainer[8])
         description += "**__Quiz Stats__**\n"
-        description += "Quizzes Answered: {}\nHot Streaks: {}\nHot Streak Shutdowns: {}\n\n".format(trainer[9], trainer[10], trainer[11])
+        description += "Quizzes Answered: {}\nHot Streaks: {}\nHot Streak Shutdowns: {}\nHighest Streak: {}\n\n".format(trainer[9], trainer[10], trainer[11], trainer[23])
         description += "**__Battle Stats__**\n"
         description += "Total Battles: {}\nTotal Wins: {}\nUnderdog Wins: {}\nHigh Stake Wins: {}\nTotal Losses: {}\nNever Lucky Losses: {}\nHigh Stake Losses: {}".format(trainer[12], trainer[13], trainer[14], trainer[15], trainer[16], trainer[17], trainer[18])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
@@ -2366,6 +2366,8 @@ class SenpaiGacha:
                         database_helper.increment_stat(msg.author.id, "streaks")
                     if shutdown >= 40:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
+                    if new_streak > database_helper.get_trainer_team(msg.author.id)[5]:
+                        database_helper.update_high_streak(msg.author.id, new_streak)
 
 
 def setup(bot):

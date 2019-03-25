@@ -596,10 +596,20 @@ def get_team(conn, team):
 def get_trainer_team(conn, id):
     try:
         c = conn.cursor()
-        sql = """SELECT team, name, rank, prestige, currxp FROM trainer WHERE id = $id"""
+        sql = """SELECT team, name, rank, prestige, currxp, highstreak FROM trainer WHERE id = $id"""
         placeholders = {"id": id}
         c.execute(sql, placeholders)
         return c.fetchone()
+    except Error as e:
+        print(e)
+
+def update_high_streak(conn, id, streak):
+    try:
+        c = conn.cursor()
+        sql = """UPDATE trainer SET highstreak = $streak WHERE id = $id"""
+        placeholders = {"streak": streak, "id": id}
+        c.execute(sql, placeholders)
+        conn.commit()
     except Error as e:
         print(e)
 
@@ -766,7 +776,7 @@ sql_create_bag = """CREATE TABLE IF NOT EXISTS bag (user_id integer NOT NULL, ba
 sql_create_bank = """CREATE TABLE IF NOT EXISTS bank (id integer PRIMARY KEY, points integer DEFAULT 0)"""
 sql_create_fav = """CREATE TABLE IF NOT EXISTS favs (user_id integer NOT NULL, poke_id integer NOT NULL, fav_id integer PRIMARY KEY) """
 sql_create_stadium = """CREATE TABLE IF NOT EXISTS stadium (battle integer PRIMARY KEY DEFAULT 0)"""
-sql_create_trainer = """CREATE TABLE IF NOT EXISTS trainer (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rank text DEFAULT 'Pokémon Trainer', rolls integer DEFAULT 0, bricks integer DEFAULT 0, jackpots integer DEFAULT 0, opens integer DEFAULT 0, releases integer DEFAULT 0, trades integer DEFAULT 0, quizzes integer DEFAULT 0, streaks integer DEFAULT 0, shutdowns integer DEFAULT 0, battles integer DEFAULT 0, wins integer DEFAULT 0, underdogs integer DEFAULT 0, highstakewins integer DEFAULT 0, losses integer DEFAULT 0, neverlucky integer DEFAULT 0, highstakeloss integer DEFAULT 0, team text NOT NULL DEFAULT '', totalxp integer DEFAULT 0, currxp integer DEFAULT 0, prestige integer DEFAULT 0)"""
+sql_create_trainer = """CREATE TABLE IF NOT EXISTS trainer (id integer PRIMARY KEY, name text NOT NULL UNIQUE, rank text DEFAULT 'Pokémon Trainer', rolls integer DEFAULT 0, bricks integer DEFAULT 0, jackpots integer DEFAULT 0, opens integer DEFAULT 0, releases integer DEFAULT 0, trades integer DEFAULT 0, quizzes integer DEFAULT 0, streaks integer DEFAULT 0, shutdowns integer DEFAULT 0, battles integer DEFAULT 0, wins integer DEFAULT 0, underdogs integer DEFAULT 0, highstakewins integer DEFAULT 0, losses integer DEFAULT 0, neverlucky integer DEFAULT 0, highstakeloss integer DEFAULT 0, team text NOT NULL DEFAULT '', totalxp integer DEFAULT 0, currxp integer DEFAULT 0, prestige integer DEFAULT 0, highstreak integer DEFAULT 0)"""
 sql_create_ranks = """CREATE TABLE IF NOT EXISTS rank (id integer PRIMARY KEY, rank text NOT NULL UNIQUE, xp integer NOT NULL)"""
 sql_create_team = """CREATE TABLE IF NOT EXISTS team (id integer PRIMARY KEY, name text NOT NULL UNIQUE)"""
 
