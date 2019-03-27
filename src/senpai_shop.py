@@ -23,7 +23,7 @@ REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA]#, KALOS, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
-QUIZ_ROLE_ID = 559748172793249807
+
 class SenpaiGacha:
     def __init__(self, bot):
         self.bot = bot
@@ -2309,7 +2309,7 @@ class SenpaiGacha:
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
                 quiz.set_image(url=url)
-                await channel.send("{}".format(channel.guild.get_role(QUIZ_ROLE_ID).mention), embed=quiz)
+                await channel.send(embed=quiz)
 
                 def check(m):
                     return m.content == pokemon and m.channel == channel
