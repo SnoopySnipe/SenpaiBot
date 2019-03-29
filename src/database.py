@@ -331,14 +331,14 @@ def change_focus(conn, *args):
     except Error as e:
         print(e)
 
-def change_special(conn, name):
+def change_special(conn, *args):
     try:
         c = conn.cursor()
         sql = """UPDATE pikagacha SET active = 0"""
         c.execute(sql)
         for arg in args:
             sql = """UPDATE pikagacha SET active = 1 WHERE name = $name"""
-            placeholders = {"name": name}
+            placeholders = {"name": arg}
             c.execute(sql, placeholders)
         conn.commit()
     except Error as e:
