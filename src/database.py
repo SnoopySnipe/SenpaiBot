@@ -147,7 +147,7 @@ def get_roll(conn, roll, region=None):
 def get_units(conn, region):
     try:
         c = conn.cursor()
-        sql = """SELECT name, rarity, focus FROM pikagacha WHERE id BETWEEN $low AND $high"""
+        sql = """SELECT name, rarity, focus, active FROM pikagacha WHERE id BETWEEN $low AND $high"""
         placeholders = {"low": region[1], "high": region[2]}
         c.execute(sql, placeholders)
         return c.fetchall()
@@ -336,10 +336,10 @@ def change_special(conn, name):
         c = conn.cursor()
         sql = """UPDATE pikagacha SET active = 0"""
         c.execute(sql)
-        conn.commit()
-        sql = """UPDATE pikagacha SET active = 1 WHERE name = $name"""
-        placeholders = {"name": name}
-        c.execute(sql, placeholders)
+        for arg in args:
+            sql = """UPDATE pikagacha SET active = 1 WHERE name = $name"""
+            placeholders = {"name": name}
+            c.execute(sql, placeholders)
         conn.commit()
     except Error as e:
         print(e)
@@ -349,7 +349,7 @@ def get_special(conn):
         c = conn.cursor()
         sql = """SELECT id, name FROM pikagacha WHERE rarity = 8 AND active = 1"""
         c.execute(sql)
-        return c.fetchone()
+        return c.fetchall()
     except Error as e:
         print(e)
 

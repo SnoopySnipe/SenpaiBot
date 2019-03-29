@@ -1505,21 +1505,22 @@ class SenpaiGacha:
             await context.send("Y'all'th'st'd've'ish ain't Snoopy")
 
     @commands.command(name="newspecial")
-    async def newspecial(self, context, name):
+    async def newspecial(self, context, *args):
         if context.message.author.id == SNOOPY_ID:
-            database_helper.change_special(name)
-            await context.invoke(self.pokedex, name, True)
+            database_helper.change_special(*args)
+            for arg in args:
+                await context.invoke(self.pokedex, arg, True)
         else:
             await context.send("Y'all'th'st'd've'ish ain't Snoopy")
 
     @commands.command(name="special")
     async def special(self, context):
         special = database_helper.get_special()
-        if special is None:
+        if len(special) <= 0:
             await context.send("There is no currently active Special Pokémon!")
             return
-
-        await context.invoke(self.pokedex, special[0], True)
+        for unit in special:
+            await context.invoke(self.pokedex, unit[0], True)
 
     @commands.command(name="sql")
     async def sql(self, context, query):
@@ -1567,9 +1568,34 @@ class SenpaiGacha:
         #     region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
-        else:
+        elif region == 'special':
+            region = SPECIAL
+        elif region is not None:
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'special')")
             return
         units = database_helper.get_units(region)
+        if region[0] == 'Special':
+            active = []
+            inactive = []
+
+            for unit in units:
+                if unit[3] == 1:
+                    active.append(unit[0])
+                elif unit[3] == 0:
+                    inactive.append(unit[0])
+
+            title = "Active Special Units: \n"
+            description = ''
+            for unit in active:
+                description = description + "\n" + unit
+            await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
+            title = "Inactive Special Units: \n"
+            description = ''
+            for unit in inactive:
+                description = description + "\n" + unit
+            await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+
         focus = []
         seven = []
         six = []

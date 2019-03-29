@@ -194,10 +194,10 @@ def change_focus(*args):
         database.change_focus(conn, *args)
         conn.close()
 
-def change_special(name):
+def change_special(*args):
     conn = sqlite3.connect(db)
     if (conn is not None):
-        database.change_special(conn, name)
+        database.change_special(conn, *args)
         conn.close()
 
 def run_sql(query):
