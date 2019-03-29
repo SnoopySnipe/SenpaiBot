@@ -1595,6 +1595,7 @@ class SenpaiGacha:
             for unit in inactive:
                 description = description + "\n" + unit
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
+            return
 
         focus = []
         seven = []
