@@ -328,6 +328,28 @@ def change_focus(conn, *args):
     except Error as e:
         print(e)
 
+def change_special(conn, name):
+    try:
+        c = conn.cursor()
+        sql = """UPDATE pikagacha SET active = 0"""
+        c.execute(sql)
+        conn.commit()
+        sql = """UPDATE pikagacha SET active = 1 WHERE name = $name"""
+        placeholders = {"name": name}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def get_special(conn):
+    try:
+        c = conn.cursor()
+        sql = """SELECT id, name FROM pikagacha WHERE rarity = 8 AND active = 1"""
+        c.execute(sql)
+        return c.fetchone()
+    except Error as e:
+        print(e)
+
 def run_sql(conn, query):
     try:
         c = conn.cursor()

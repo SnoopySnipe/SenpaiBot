@@ -194,6 +194,12 @@ def change_focus(*args):
         database.change_focus(conn, *args)
         conn.close()
 
+def change_special(name):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.change_special(conn, name)
+        conn.close()
+
 def run_sql(query):
     conn = sqlite3.connect(db)
     if (conn is not None):
@@ -406,3 +412,11 @@ def update_high_streak(id, streak):
     if (conn is not None):
         database.update_high_streak(conn, id, streak)
         conn.close()
+
+def get_special():
+    conn = sqlite3.connect(db)
+    result = None
+    if(conn is not None):
+        result = database.get_special(conn)
+        conn.close()
+    return result

@@ -19,10 +19,15 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
+SPECIAL = ('Special', 10000, 11000)
 REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA]#, KALOS, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
+
+SPECIAL_POKEMON = {
+    10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png'
+}
 
 class SenpaiGacha:
     def __init__(self, bot):
@@ -85,149 +90,149 @@ class SenpaiGacha:
 
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-    @commands.command(name="forceroll")
-    async def forceroll(self, context, region=None, user_id=None):
-        if context.message.author.id != SNOOPY_ID:
-            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
-            return
-
-        PRICE = 30
-        if user_id is None:
-            await context.send("user_id cannot be None!")
-            return
-        user = self.bot.get_user(int(user_id))
-        username = user.name
-        database_helper.adjust_pity(user_id)
-        details = database_helper.get_user_details(user_id)
-        if details is None:
-            await context.send("{} has no pikapoints! Join voice and start earning!".format(username))
-        elif PRICE <= details[0]:
-            balance = details[0]
-            rolls = balance // 30
-
-            if region is None:
-                await context.send("`Usage:`\n\n```!forceroll region user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
-                return
-
-            if region == 'kanto':
-                region = KANTO
-            elif region == 'johto':
-                region = JOHTO
-            elif region == 'hoenn':
-                region = HOENN
-            elif region == 'sinnoh':
-                region = SINNOH
-            elif region == 'unova':
-                region = UNOVA
-            # elif region == 'kalos':
-            #     region = KALOS
-            # elif region == 'alola':
-            #     region = ALOLA
-            elif region == 'all':
-                region = None
-            else:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'all')")
-                return
-
-            if rolls == 0:
-                await context.send("There is nothing to roll...")
-                return
-
-            await context.send("{} currently has {} pikapoints.\nRolling {} times...".format(username, str(balance), str(rolls)))
-            database_helper.adjust_points(user_id, -(PRICE * rolls))
-            for i in range(rolls):
-                details = database_helper.get_user_details(user_id)
-                r = random.randint(0, 1003)
-                if r == 0:
-                    options = database_helper.get_roll(7, region)
-                    database_helper.adjust_pity(user_id, True)
-                    database_helper.update_jackpot(user_id, False)
-                elif 1001 <= r <= 1003:
-                    options = database_helper.get_roll(6, region)
-                    database_helper.adjust_pity(user_id, True)
-                    database_helper.update_jackpot(user_id, False)
-                elif 1 <= r <= details[1]:
-                    options = database_helper.get_roll(3, region)
-                    database_helper.adjust_pity(user_id, False)
-                    database_helper.update_jackpot(user_id, False)
-                elif details[1] < r <= details[1] + details[2]:
-                    options = database_helper.get_roll(4, region)
-                    database_helper.adjust_pity(user_id, False)
-                    database_helper.update_jackpot(user_id, False)
-                elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
-                    options = database_helper.get_roll(5, region)
-                    database_helper.adjust_pity(user_id, True)
-                    database_helper.update_jackpot(user_id, False)
-                elif details[1] + details[2] + details[3] < r <= 1000:
-                    options = database_helper.get_roll(1, region)
-                    database_helper.adjust_pity(user_id, True)
-                    database_helper.update_jackpot(user_id, False)
-                gacha = options[random.randint(0, len(options) - 1)]
-                title = "{} Summoned: \n".format(username)
-                if gacha[2] <= 5:
-                    description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
-                elif gacha[2] == 6:
-                    description = gacha[0] + "\nRarity: Legendary"
-                elif gacha[2] == 7:
-                    description = gacha[0] + "\nRarity: Mythic"
-                database_helper.add_inventory(user_id, gacha[1])
-                embed = discord.Embed(title=title, description=description, color=0x9370db)
-                str_id = "{:03}".format(gacha[1])
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-                embed.set_thumbnail(url=url)
-                await context.send(embed=embed)
-                if gacha[2] > 5:
-                    jackpot = database_helper.get_jackpot(True)[0]
-                    no_contributors = len(database_helper.get_jackpot_rewards())
-                    if no_contributors == 0:
-                        if gacha[2] == 6:
-                            str_rarity = 'Legendary'
-                        elif gacha[2] == 7:
-                            str_rarity = 'Mythic'
-                        await context.send(
-                            '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(
-                                username, str_rarity, jackpot))
-                        continue
-
-                    ball = random.randint(1, 10000)
-                    master_chance = min(jackpot, 1000)
-                    ultra_chance = master_chance * 3
-                    great_chance = master_chance * 6
-                    if 1 <= ball <= master_chance:
-                        ball_str = 'Master Ball'
-                        ball_id = 4
-                    elif master_chance < ball <= master_chance + ultra_chance:
-                        ball_str = 'Ultra Ball'
-                        ball_id = 3
-                    elif master_chance + ultra_chance < ball <= master_chance + ultra_chance + great_chance:
-                        ball_str = 'Great Ball'
-                        ball_id = 2
-                    elif master_chance + ultra_chance + great_chance < ball <= 10000:
-                        ball_str = 'Poké Ball'
-                        ball_id = 1
-
-                    msg = username + ' summoned a '
-                    if gacha[2] == 6:
-                        payout = jackpot // no_contributors
-                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
-                            jackpot, payout, ball_str)
-                    elif gacha[2] == 7:
-                        payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
-                            jackpot, jackpot * 2, payout, ball_str)
-                    contributors = database_helper.get_jackpot(False)
-                    for contributor in contributors:
-                        if contributor[1] >= 3:
-                            database_helper.adjust_points(contributor[0], payout)
-                            database_helper.add_item(contributor[0], ball_id)
-                            msg = msg + '\n' + self.bot.get_user(contributor[0]).name
-                    msg = msg + '```'
-                    database_helper.update_jackpot(user_id, True)
-                    await context.send(msg)
-            balance = database_helper.get_pikapoints(user_id)
-            await context.send("{} now has {} pikapoints.".format(username, str(balance)))
-        else:
-            await context.send("{} doesn't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(username, str(PRICE)))
+    # @commands.command(name="forceroll")
+    # async def forceroll(self, context, region=None, user_id=None):
+    #     if context.message.author.id != SNOOPY_ID:
+    #         await context.send("Y'all'th'st'd've'ish ain't Snoopy")
+    #         return
+    #
+    #     PRICE = 30
+    #     if user_id is None:
+    #         await context.send("user_id cannot be None!")
+    #         return
+    #     user = self.bot.get_user(int(user_id))
+    #     username = user.name
+    #     database_helper.adjust_pity(user_id)
+    #     details = database_helper.get_user_details(user_id)
+    #     if details is None:
+    #         await context.send("{} has no pikapoints! Join voice and start earning!".format(username))
+    #     elif PRICE <= details[0]:
+    #         balance = details[0]
+    #         rolls = balance // 30
+    #
+    #         if region is None:
+    #             await context.send("`Usage:`\n\n```!forceroll region user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
+    #             return
+    #
+    #         if region == 'kanto':
+    #             region = KANTO
+    #         elif region == 'johto':
+    #             region = JOHTO
+    #         elif region == 'hoenn':
+    #             region = HOENN
+    #         elif region == 'sinnoh':
+    #             region = SINNOH
+    #         elif region == 'unova':
+    #             region = UNOVA
+    #         # elif region == 'kalos':
+    #         #     region = KALOS
+    #         # elif region == 'alola':
+    #         #     region = ALOLA
+    #         elif region == 'all':
+    #             region = None
+    #         else:
+    #             await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'all')")
+    #             return
+    #
+    #         if rolls == 0:
+    #             await context.send("There is nothing to roll...")
+    #             return
+    #
+    #         await context.send("{} currently has {} pikapoints.\nRolling {} times...".format(username, str(balance), str(rolls)))
+    #         database_helper.adjust_points(user_id, -(PRICE * rolls))
+    #         for i in range(rolls):
+    #             details = database_helper.get_user_details(user_id)
+    #             r = random.randint(0, 1003)
+    #             if r == 0:
+    #                 options = database_helper.get_roll(7, region)
+    #                 database_helper.adjust_pity(user_id, True)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             elif 1001 <= r <= 1003:
+    #                 options = database_helper.get_roll(6, region)
+    #                 database_helper.adjust_pity(user_id, True)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             elif 1 <= r <= details[1]:
+    #                 options = database_helper.get_roll(3, region)
+    #                 database_helper.adjust_pity(user_id, False)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             elif details[1] < r <= details[1] + details[2]:
+    #                 options = database_helper.get_roll(4, region)
+    #                 database_helper.adjust_pity(user_id, False)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             elif details[1] + details[2] < r <= details[1] + details[2] + details[3]:
+    #                 options = database_helper.get_roll(5, region)
+    #                 database_helper.adjust_pity(user_id, True)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             elif details[1] + details[2] + details[3] < r <= 1000:
+    #                 options = database_helper.get_roll(1, region)
+    #                 database_helper.adjust_pity(user_id, True)
+    #                 database_helper.update_jackpot(user_id, False)
+    #             gacha = options[random.randint(0, len(options) - 1)]
+    #             title = "{} Summoned: \n".format(username)
+    #             if gacha[2] <= 5:
+    #                 description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
+    #             elif gacha[2] == 6:
+    #                 description = gacha[0] + "\nRarity: Legendary"
+    #             elif gacha[2] == 7:
+    #                 description = gacha[0] + "\nRarity: Mythic"
+    #             database_helper.add_inventory(user_id, gacha[1])
+    #             embed = discord.Embed(title=title, description=description, color=0x9370db)
+    #             str_id = "{:03}".format(gacha[1])
+    #             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+    #             embed.set_thumbnail(url=url)
+    #             await context.send(embed=embed)
+    #             if gacha[2] > 5:
+    #                 jackpot = database_helper.get_jackpot(True)[0]
+    #                 no_contributors = len(database_helper.get_jackpot_rewards())
+    #                 if no_contributors == 0:
+    #                     if gacha[2] == 6:
+    #                         str_rarity = 'Legendary'
+    #                     elif gacha[2] == 7:
+    #                         str_rarity = 'Mythic'
+    #                     await context.send(
+    #                         '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(
+    #                             username, str_rarity, jackpot))
+    #                     continue
+    #
+    #                 ball = random.randint(1, 10000)
+    #                 master_chance = min(jackpot, 1000)
+    #                 ultra_chance = master_chance * 3
+    #                 great_chance = master_chance * 6
+    #                 if 1 <= ball <= master_chance:
+    #                     ball_str = 'Master Ball'
+    #                     ball_id = 4
+    #                 elif master_chance < ball <= master_chance + ultra_chance:
+    #                     ball_str = 'Ultra Ball'
+    #                     ball_id = 3
+    #                 elif master_chance + ultra_chance < ball <= master_chance + ultra_chance + great_chance:
+    #                     ball_str = 'Great Ball'
+    #                     ball_id = 2
+    #                 elif master_chance + ultra_chance + great_chance < ball <= 10000:
+    #                     ball_str = 'Poké Ball'
+    #                     ball_id = 1
+    #
+    #                 msg = username + ' summoned a '
+    #                 if gacha[2] == 6:
+    #                     payout = jackpot // no_contributors
+    #                     msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+    #                         jackpot, payout, ball_str)
+    #                 elif gacha[2] == 7:
+    #                     payout = (jackpot * 2) // no_contributors
+    #                     msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+    #                         jackpot, jackpot * 2, payout, ball_str)
+    #                 contributors = database_helper.get_jackpot(False)
+    #                 for contributor in contributors:
+    #                     if contributor[1] >= 3:
+    #                         database_helper.adjust_points(contributor[0], payout)
+    #                         database_helper.add_item(contributor[0], ball_id)
+    #                         msg = msg + '\n' + self.bot.get_user(contributor[0]).name
+    #                 msg = msg + '```'
+    #                 database_helper.update_jackpot(user_id, True)
+    #                 await context.send(msg)
+    #         balance = database_helper.get_pikapoints(user_id)
+    #         await context.send("{} now has {} pikapoints.".format(username, str(balance)))
+    #     else:
+    #         await context.send("{} doesn't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(username, str(PRICE)))
 
     @commands.command(name="fullroll")
     async def fullroll(self, context, region=None, no_rolls=None):
@@ -300,12 +305,14 @@ class SenpaiGacha:
                 r = random.randint(0, 1003)
                 if r == 0:
                     options = database_helper.get_roll(7, region)
+                    options.append(database_helper.get_roll(8, None))
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
                     if rolls >= 50:
                         brick = False
                 elif 1001 <= r <= 1003:
                     options = database_helper.get_roll(6, region)
+                    options.append(database_helper.get_roll(8, None))
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
                     if rolls >= 50:
@@ -334,10 +341,15 @@ class SenpaiGacha:
                     description = gacha[0] + "\nRarity: Legendary"
                 elif gacha[2] == 7:
                     description = gacha[0] + "\nRarity: Mythic"
+                elif gacha[2] == 8:
+                    description = gacha[0] + "\nRarity: Special"
                 database_helper.add_inventory(user_id, gacha[1])
                 embed = discord.Embed(title=title, description=description, color=0x9370db)
-                str_id = "{:03}".format(gacha[1])
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                if gacha[1] >= 10000:
+                    url = SPECIAL_POKEMON[gacha[1]]
+                else:
+                    str_id = "{:03}".format(gacha[1])
+                    url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
                 database_helper.increment_stat(user_id, "rolls")
@@ -353,6 +365,8 @@ class SenpaiGacha:
                             str_rarity = 'Legendary'
                         elif gacha[2] == 7:
                             str_rarity = 'Mythic'
+                        elif gacha[2] == 8:
+                            str_rarity = 'Special'
                         await context.send(
                             '{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(
                                 username, str_rarity, jackpot))
@@ -384,6 +398,10 @@ class SenpaiGacha:
                         payout = (jackpot * 2) // no_contributors
                         msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                             jackpot, jackpot * 2, payout, ball_str)
+                    elif gacha[2] == 8:
+                        payout = jackpot // no_contributors
+                        msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                            jackpot, payout, ball_str)
                     contributors = database_helper.get_jackpot(False)
                     for contributor in contributors:
                         if contributor[1] >= 3:
@@ -433,10 +451,12 @@ class SenpaiGacha:
 
             if r == 0:
                 options = database_helper.get_roll(7, region)
+                options.append(database_helper.get_roll(8, None))
                 database_helper.adjust_pity(user_id, True)
                 database_helper.update_jackpot(user_id, False)
             elif 1001 <= r <= 1003:
                 options = database_helper.get_roll(6, region)
+                options.append(database_helper.get_roll(8, None))
                 database_helper.adjust_pity(user_id, True)
                 database_helper.update_jackpot(user_id, False)
             elif 1 <= r <= details[1]:
@@ -463,12 +483,17 @@ class SenpaiGacha:
                 description = gacha[0] + "\nRarity: Legendary"
             elif gacha[2] == 7:
                 description = gacha[0] + "\nRarity: Mythic"
+            elif gacha[2] == 8:
+                description = gacha[0] + "\nRarity: Special"
             database_helper.adjust_points(user_id, -PRICE)
             balance = database_helper.get_pikapoints(user_id)
             database_helper.add_inventory(user_id, gacha[1])
             embed = discord.Embed(title=title, description=description, color=0x9370db)
-            str_id = "{:03}".format(gacha[1])
-            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+            if gacha[1] >= 10000:
+                url = SPECIAL_POKEMON[gacha[1]]
+            else:
+                str_id = "{:03}".format(gacha[1])
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
             database_helper.increment_stat(user_id, "rolls")
@@ -484,6 +509,8 @@ class SenpaiGacha:
                         str_rarity = 'Legendary'
                     elif gacha[2] == 7:
                         str_rarity = 'Mythic'
+                    elif gacha[2] == 8:
+                        str_rarity = 'Special'
                     await context.send('{} summoned a {} Pokémon! The jackpot contained {} pikapoints. No users contributed at least 3 pikapoints to the jackpot, therefore the jackpot will not be reset.'.format(username, str_rarity, jackpot))
                     return
 
@@ -513,6 +540,10 @@ class SenpaiGacha:
                     payout = (jackpot * 2) // no_contributors
                     msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
                         jackpot, jackpot * 2, payout, ball_str)
+                elif gacha[2] == 8:
+                    payout = jackpot // no_contributors
+                    msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        jackpot, payout, ball_str)
                 contributors = database_helper.get_jackpot(False)
                 for contributor in contributors:
                     if contributor[1] >= 3:
@@ -527,16 +558,19 @@ class SenpaiGacha:
             await context.send("You don't have enough pikapoints to summon! It costs {} pikapoints per roll!".format(str(PRICE)))
 
     @commands.command(name="pokedex")
-    async def pokedex(self, context, name=None):
+    async def pokedex(self, context, name=None, special=False):
         if name is None:
             await context.send("`Usage:`\n\n```!pokedex pokemon_name_or_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         poke_id = database_helper.get_pokemon(name)
         poke_name = database_helper.get_pokemon_name(name)
         if poke_id is not None:
-            str_id = "{:03}".format(poke_id[0])
-            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            id = int(str_id)
+            id = poke_id[0]
+            if id >= 10000:
+                url = SPECIAL_POKEMON[id]
+            else:
+                str_id = "{:03}".format(id)
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             if 1 <= id <= 151:
                 region = 'Kanto'
             elif 152 <= id <= 251:
@@ -551,13 +585,21 @@ class SenpaiGacha:
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
+            elif id >= 10000:
+                region = 'Special'
             dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(poke_id[0]), name, poke_id[2], region), color=0xffb6c1)
             dex.set_image(url=url)
-            await context.send(embed=dex)
+            if special:
+                await context.send("Current Special Unit", embed=dex)
+            else:
+                await context.send(embed=dex)
         elif poke_name is not None:
-            str_id = "{:03}".format(int(name))
-            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            id = int(str_id)
+            id = int(name)
+            if id >= 10000:
+                url = SPECIAL_POKEMON[id]
+            else:
+                str_id = "{:03}".format(id)
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             if 1 <= id <= 151:
                 region = 'Kanto'
             elif 152 <= id <= 251:
@@ -572,9 +614,14 @@ class SenpaiGacha:
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
+            elif id >= 10000:
+                region = 'Special'
             dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(name), poke_name[0], poke_name[1], region), color=0xffb6c1)
             dex.set_image(url=url)
-            await context.send(embed=dex)
+            if special:
+                await context.send("Current Special Unit", embed=dex)
+            else:
+                await context.send(embed=dex)
         else:
             await context.send("Pokémon name or ID doesn't exist!")
 
@@ -661,134 +708,134 @@ class SenpaiGacha:
                 database_helper.increment_stat(id1, "trades")
                 database_helper.increment_stat(id2, "trades")
 
-    @commands.command(name="forceopen")
-    async def forceopen(self, context, user_id=None, ball=None):
-        if context.message.author.id != SNOOPY_ID:
-            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
-            return
-
-        if user_id is None:
-            await context.send("`Usage:`\n\n```!forceopen user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
-            return
-
-        if ball is None:
-            bag = database_helper.get_bag(user_id)
-            bag_list = []
-            for item in bag:
-                for i in range(item[1]):
-                    if item[0] == 1:
-                        bag_list.append('pokeball')
-                    elif item[0] == 2:
-                        bag_list.append('greatball')
-                    elif item[0] == 3:
-                        bag_list.append('ultraball')
-                    elif item[0] == 4:
-                        bag_list.append('masterball')
-            for ball in bag_list:
-                await context.invoke(self.forceopen, user_id, ball)
-            return
-
-        if ball == 'pokeball':
-            ball_id = 1
-        elif ball == 'greatball':
-            ball_id = 2
-        elif ball == 'ultraball':
-            ball_id = 3
-        elif ball == 'masterball':
-            ball_id = 4
-
-        user = self.bot.get_user(int(user_id))
-        username = user.name
-
-        database_helper.use_item(user_id, ball_id)
-
-        option = random.randint(0, 1)
-        if option == 0:
-            if ball_id == 1:
-                pt_range = (1, 15)
-                ball_str = 'Poké Ball'
-            elif ball_id == 2:
-                pt_range = (15, 30)
-                ball_str = 'Great Ball'
-            elif ball_id == 3:
-                pt_range = (30, 60)
-                ball_str = 'Ultra Ball'
-            elif ball_id == 4:
-                pt_range = (60, 150)
-                ball_str = 'Master Ball'
-            pt_prize = random.randint(pt_range[0], pt_range[1])
-            database_helper.adjust_points(user_id, pt_prize)
-            balance = database_helper.get_pikapoints(user_id)
-            await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str,
-                                                                                                     pt_prize, balance))
-        elif option == 1:
-            if ball_id == 1:
-                ball_str = 'Poké Ball'
-                roll_range = {
-                    3: 60,
-                    4: 40,
-                }
-                roll = random.randint(1, 100)
-                if 1 <= roll <= roll_range[3]:
-                    options = database_helper.get_roll(3)
-                elif roll_range[3] < roll <= 100:
-                    options = database_helper.get_roll(4)
-            elif ball_id == 2:
-                ball_str = 'Great Ball'
-                roll_range = {
-                    3: 50,
-                    4: 40,
-                    5: 10
-                }
-                roll = random.randint(1, 100)
-                if 1 <= roll <= roll_range[3]:
-                    options = database_helper.get_roll(3)
-                elif roll_range[3] < roll <= roll_range[3] + roll_range[4]:
-                    options = database_helper.get_roll(4)
-                elif roll_range[3] + roll_range[4] < roll <= 100:
-                    options = database_helper.get_roll(5)
-            elif ball_id == 3:
-                ball_str = 'Ultra Ball'
-                roll_range = {
-                    4: 60,
-                    5: 35,
-                    6: 5
-                }
-                roll = random.randint(1, 100)
-                if 1 <= roll <= roll_range[4]:
-                    options = database_helper.get_roll(4)
-                elif roll_range[4] < roll <= roll_range[4] + roll_range[5]:
-                    options = database_helper.get_roll(5)
-                elif roll_range[4] + roll_range[5] < roll <= 100:
-                    options = database_helper.get_roll(6)
-            elif ball_id == 4:
-                ball_str = 'Master Ball'
-                roll_range = {
-                    5: 85,
-                    6: 10,
-                    7: 5
-                }
-                roll = random.randint(1, 100)
-                if 1 <= roll <= roll_range[5]:
-                    options = database_helper.get_roll(5)
-                elif roll_range[5] < roll <= roll_range[5] + roll_range[6]:
-                    options = database_helper.get_roll(6)
-                elif roll_range[5] + roll_range[6] < roll <= 100:
-                    options = database_helper.get_roll(7)
-            gacha = random.choice(options)
-            title = "{} Opened: \n".format(username)
-            if gacha[2] <= 5:
-                description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
-            elif gacha[2] == 6:
-                description = gacha[0] + "\nRarity: Legendary"
-            elif gacha[2] == 7:
-                description = gacha[0] + "\nRarity: Mythic"
-            database_helper.add_inventory(user_id, gacha[1])
-            embed = discord.Embed(title=title, description=description, color=0x9370db)
-            str_id = "{:03}".format(gacha[1])
-            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
-            embed.set_thumbnail(url=url)
-            await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
+    # @commands.command(name="forceopen")
+    # async def forceopen(self, context, user_id=None, ball=None):
+    #     if context.message.author.id != SNOOPY_ID:
+    #         await context.send("Y'all'th'st'd've'ish ain't Snoopy")
+    #         return
+    #
+    #     if user_id is None:
+    #         await context.send("`Usage:`\n\n```!forceopen user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
+    #         return
+    #
+    #     if ball is None:
+    #         bag = database_helper.get_bag(user_id)
+    #         bag_list = []
+    #         for item in bag:
+    #             for i in range(item[1]):
+    #                 if item[0] == 1:
+    #                     bag_list.append('pokeball')
+    #                 elif item[0] == 2:
+    #                     bag_list.append('greatball')
+    #                 elif item[0] == 3:
+    #                     bag_list.append('ultraball')
+    #                 elif item[0] == 4:
+    #                     bag_list.append('masterball')
+    #         for ball in bag_list:
+    #             await context.invoke(self.forceopen, user_id, ball)
+    #         return
+    #
+    #     if ball == 'pokeball':
+    #         ball_id = 1
+    #     elif ball == 'greatball':
+    #         ball_id = 2
+    #     elif ball == 'ultraball':
+    #         ball_id = 3
+    #     elif ball == 'masterball':
+    #         ball_id = 4
+    #
+    #     user = self.bot.get_user(int(user_id))
+    #     username = user.name
+    #
+    #     database_helper.use_item(user_id, ball_id)
+    #
+    #     option = random.randint(0, 1)
+    #     if option == 0:
+    #         if ball_id == 1:
+    #             pt_range = (1, 15)
+    #             ball_str = 'Poké Ball'
+    #         elif ball_id == 2:
+    #             pt_range = (15, 30)
+    #             ball_str = 'Great Ball'
+    #         elif ball_id == 3:
+    #             pt_range = (30, 60)
+    #             ball_str = 'Ultra Ball'
+    #         elif ball_id == 4:
+    #             pt_range = (60, 150)
+    #             ball_str = 'Master Ball'
+    #         pt_prize = random.randint(pt_range[0], pt_range[1])
+    #         database_helper.adjust_points(user_id, pt_prize)
+    #         balance = database_helper.get_pikapoints(user_id)
+    #         await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str,
+    #                                                                                                  pt_prize, balance))
+    #     elif option == 1:
+    #         if ball_id == 1:
+    #             ball_str = 'Poké Ball'
+    #             roll_range = {
+    #                 3: 60,
+    #                 4: 40,
+    #             }
+    #             roll = random.randint(1, 100)
+    #             if 1 <= roll <= roll_range[3]:
+    #                 options = database_helper.get_roll(3)
+    #             elif roll_range[3] < roll <= 100:
+    #                 options = database_helper.get_roll(4)
+    #         elif ball_id == 2:
+    #             ball_str = 'Great Ball'
+    #             roll_range = {
+    #                 3: 50,
+    #                 4: 40,
+    #                 5: 10
+    #             }
+    #             roll = random.randint(1, 100)
+    #             if 1 <= roll <= roll_range[3]:
+    #                 options = database_helper.get_roll(3)
+    #             elif roll_range[3] < roll <= roll_range[3] + roll_range[4]:
+    #                 options = database_helper.get_roll(4)
+    #             elif roll_range[3] + roll_range[4] < roll <= 100:
+    #                 options = database_helper.get_roll(5)
+    #         elif ball_id == 3:
+    #             ball_str = 'Ultra Ball'
+    #             roll_range = {
+    #                 4: 60,
+    #                 5: 35,
+    #                 6: 5
+    #             }
+    #             roll = random.randint(1, 100)
+    #             if 1 <= roll <= roll_range[4]:
+    #                 options = database_helper.get_roll(4)
+    #             elif roll_range[4] < roll <= roll_range[4] + roll_range[5]:
+    #                 options = database_helper.get_roll(5)
+    #             elif roll_range[4] + roll_range[5] < roll <= 100:
+    #                 options = database_helper.get_roll(6)
+    #         elif ball_id == 4:
+    #             ball_str = 'Master Ball'
+    #             roll_range = {
+    #                 5: 85,
+    #                 6: 10,
+    #                 7: 5
+    #             }
+    #             roll = random.randint(1, 100)
+    #             if 1 <= roll <= roll_range[5]:
+    #                 options = database_helper.get_roll(5)
+    #             elif roll_range[5] < roll <= roll_range[5] + roll_range[6]:
+    #                 options = database_helper.get_roll(6)
+    #             elif roll_range[5] + roll_range[6] < roll <= 100:
+    #                 options = database_helper.get_roll(7)
+    #         gacha = random.choice(options)
+    #         title = "{} Opened: \n".format(username)
+    #         if gacha[2] <= 5:
+    #             description = gacha[0] + "\nRarity: {}⭐".format(gacha[2])
+    #         elif gacha[2] == 6:
+    #             description = gacha[0] + "\nRarity: Legendary"
+    #         elif gacha[2] == 7:
+    #             description = gacha[0] + "\nRarity: Mythic"
+    #         database_helper.add_inventory(user_id, gacha[1])
+    #         embed = discord.Embed(title=title, description=description, color=0x9370db)
+    #         str_id = "{:03}".format(gacha[1])
+    #         url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+    #         embed.set_thumbnail(url=url)
+    #         await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
 
     @commands.command(name="open")
     async def open(self, context, ball=None):
@@ -892,6 +939,7 @@ class SenpaiGacha:
                     options = database_helper.get_roll(5)
                 elif roll_range[4] + roll_range[5] < roll <= 100:
                     options = database_helper.get_roll(6)
+                    options.append(database_helper.get_roll(8, None))
             elif ball_id == 4:
                 ball_str = 'Master Ball'
                 roll_range = {
@@ -904,8 +952,10 @@ class SenpaiGacha:
                     options = database_helper.get_roll(5)
                 elif roll_range[5] < roll <= roll_range[5] + roll_range[6]:
                     options = database_helper.get_roll(6)
+                    options.append(database_helper.get_roll(8, None))
                 elif roll_range[5] + roll_range[6] < roll <= 100:
                     options = database_helper.get_roll(7)
+                    options.append(database_helper.get_roll(8, None))
             gacha = random.choice(options)
             title = "{} Opened: \n".format(username)
             if gacha[2] <= 5:
@@ -914,10 +964,15 @@ class SenpaiGacha:
                 description = gacha[0] + "\nRarity: Legendary"
             elif gacha[2] == 7:
                 description = gacha[0] + "\nRarity: Mythic"
+            elif gacha[2] == 8:
+                description = gacha[0] + "\nRarity: Special"
             database_helper.add_inventory(user_id, gacha[1])
             embed = discord.Embed(title=title, description=description, color=0x9370db)
-            str_id = "{:03}".format(gacha[1])
-            url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+            if gacha[1] >= 10000:
+                url = SPECIAL_POKEMON[gacha[1]]
+            else:
+                str_id = "{:03}".format(gacha[1])
+                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
             database_helper.increment_stat(user_id, "opens")
@@ -1090,9 +1145,14 @@ class SenpaiGacha:
                 pokemon_num = pokemon[4]
             index += 1
             pokemon_id = pokemon[1]
-            sprite = pb.SpriteResource('pokemon', pokemon_id)
-            img = Image.open(sprite.path).convert("RGBA")
-            img = img.resize((150,150))
+            if pokemon_id >= 10000:
+                response = requests.get(SPECIAL_POKEMON[pokemon_id])
+                img = Image.open(BytesIO(response.content)).convert("RGBA")
+                img = img.resize((150, 150))
+            else:
+                sprite = pb.SpriteResource('pokemon', pokemon_id)
+                img = Image.open(sprite.path).convert("RGBA")
+                img = img.resize((150,150))
             for i in range(pokemon_num):
                 #img = Image.open("images/pokemon/"+pokemon[2]+".png")
                 offset = (x*100, y*100)
@@ -1129,7 +1189,10 @@ class SenpaiGacha:
         #     region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
-        else:
+        elif region == 'special':
+            region = SPECIAL
+        elif region is not None:
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'special')")
             return
         if user_id is None:
             user_id = context.message.author.id
@@ -1145,45 +1208,47 @@ class SenpaiGacha:
                 description = description + "\n    {} {} - Legendary".format(poke[4], poke[2])
             elif poke[3] == 7:
                 description = description + "\n    {} {} - Mythic".format(poke[4], poke[2])
+            elif poke[3] == 8:
+                description = description + "\n    {} {} - Special".format(poke[4], poke[2])
         await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
 
-    @commands.command(name="forcerelease")
-    async def forcerelease(self, context, user_id=None, rarity=None):
-        if context.message.author.id != SNOOPY_ID:
-            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
-            return
-
-        if user_id is None:
-            await context.send("`Usage:`\n\n```!forcerelease user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
-            return
-
-        if rarity is None:
-            rarities = ['3', '4', '5']
-            for r in rarities:
-                await context.invoke(self.forcerelease, user_id, r)
-            return
-
-        user = self.bot.get_user(int(user_id))
-        username = user.name
-        balance = database_helper.get_pikapoints(user_id)
-        region = None
-        str_region = "all regions"
-        rows = database_helper.full_remove_inventory(user_id, rarity, region)
-        if rows == 0:
-            await context.send("There is no {}⭐ pokémon to release...".format(rarity))
-            return
-        if rarity == '3':
-            gain = 5
-        elif rarity == '4':
-            gain = 10
-        elif rarity == '5':
-            gain = 15
-        database_helper.adjust_points(user_id, gain * rows)
-        total_gain = gain * rows
-        await context.send(
-            "{} currently has {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...\n{} got {} pikapoints!\n{} now has {} pikapoints.".format(
-                username, str(balance), rows, rarity, str_region, username, total_gain, username,
-                database_helper.get_pikapoints(user_id)))
+    # @commands.command(name="forcerelease")
+    # async def forcerelease(self, context, user_id=None, rarity=None):
+    #     if context.message.author.id != SNOOPY_ID:
+    #         await context.send("Y'all'th'st'd've'ish ain't Snoopy")
+    #         return
+    #
+    #     if user_id is None:
+    #         await context.send("`Usage:`\n\n```!forcerelease user_id```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
+    #         return
+    #
+    #     if rarity is None:
+    #         rarities = ['3', '4', '5']
+    #         for r in rarities:
+    #             await context.invoke(self.forcerelease, user_id, r)
+    #         return
+    #
+    #     user = self.bot.get_user(int(user_id))
+    #     username = user.name
+    #     balance = database_helper.get_pikapoints(user_id)
+    #     region = None
+    #     str_region = "all regions"
+    #     rows = database_helper.full_remove_inventory(user_id, rarity, region)
+    #     if rows == 0:
+    #         await context.send("There is no {}⭐ pokémon to release...".format(rarity))
+    #         return
+    #     if rarity == '3':
+    #         gain = 5
+    #     elif rarity == '4':
+    #         gain = 10
+    #     elif rarity == '5':
+    #         gain = 15
+    #     database_helper.adjust_points(user_id, gain * rows)
+    #     total_gain = gain * rows
+    #     await context.send(
+    #         "{} currently has {} pikapoints.\nReleasing {} {}⭐ Pokémon from {}...\n{} got {} pikapoints!\n{} now has {} pikapoints.".format(
+    #             username, str(balance), rows, rarity, str_region, username, total_gain, username,
+    #             database_helper.get_pikapoints(user_id)))
 
 
 
@@ -1328,6 +1393,8 @@ class SenpaiGacha:
                     gain = 30
                 elif pokemon[1] == 7:
                     gain = 60
+                elif pokemon[1] == 8:
+                    gain = 45
                 database_helper.adjust_points(context.message.author.id, gain)
                 await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
                 database_helper.increment_stat(context.message.author.id, "releases")
@@ -1422,6 +1489,23 @@ class SenpaiGacha:
             await context.send(embed=discord.Embed(title=title, description=description, color=0x9370db))
         else:
             await context.send("Y'all'th'st'd've'ish ain't Snoopy")
+
+    @commands.command(name="newspecial")
+    async def newspecial(self, context, name):
+        if context.message.author.id == SNOOPY_ID:
+            database_helper.change_special(name)
+            await context.invoke(self.pokedex, name, True)
+        else:
+            await context.send("Y'all'th'st'd've'ish ain't Snoopy")
+
+    @commands.command(name="special")
+    async def special(self, context):
+        special = database_helper.get_special()
+        if special is None:
+            await context.send("There is no currently active Special Pokémon!")
+            return
+
+        await context.invoke(self.pokedex, special[0], True)
 
     @commands.command(name="sql")
     async def sql(self, context, query):
@@ -1912,7 +1996,10 @@ class SenpaiGacha:
             await context.send(promote)
 
     async def get_multiplier(self, rarity, dupes):
-        inc = (rarity - 2) / 100
+        if rarity == 8:
+            inc = 0.1
+        else:
+            inc = (rarity - 2) / 100
 
         count = 1
         bonus = 1
@@ -2216,6 +2303,7 @@ class SenpaiGacha:
             ("release", "Release a pokémon for pikapoints"),
             ("releasedupes", "See fullroll, but will let you keep one pokémon of every species"),
             ("roll", "Summon a pokémon from an optionally specified region")
+            ("special", "View the currently active Special Pokémon")
         ]
         account_help = [
             ("account", "See points, bag, and box"),
