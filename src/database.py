@@ -124,7 +124,10 @@ def adjust_savings(conn, user_id, points):
 def get_roll(conn, roll, region=None):
     try:
         c = conn.cursor()
-        if region is None:
+        if roll == 8:
+            sql = """SELECT name, id, rarity FROM pikagacha WHERE rarity = $roll AND active = 1"""
+            placeholders = {"roll": roll}
+        elif region is None:
             if roll == 1:
                 sql = """SELECT name, id, rarity FROM pikagacha WHERE focus = 1"""
             else:

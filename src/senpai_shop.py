@@ -305,14 +305,18 @@ class SenpaiGacha:
                 r = random.randint(0, 1003)
                 if r == 0:
                     options = database_helper.get_roll(7, region)
-                    options.append(database_helper.get_roll(8, None))
+                    specials = database_helper.get_roll(8, None)
+                    for special in specials:
+                        options.append(special)
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
                     if rolls >= 50:
                         brick = False
                 elif 1001 <= r <= 1003:
                     options = database_helper.get_roll(6, region)
-                    options.append(database_helper.get_roll(8, None))
+                    specials = database_helper.get_roll(8, None)
+                    for special in specials:
+                        options.append(special)
                     database_helper.adjust_pity(user_id, True)
                     database_helper.update_jackpot(user_id, False)
                     if rolls >= 50:
@@ -451,12 +455,16 @@ class SenpaiGacha:
 
             if r == 0:
                 options = database_helper.get_roll(7, region)
-                options.append(database_helper.get_roll(8, None))
+                specials = database_helper.get_roll(8, None)
+                for special in specials:
+                    options.append(special)
                 database_helper.adjust_pity(user_id, True)
                 database_helper.update_jackpot(user_id, False)
             elif 1001 <= r <= 1003:
                 options = database_helper.get_roll(6, region)
-                options.append(database_helper.get_roll(8, None))
+                specials = database_helper.get_roll(8, None)
+                for special in specials:
+                    options.append(special)
                 database_helper.adjust_pity(user_id, True)
                 database_helper.update_jackpot(user_id, False)
             elif 1 <= r <= details[1]:
@@ -939,7 +947,9 @@ class SenpaiGacha:
                     options = database_helper.get_roll(5)
                 elif roll_range[4] + roll_range[5] < roll <= 100:
                     options = database_helper.get_roll(6)
-                    options.append(database_helper.get_roll(8, None))
+                    specials = database_helper.get_roll(8, None)
+                    for special in specials:
+                        options.append(special)
             elif ball_id == 4:
                 ball_str = 'Master Ball'
                 roll_range = {
@@ -952,10 +962,14 @@ class SenpaiGacha:
                     options = database_helper.get_roll(5)
                 elif roll_range[5] < roll <= roll_range[5] + roll_range[6]:
                     options = database_helper.get_roll(6)
-                    options.append(database_helper.get_roll(8, None))
+                    specials = database_helper.get_roll(8, None)
+                    for special in specials:
+                        options.append(special)
                 elif roll_range[5] + roll_range[6] < roll <= 100:
                     options = database_helper.get_roll(7)
-                    options.append(database_helper.get_roll(8, None))
+                    specials = database_helper.get_roll(8, None)
+                    for special in specials:
+                        options.append(special)
             gacha = random.choice(options)
             title = "{} Opened: \n".format(username)
             if gacha[2] <= 5:
