@@ -2302,7 +2302,7 @@ class SenpaiGacha:
             ("pity", "View your pity rates"),
             ("release", "Release a pokémon for pikapoints"),
             ("releasedupes", "See fullroll, but will let you keep one pokémon of every species"),
-            ("roll", "Summon a pokémon from an optionally specified region")
+            ("roll", "Summon a pokémon from an optionally specified region"),
             ("special", "View the currently active Special Pokémon")
         ]
         account_help = [
