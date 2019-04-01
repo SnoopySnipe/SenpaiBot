@@ -26,7 +26,8 @@ COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 
 SPECIAL_POKEMON = {
-    10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png'
+    10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
+    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png'
 }
 
 class SenpaiGacha:
