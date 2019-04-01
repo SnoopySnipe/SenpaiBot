@@ -396,15 +396,15 @@ class SenpaiGacha:
                     msg = username + ' summoned a '
                     if gacha[2] == 6:
                         payout = jackpot // no_contributors
-                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, payout, ball_str)
                     elif gacha[2] == 7:
                         payout = (jackpot * 2) // no_contributors
-                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, jackpot * 2, payout, ball_str)
                     elif gacha[2] == 8:
                         payout = jackpot // no_contributors
-                        msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                        msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, payout, ball_str)
                     contributors = database_helper.get_jackpot(False)
                     for contributor in contributors:
@@ -412,8 +412,7 @@ class SenpaiGacha:
                             database_helper.adjust_points(contributor[0], payout)
                             database_helper.add_item(contributor[0], ball_id)
                             database_helper.increment_stat(contributor[0], "jackpots")
-                            msg = msg + '\n' + self.bot.get_user(contributor[0]).name
-                    msg = msg + '```'
+                            msg = msg + '\n' + self.bot.get_user(contributor[0]).mention
                     database_helper.update_jackpot(user_id, True)
                     await context.send(msg)
             balance = database_helper.get_pikapoints(user_id)
@@ -542,15 +541,15 @@ class SenpaiGacha:
                 msg = username + ' summoned a '
                 if gacha[2] == 6:
                     payout = jackpot // no_contributors
-                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                    msg = msg + 'Legendary Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, payout, ball_str)
                 elif gacha[2] == 7:
                     payout = (jackpot * 2) // no_contributors
-                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                    msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, jackpot * 2, payout, ball_str)
                 elif gacha[2] == 8:
                     payout = jackpot // no_contributors
-                    msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:```'.format(
+                    msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, payout, ball_str)
                 contributors = database_helper.get_jackpot(False)
                 for contributor in contributors:
@@ -558,8 +557,7 @@ class SenpaiGacha:
                         database_helper.adjust_points(contributor[0], payout)
                         database_helper.add_item(contributor[0], ball_id)
                         database_helper.increment_stat(contributor[0], "jackpots")
-                        msg = msg + '\n' + self.bot.get_user(contributor[0]).name
-                msg = msg + '```'
+                        msg = msg + '\n' + self.bot.get_user(contributor[0]).mention
                 database_helper.update_jackpot(user_id, True)
                 await context.send(msg)
         else:
@@ -907,6 +905,7 @@ class SenpaiGacha:
             database_helper.adjust_points(user_id, pt_prize)
             balance = database_helper.get_pikapoints(user_id)
             await context.send("{} opened a {} and got {} pikapoints! They now have {} pikapoints.".format(username, ball_str, pt_prize, balance))
+            database_helper.increment_stat(user_id, "opens")
         elif option == 1:
             if ball_id == 1:
                 ball_str = 'Poké Ball'
