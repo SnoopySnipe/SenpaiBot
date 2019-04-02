@@ -27,7 +27,7 @@ LEAGUE_ID = 401518684763586560
 
 SPECIAL_POKEMON = {
     10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
-    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png'
+    10001: 'https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg'#'https://www.serebii.net/sunmoon/pokemon/384-m.png'
 }
 
 class SenpaiGacha:
