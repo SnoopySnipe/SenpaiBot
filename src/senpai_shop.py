@@ -2495,7 +2495,7 @@ class SenpaiGacha:
                         database_helper.increment_stat(msg.author.id, "streaks")
                     if shutdown >= 40:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
-                    if new_streak > database_helper.get_trainer_team(msg.author.id)[5]:
+                    if database_helper.get_trainer_team(msg.author.id) is not None and new_streak > database_helper.get_trainer_team(msg.author.id)[5]:
                         database_helper.update_high_streak(msg.author.id, new_streak)
 
 
