@@ -2490,7 +2490,7 @@ class SenpaiGacha:
                     database_helper.update_exp(msg.author.id, 1)
                     promote = database_helper.promote(msg.author.id)
                     if promote is not None:
-                        await context.send(promote)
+                        await channel.send(promote)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
                     if shutdown >= 40:
