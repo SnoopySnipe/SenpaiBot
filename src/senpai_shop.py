@@ -1095,7 +1095,7 @@ class SenpaiGacha:
         return (save_location, index, remain_overflow)
 
     @commands.command(name="box")
-    async def box(self, context, user_id=None, page_num=1):
+    async def box(self, context, user_id=None, page_num=None):
         BOX_SIZE = 32
 
         if user_id is None or user_id == 'self':
@@ -1104,6 +1104,9 @@ class SenpaiGacha:
         user = self.bot.get_user(int(user_id))
         username = user.name
         box_list = database_helper.get_box(user_id)
+
+        if page_num is None:
+            page_num = 1
 
         if page_num == 'last':
             last_page = math.ceil(len(box_list) / BOX_SIZE)
