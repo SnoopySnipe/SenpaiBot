@@ -1095,8 +1095,18 @@ class SenpaiGacha:
         return (save_location, index, remain_overflow)
 
     @commands.command(name="box")
-    async def box(self, context, user_id=None):
-        await self.box_page(context, 1, user_id)
+    async def box(self, context, user_id=None, page_num=1):
+        if user_id == 'self':
+            user_id = None
+
+        if page_num != 1:
+            try:
+                page_num = int(page_num)
+            except:
+                await context.send("Page number must be a positive integer!")
+                return
+
+        await self.box_page(context, page_num, user_id)
     async def box_page(self, context, page_num, user_id):
     #img = Image.open('images/crate.png', 'r')
         if user_id is None:
