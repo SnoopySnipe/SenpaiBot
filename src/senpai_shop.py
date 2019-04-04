@@ -1116,7 +1116,7 @@ class SenpaiGacha:
         if len(inventory) == 0:
             await context.send("You have no pokémon on page {}! Start rolling!".format(page_num))
         else:
-            page_indices = {1:(0,0)}
+            page_indices = {page_num:(0,0)}
             num_pokemon = 0
             for pokemon in inventory:
                 num_pokemon += pokemon[4]
