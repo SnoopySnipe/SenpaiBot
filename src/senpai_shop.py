@@ -1101,14 +1101,23 @@ class SenpaiGacha:
         if user_id is None or user_id == 'self':
             user_id = context.message.author.id
 
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+        box_list = database_helper.get_box(user_id)
+
+        if page_num == 'last':
+            last_page = math.ceil(len(box_list) / BOX_SIZE)
+            await context.invoke(self.box, user_id, last_page)
+            return
+
         if page_num != 1:
             try:
                 page_num = int(page_num)
             except:
-                await context.send("Page number must be a positive integer!")
+                await context.send("Page number must be a positive integer or 'last'!")
                 return
         if not page_num > 0:
-            await context.send("Page number must be a positive integer!")
+            await context.send("Page number must be a positive integer or 'last'!")
             return
 
         if page_num == 1:
@@ -1116,10 +1125,6 @@ class SenpaiGacha:
         else:
             begin = False
         end = False
-
-        user = self.bot.get_user(int(user_id))
-        username = user.name
-        box_list = database_helper.get_box(user_id)
 
         if len(box_list) <= (page_num - 1) * BOX_SIZE:
             await context.send("{} has no pokémon in box page {}!".format(username, page_num))
