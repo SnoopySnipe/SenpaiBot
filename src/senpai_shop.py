@@ -1101,6 +1101,7 @@ class SenpaiGacha:
             begin = True
         else:
             begin = False
+        end = False
 
         if user_id is None or user_id == 'self':
             user_id = context.message.author.id
@@ -1125,9 +1126,10 @@ class SenpaiGacha:
 
         try:
             display = box_list[(page_num - 1) * BOX_SIZE:page_num * BOX_SIZE]
-            end  = False
         except:
             display = box_list[(page_num - 1) * BOX_SIZE:]
+
+        if len(box_list[page_num * BOX_SIZE:]) < 1:
             end = True
 
         background = Image.open('images/inv_background.png', 'r')
