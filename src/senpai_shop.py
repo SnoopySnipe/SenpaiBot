@@ -1167,10 +1167,10 @@ class SenpaiGacha:
         else:
             if str(reaction.emoji) == '⬅' and not begin:
                 await msg.delete()
-                await context.invoke(self.box, page_num - 1)
+                await context.invoke(self.box, user_id, page_num - 1)
             elif str(reaction.emoji) == '➡' and not end:
                 await msg.delete()
-                await context.invoke(self.box, page_num + 1)
+                await context.invoke(self.box, user_id, page_num + 1)
 
     # @commands.command(name="box")
     # async def box(self, context, user_id=None):
