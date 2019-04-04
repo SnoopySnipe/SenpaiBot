@@ -1097,11 +1097,6 @@ class SenpaiGacha:
     @commands.command(name="box")
     async def box(self, context, user_id=None, page_num=1):
         BOX_SIZE = 32
-        if page_num == 1:
-            begin = True
-        else:
-            begin = False
-        end = False
 
         if user_id is None or user_id == 'self':
             user_id = context.message.author.id
@@ -1115,6 +1110,12 @@ class SenpaiGacha:
         if not page_num > 0:
             await context.send("Page number must be a positive integer!")
             return
+
+        if page_num == 1:
+            begin = True
+        else:
+            begin = False
+        end = False
 
         user = self.bot.get_user(int(user_id))
         username = user.name
