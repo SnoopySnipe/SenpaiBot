@@ -420,3 +420,11 @@ def get_special():
         result = database.get_special(conn)
         conn.close()
     return result
+
+def get_box(user_id):
+    conn = sqlite3.connect(db)
+    result = []
+    if (conn is not None):
+        result = database.get_box(conn, user_id)
+        conn.close()
+    return result

@@ -169,6 +169,16 @@ def get_inventory(conn, user_id, region=None):
     except Error as e:
         print(e)
 
+def get_box(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """SELECT inventory.poke_id, pikagacha.rarity FROM inventory INNER JOIN pikagacha ON inventory.poke_id = pikagacha.id WHERE inventory.user_id = $user_id ORDER BY pikagacha.rarity DESC, inventory.poke_id ASC"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        return c.fetchall()
+    except Error as e:
+        print(e)
+
 def get_poke_count(conn, user_id, poke_id):
     try:
         c = conn.cursor()
