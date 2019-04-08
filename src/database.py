@@ -259,6 +259,16 @@ def del_fav(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def del_all_favs(conn, user_id):
+    try:
+        c = conn.cursor()
+        sql = """DELETE FROM favs WHERE user_id = $user_id"""
+        placeholders = {"user_id": user_id}
+        c.execute(sql, placeholders)
+        conn.commit()
+    except Error as e:
+        print(e)
+
 def remove_inventory(conn, user_id, poke_id):
     try:
         c = conn.cursor()

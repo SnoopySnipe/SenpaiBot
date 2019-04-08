@@ -238,6 +238,12 @@ def del_fav(user_id, poke_id):
         database.del_fav(conn, user_id, poke_id)
         conn.close()
 
+def del_all_favs(user_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        database.del_all_favs(conn, user_id)
+        conn.close()
+
 def get_favs(user_id):
     conn = sqlite3.connect(db)
     result = None

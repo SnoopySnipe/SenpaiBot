@@ -1538,14 +1538,19 @@ class SenpaiGacha:
             await context.send("`Usage:`\n\n```!unfav pokemon_name```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
 
+        user_id = context.message.author.id
+        user = self.bot.get_user(int(user_id))
+        username = user.name
+
+        if name == 'all':
+            database_helper.del_all_favs(user_id)
+            await context.send("Successfully unfavourited all pokémon!")
+            return
+
         pokemon = database_helper.get_pokemon(name)
         if pokemon is None:
             await context.send("Invalid Pokémon name!")
             return
-
-        user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
-        username = user.name
 
         favs = database_helper.get_favs(user_id)
         fav_list = []
