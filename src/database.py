@@ -294,6 +294,28 @@ def full_remove_inventory(conn, user_id, rarity, region=None):
     except Error as e:
         print(e)
 
+def fullrelease_pokemon(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """DELETE FROM inventory WHERE user_id = $user_id AND poke_id = $poke_id"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        rows = c.execute(sql, placeholders).rowcount
+        conn.commit()
+        return rows
+    except Error as e:
+        print(e)
+
+def releasedupes_pokemon(conn, user_id, poke_id):
+    try:
+        c = conn.cursor()
+        sql = """DELETE FROM inventory WHERE inventory_id IN (SELECT inventory_id FROM inventory LEFT JOIN (SELECT MIN(inventory_id) as inv_id, user_id, poke_id FROM inventory GROUP BY user_id, poke_id) as KeepRows ON inventory.inventory_id = KeepRows.inv_id WHERE KeepRows.inv_id IS NULL AND inventory.user_id = $user_id AND inventory.poke_id = $poke_id"""
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        rows = c.execute(sql, placeholders).rowcount
+        conn.commit()
+        return rows
+    except Error as e:
+        print(e)
+
 def remove_dupes(conn, user_id, rarity, region=None):
     try:
         c = conn.cursor()

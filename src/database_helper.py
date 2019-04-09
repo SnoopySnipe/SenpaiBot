@@ -220,6 +220,18 @@ def full_remove_inventory(user_id, rarity, region=None):
         return database.full_remove_inventory(conn, user_id, rarity, region)
         conn.close()
 
+def fullrelease_pokemon(user_id, poke_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        return database.fullrelease_pokemon(conn, user_id, poke_id)
+        conn.close()
+
+def releasedupes_pokemon(user_id, poke_id):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        return database.releasedupes_pokemon(conn, user_id, poke_id)
+        conn.close()
+
 def remove_dupes(user_id, rarity, region=None):
     conn = sqlite3.connect(db)
     if (conn is not None):

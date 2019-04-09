@@ -1478,29 +1478,70 @@ class SenpaiGacha:
                 database_helper.increment_stat(context.message.author.id, "releases")
 
     @commands.command(name="release")
-    async def release(self, context, name=None):
+    async def release(self, context, name=None, option=None):
         if name is None:
-            await context.send("`Usage:`\n\n```!release pokemon_name```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
+            await context.send("`Usage:`\n\n```!release pokemon_name [option]```\n`Use !gachahelp to view the help menu for more information on all PikaGacha commands`")
             return
         pokemon = database_helper.get_pokemon(name)
         if pokemon is not None:
             if database_helper.get_from_inventory(context.message.author.id, pokemon[0]):
-                database_helper.remove_inventory(context.message.author.id, pokemon[0])
-                if pokemon[1] == 3:
-                    gain = 5
-                elif pokemon[1] == 4:
-                    gain = 10
-                elif pokemon[1] == 5:
-                    gain = 15
-                elif pokemon[1] == 6:
-                    gain = 30
-                elif pokemon[1] == 7:
-                    gain = 60
-                elif pokemon[1] == 8:
-                    gain = 45
-                database_helper.adjust_points(context.message.author.id, gain)
-                await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
-                database_helper.increment_stat(context.message.author.id, "releases")
+                if option is None:
+                    database_helper.remove_inventory(context.message.author.id, pokemon[0])
+                    if pokemon[1] == 3:
+                        gain = 5
+                    elif pokemon[1] == 4:
+                        gain = 10
+                    elif pokemon[1] == 5:
+                        gain = 15
+                    elif pokemon[1] == 6:
+                        gain = 30
+                    elif pokemon[1] == 7:
+                        gain = 60
+                    elif pokemon[1] == 8:
+                        gain = 45
+                    database_helper.adjust_points(context.message.author.id, gain)
+                    await context.send("Successfully released {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(name, gain, database_helper.get_pikapoints(context.message.author.id)))
+                    database_helper.increment_stat(context.message.author.id, "releases")
+                elif option == 'all':
+                    rows = database_helper.fullrelease_pokemon(context.message.author.id, pokemon[0])
+                    if pokemon[1] == 3:
+                        gain = 5
+                    elif pokemon[1] == 4:
+                        gain = 10
+                    elif pokemon[1] == 5:
+                        gain = 15
+                    elif pokemon[1] == 6:
+                        gain = 30
+                    elif pokemon[1] == 7:
+                        gain = 60
+                    elif pokemon[1] == 8:
+                        gain = 45
+                    gain = gain * rows
+                    database_helper.adjust_points(context.message.author.id, gain)
+                    await context.send("Successfully released {} {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(rows, name, gain, database_helper.get_pikapoints(context.message.author.id)))
+                    for i in range(rows):
+                        database_helper.increment_stat(context.message.author.id, "releases")
+                elif option == 'dupes':
+                    rows = database_helper.releasedupes_pokemon(context.message.author.id, pokemon[0])
+                    if pokemon[1] == 3:
+                        gain = 5
+                    elif pokemon[1] == 4:
+                        gain = 10
+                    elif pokemon[1] == 5:
+                        gain = 15
+                    elif pokemon[1] == 6:
+                        gain = 30
+                    elif pokemon[1] == 7:
+                        gain = 60
+                    elif pokemon[1] == 8:
+                        gain = 45
+                    gain = gain * rows
+                    database_helper.adjust_points(context.message.author.id, gain)
+                    await context.send("Successfully released {} {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(rows, name, gain, database_helper.get_pikapoints(context.message.author.id)))
+                    for i in range(rows):
+                        database_helper.increment_stat(context.message.author.id, "releases")
+                else:
+                    await context.send("Option must be in ('all', 'dupes', None)")
             else:
                 await context.send("You do not have that Pokémon!")
         else:
