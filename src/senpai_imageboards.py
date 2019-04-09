@@ -3,6 +3,9 @@ import requests
 import time
 
 import discord
+from PIL import Image
+import requests
+from io import BytesIO
 
 from discord.ext import commands
 
@@ -10,9 +13,11 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
         embed_msg = discord.Embed(title=title,
                             url=post_url,
                             color=0xff93ac)
-        embed_msg.set_image(url=file_url)
+        # embed_msg.set_image(url=file_url)
+        response = requests.get(file_url)
+        img = Image.open(BytesIO(response.content))
 
-        message = await context.send(embed=embed_msg)
+        message = await context.send(embed=embed_msg, file=discord.File(img, spoiler=True))
         board.messages.append(message)
 
 class SenpaiImageboard:
