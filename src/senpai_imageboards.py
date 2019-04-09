@@ -3,8 +3,7 @@ import requests
 import time
 
 import discord
-from PIL import Image
-import requests
+import aiohttp
 from io import BytesIO
 
 from discord.ext import commands
@@ -14,13 +13,13 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
                             url=post_url,
                             color=0xff93ac)
         # embed_msg.set_image(url=file_url)
-        response = requests.get(file_url)
-        img = Image.open(BytesIO(response.content))
 
-        file = discord.File(img, filename='hentai.png', spoiler=True)
-
-        message = await context.send(embed=embed_msg, file=file)
-        board.messages.append(message)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(file_url) as resp:
+                data = io.BytesIO(await resp.read())
+                file = discord.File(data, filename='hentai.png', spoiler=True)
+                message = await context.send(embed=embed_msg, file)
+                board.messages.append(message)
 
 class SenpaiImageboard:
     def __init__(self):
