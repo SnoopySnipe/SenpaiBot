@@ -1551,7 +1551,7 @@ class SenpaiGacha:
                         is_int = False
 
                     if is_int:
-                        if option > database_helper.get_from_inventory(context.message.author.id, pokemon[0]):
+                        if option > database_helper.get_from_inventory(context.message.author.id, pokemon[0], True):
                             await context.send("You do not have that much of that Pokémon!")
                         else:
                             rows = database_helper.limitrelease_pokemon(context.message.author.id, pokemon[0], option)
