@@ -305,6 +305,18 @@ def fullrelease_pokemon(conn, user_id, poke_id):
     except Error as e:
         print(e)
 
+def limitrelease_pokemon(conn, user_id, poke_id, limit):
+    try:
+        limit = str(limit)
+        c = conn.cursor()
+        sql = """DELETE FROM inventory WHERE user_id = $user_id AND poke_id = $poke_id LIMIT """ + limit
+        placeholders = {"user_id": user_id, "poke_id": poke_id}
+        rows = c.execute(sql, placeholders).rowcount
+        conn.commit()
+        return rows
+    except Error as e:
+        print(e)
+
 def releasedupes_pokemon(conn, user_id, poke_id):
     try:
         c = conn.cursor()

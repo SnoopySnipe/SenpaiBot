@@ -1541,7 +1541,41 @@ class SenpaiGacha:
                     for i in range(rows):
                         database_helper.increment_stat(context.message.author.id, "releases")
                 else:
-                    await context.send("Option must be in ('all', 'dupes', None)")
+                    try:
+                        option = int(option)
+                        if option > 0:
+                            is_int = True
+                        else:
+                            is_int = False
+                    except:
+                        is_int = False
+
+                    if is_int:
+                        if option > database_helper.get_from_inventory(context.message.author.id, pokemon[0]):
+                            await context.send("You do not have that much of that Pokémon!")
+                        else:
+                            rows = database_helper.limitrelease_pokemon(context.message.author.id, pokemon[0], option)
+                            if pokemon[1] == 3:
+                                gain = 5
+                            elif pokemon[1] == 4:
+                                gain = 10
+                            elif pokemon[1] == 5:
+                                gain = 15
+                            elif pokemon[1] == 6:
+                                gain = 30
+                            elif pokemon[1] == 7:
+                                gain = 60
+                            elif pokemon[1] == 8:
+                                gain = 45
+                            gain = gain * rows
+                            database_helper.adjust_points(context.message.author.id, gain)
+                            await context.send(
+                                "Successfully released {} {}. You got {} pikapoints!\nYou now have {} pikapoints.".format(
+                                    rows, name, gain, database_helper.get_pikapoints(context.message.author.id)))
+                            for i in range(rows):
+                                database_helper.increment_stat(context.message.author.id, "releases")
+                    else:
+                        await context.send("Option must be 'all', 'dupes', a positive integer, or None")
             else:
                 await context.send("You do not have that Pokémon!")
         else:

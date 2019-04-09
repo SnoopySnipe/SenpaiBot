@@ -144,12 +144,14 @@ def use_item(user_id, ball_id):
         database.use_item(conn, user_id, ball_id)
         conn.close()
 
-def get_from_inventory(user_id, poke_id):
+def get_from_inventory(user_id, poke_id, count=False):
     conn = sqlite3.connect(db)
     result = False
     if(conn is not None):
         if len(database.get_from_inventory(conn, user_id, poke_id)) > 0:
             result = True
+        if count:
+            result = len(database.get_from_inventory(conn, user_id, poke_id))
         conn.close()
     return result
 
@@ -224,6 +226,12 @@ def fullrelease_pokemon(user_id, poke_id):
     conn = sqlite3.connect(db)
     if (conn is not None):
         return database.fullrelease_pokemon(conn, user_id, poke_id)
+        conn.close()
+
+def limitrelease_pokemon(user_id, poke_id, limit):
+    conn = sqlite3.connect(db)
+    if (conn is not None):
+        return database.limitrelease_pokemon(conn, user_id, poke_id, limit)
         conn.close()
 
 def releasedupes_pokemon(user_id, poke_id):
