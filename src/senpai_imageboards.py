@@ -18,7 +18,7 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
             async with session.get(file_url) as resp:
                 data = io.BytesIO(await resp.read())
                 file = discord.File(data, filename='hentai.png', spoiler=True)
-                message = await context.send(embed=embed_msg, file)
+                message = await context.send(embed=embed_msg, file=file)
                 board.messages.append(message)
 
 class SenpaiImageboard:
