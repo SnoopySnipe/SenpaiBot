@@ -2244,11 +2244,11 @@ class SenpaiGacha:
         background.paste(img, coordinates, img)
 
         # draw title
-        draw = ImageDraw.Draw(background)
-        font = ImageFont.truetype("arial.ttf", 30)
-        draw.text((240, 20), "Battle!", (255, 255, 255), font=font)
-        font = ImageFont.truetype("arial.ttf", 25)
-        draw.text((220, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
+        # draw = ImageDraw.Draw(background)
+        # font = ImageFont.truetype("arial.ttf", 30)
+        # draw.text((240, 20), "Battle!", (255, 255, 255), font=font)
+        # font = ImageFont.truetype("arial.ttf", 25)
+        # draw.text((220, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
 
 
 
