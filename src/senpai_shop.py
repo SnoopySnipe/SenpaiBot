@@ -2223,7 +2223,7 @@ class SenpaiGacha:
             sprite = pb.SpriteResource('pokemon', poke1_id)
             img = Image.open(sprite.path).convert("RGBA")
         img = img.resize((200, 200))
-        coordinates = (50, 250)
+        coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000:
@@ -2237,18 +2237,18 @@ class SenpaiGacha:
         background.paste(img, coordinates, img)
 
         # draw boxes
-        img = Image.open('images/battle_text_box.png', 'r').resize((400, 150))
+        img = Image.open('images/battle_text_box.png', 'r').resize((400, 125))
         coordinates = (25, 75)
         background.paste(img, coordinates, img)
-        coordinates = (425, 275)
+        coordinates = (425, 300)
         background.paste(img, coordinates, img)
 
         # draw title
-        # draw = ImageDraw.Draw(background)
-        # font = ImageFont.truetype("arial.ttf", 30)
-        # draw.text((415, 20), "Battle!", (255, 255, 255), font=font)
-        # font = ImageFont.truetype("arial.ttf", 25)
-        # draw.text((395, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
+        draw = ImageDraw.Draw(background)
+        font = ImageFont.truetype("images/arial.ttf", 30)
+        draw.text((415, 20), "Battle!", (255, 255, 255), font=font)
+        font = ImageFont.truetype("images/arial.ttf", 25)
+        draw.text((395, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
 
 
 
