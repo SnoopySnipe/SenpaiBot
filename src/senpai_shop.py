@@ -2218,10 +2218,10 @@ class SenpaiGacha:
         # draw pokemon
         if poke1_id >= 10000:
             response = requests.get(SPECIAL_POKEMON[poke1_id])
-            img = Image.open(BytesIO(response.content)).convert("RGBA")
+            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         else:
             sprite = pb.SpriteResource('pokemon', poke1_id)
-            img = Image.open(sprite.path).convert("RGBA")
+            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
@@ -2254,7 +2254,7 @@ class SenpaiGacha:
         font = ImageFont.truetype("images/arial.ttf", 50)
         draw.text((415, 200), "VS", (255, 255, 255), font=font)
         font = ImageFont.truetype("images/arial.ttf", 15)
-        draw.text((230, 250), "Both players must confirm if they wish for the battle to proceed", (255, 255, 255), font=font)
+        draw.text((240, 250), "Both players must confirm if they wish for the battle to proceed", (255, 255, 255), font=font)
 
         # populate text boxes
         font = ImageFont.truetype("images/arial.ttf", 20)
