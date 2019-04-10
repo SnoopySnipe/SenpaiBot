@@ -2237,20 +2237,34 @@ class SenpaiGacha:
         background.paste(img, coordinates, img)
 
         # draw boxes
-        img = Image.open('images/battle_text_box.png', 'r').resize((400, 125))
+        img = Image.open('images/battle_text_box.png', 'r').resize((300, 150))
         coordinates = (25, 75)
         background.paste(img, coordinates, img)
-        coordinates = (425, 300)
+        coordinates = (525, 275)
         background.paste(img, coordinates, img)
 
         # draw title
         draw = ImageDraw.Draw(background)
         font = ImageFont.truetype("images/arial.ttf", 30)
-        draw.text((415, 20), "Battle!", (255, 255, 255), font=font)
+        draw.text((400,5), "Battle!", (255, 255, 255), font=font)
         font = ImageFont.truetype("images/arial.ttf", 25)
-        draw.text((395, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
+        draw.text((320, 40), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
 
+        # populate text boxes
+        font = ImageFont.truetype("images/arial.ttf", 10)
+        draw.text((30, 80), "{}".format(username2), (255, 255, 255), font=font)
+        draw.text((30, 90), "{}{}".format(pokemon2, str_poke2_plus), (255, 255, 255), font=font)
+        draw.text((30, 100), "BST: {}{}".format(poke2_bst, str_poke2_bst_bonus), (255, 255, 255), font=font)
+        draw.text((30, 110), "Odds: {}%".format(poke2_odds), (255, 255, 255), font=font)
+        draw.text((30, 120), "Balance: {} pikapoints".format(p2_balance), (255, 255, 255), font=font)
+        draw.text((30, 130), "Earnings: {} pikapoints".format(p2_win_payout), (255, 255, 255), font=font)
 
+        draw.text((530, 380), "{}".format(username1), (255, 255, 255), font=font)
+        draw.text((530, 390), "{}{}".format(pokemon1, str_poke1_plus), (255, 255, 255), font=font)
+        draw.text((530, 400), "BST: {}{}".format(poke1_bst, str_poke1_bst_bonus), (255, 255, 255), font=font)
+        draw.text((530, 410), "Odds: {}%".format(poke1_odds), (255, 255, 255), font=font)
+        draw.text((530, 420), "Balance: {} pikapoints".format(p1_balance), (255, 255, 255), font=font)
+        draw.text((530, 430), "Earnings: {} pikapoints".format(p1_win_payout), (255, 255, 255), font=font)
 
         save_location = "images/battle_{}_{}.png".format(poke1_id, poke2_id)
         background.save(save_location)
