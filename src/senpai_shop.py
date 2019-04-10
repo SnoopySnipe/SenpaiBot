@@ -2252,9 +2252,9 @@ class SenpaiGacha:
 
         # draw middle
         font = ImageFont.truetype("images/arial.ttf", 50)
-        draw.text((420, 225), "VS", (255, 255, 255), font=font)
-        font = ImageFont.truetype("images/arial.ttf", 25)
-        draw.text((250, 250), "Both players must confirm if they wish for the battle to proceed", (255, 255, 255), font=font)
+        draw.text((415, 215), "VS", (255, 255, 255), font=font)
+        font = ImageFont.truetype("images/arial.ttf", 15)
+        draw.text((225, 240), "Both players must confirm if they wish for the battle to proceed", (255, 255, 255), font=font)
 
         # populate text boxes
         font = ImageFont.truetype("images/arial.ttf", 20)
