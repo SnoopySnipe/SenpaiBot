@@ -6,7 +6,7 @@ import pokebase as pb
 import asyncio
 import datetime
 import time
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 import requests
 from io import BytesIO
 import math
@@ -2136,12 +2136,17 @@ class SenpaiGacha:
         p1_balance = database_helper.get_pikapoints(id1)
         p2_balance = database_helper.get_pikapoints(id2)
 
-        title = "Battle!"
-        description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints\n{} currently has {} pikapoints\n\nBase Wager: {}\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
-            username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
-            username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
-            username1, p1_balance, username2, p2_balance, wager, username1, p1_win_payout, username2, p2_win_payout)
-        msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+        # title = "Battle!"
+        # description = "{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\nVS\n\n{}'s {}{}\nBST: {}{}\nChance to Win: {}%\n\n{} currently has {} pikapoints\n{} currently has {} pikapoints\n\nBase Wager: {}\nPayout if {} wins: {} pikapoints\nPayout if {} wins: {} pikapoints\n\n**Both players must confirm if they wish for the battle to proceed**".format(
+        #     username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
+        #     username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
+        #     username1, p1_balance, username2, p2_balance, wager, username1, p1_win_payout, username2, p2_win_payout)
+
+        file = await self.draw_battle(username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
+                          username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
+                          p1_balance, p2_balance, wager, p1_win_payout, p2_win_payout, poke1_id, poke2_id)
+        msg = await context.send(file=file)
+        # msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
         await msg.add_reaction('✅')
         await msg.add_reaction('❌')
         timed_out = False
@@ -2204,6 +2209,55 @@ class SenpaiGacha:
         promote = database_helper.promote(winner.id)
         if promote is not None:
             await context.send(promote)
+
+    async def draw_battle(self, username1, pokemon1, str_poke1_plus, poke1_bst, str_poke1_bst_bonus, poke1_odds,
+                          username2, pokemon2, str_poke2_plus, poke2_bst, str_poke2_bst_bonus, poke2_odds,
+                          p1_balance, p2_balance, wager, p1_win_payout, p2_win_payout, poke1_id, poke2_id):
+        background = Image.open('images/battle_background.png', 'r').resize((850, 450))
+
+        # draw pokemon
+        if poke1_id >= 10000:
+            response = requests.get(SPECIAL_POKEMON[poke1_id])
+            img = Image.open(BytesIO(response.content)).convert("RGBA")
+        else:
+            sprite = pb.SpriteResource('pokemon', poke1_id)
+            img = Image.open(sprite.path).convert("RGBA")
+        img = img.resize((200, 200))
+        coordinates = (100, 250)
+        background.paste(img, coordinates, img)
+
+        if poke2_id >= 10000:
+            response = requests.get(SPECIAL_POKEMON[poke2_id])
+            img = Image.open(BytesIO(response.content)).convert("RGBA")
+        else:
+            sprite = pb.SpriteResource('pokemon', poke2_id)
+            img = Image.open(sprite.path).convert("RGBA")
+        img = img.resize((200, 200))
+        coordinates = (200, 50)
+        background.paste(img, coordinates, img)
+
+        # draw boxes
+        img = Image.open('images/battle_text_box.png', 'r').resize((200, 150))
+        coordinates = (25, 75)
+        background.paste(img, coordinates, img)
+        coordinates = (150, 275)
+        background.paste(img, coordinates, img)
+
+        # draw title
+        draw = ImageDraw.Draw(background)
+        font = ImageFont.truetype("arial.ttf", 30)
+        draw.text((240, 20), "Battle!", (255, 255, 255), font=font)
+        font = ImageFont.truetype("arial.ttf", 25)
+        draw.text((220, 60), "Base Wager: {} pikapoints".format(wager), (255, 255, 255), font=font)
+
+
+
+        save_location = "images/battle_{}_{}.png".format(poke1_id, poke2_id)
+        background.save(save_location)
+        file = discord.File(save_location, filename='battle.png')
+        return file
+
+
 
     async def get_multiplier(self, rarity, dupes):
         if rarity == 8:
