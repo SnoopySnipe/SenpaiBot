@@ -2246,15 +2246,15 @@ class SenpaiGacha:
         # draw title
         draw = ImageDraw.Draw(background)
         font = ImageFont.truetype("images/arial.ttf", 30)
-        draw.text((400,5), "Battle!", (100, 100, 100), font=font)
+        draw.text((400,5), "Battle!", (210, 4, 0), font=font)
         font = ImageFont.truetype("images/arial.ttf", 25)
-        draw.text((300, 40), "Base Wager: {} pikapoints".format(wager), (100, 100, 100), font=font)
+        draw.text((300, 40), "Base Wager: {} pikapoints".format(wager), (210, 4, 0), font=font)
 
         # draw middle
         font = ImageFont.truetype("images/arial.ttf", 50)
-        draw.text((415, 200), "VS", (100, 100, 100), font=font)
+        draw.text((415, 200), "VS", (210, 4, 0), font=font)
         font = ImageFont.truetype("images/arial.ttf", 15)
-        draw.text((240, 250), "Both players must confirm if they wish for the battle to proceed", (100, 100, 100), font=font)
+        draw.text((240, 250), "Both players must confirm if they wish for the battle to proceed", (210, 4, 0), font=font)
 
         # populate text boxes
         font = ImageFont.truetype("images/arial.ttf", 20)
