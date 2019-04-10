@@ -2221,7 +2221,7 @@ class SenpaiGacha:
             img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         else:
             sprite = pb.SpriteResource('pokemon', poke1_id)
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
