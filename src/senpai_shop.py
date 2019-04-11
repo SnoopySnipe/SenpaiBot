@@ -6,7 +6,7 @@ import pokebase as pb
 import asyncio
 import datetime
 import time
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw, ImageSequence
 import requests
 from io import BytesIO
 import math
@@ -2215,13 +2215,26 @@ class SenpaiGacha:
                           p1_balance, p2_balance, wager, p1_win_payout, p2_win_payout, poke1_id, poke2_id):
         background = Image.open('images/battle_background.png', 'r').resize((850, 450))
 
+        str_pokemon1 = pokemon1.lower().replace('.', '').replace(' ', '_')
+        pokemon1_url = "https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon1)
+        str_pokemon2 = pokemon2.lower().replace('.', '').replace(' ', '_')
+        pokemon2_url = "https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon2)
+
         # draw pokemon
         if poke1_id >= 10000:
             response = requests.get(SPECIAL_POKEMON[poke1_id])
             img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         else:
-            sprite = pb.SpriteResource('pokemon', poke1_id)
-            img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            response = requests.get(pokemon1_url)
+            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            frames = []
+            for frame in ImageSequence.Iterator(img):
+                frame = frame.copy()
+                frame.paste(background, mask=transparent_foreground)
+                frames.append(frame)
+            frames[0].save('battle.gif', save_all=True, append_images=frames[1:])
+            #sprite = pb.SpriteResource('pokemon', poke1_id)
+            #img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
@@ -2230,8 +2243,16 @@ class SenpaiGacha:
             response = requests.get(SPECIAL_POKEMON[poke2_id])
             img = Image.open(BytesIO(response.content)).convert("RGBA")
         else:
-            sprite = pb.SpriteResource('pokemon', poke2_id)
-            img = Image.open(sprite.path).convert("RGBA")
+            response = requests.get(pokemon2_url)
+            img = Image.open(BytesIO(response.content)).convert("RGBA")
+            frames = []
+            for frame in ImageSequence.Iterator(img):
+                frame = frame.copy()
+                frame.paste(background, mask=transparent_foreground)
+                frames.append(frame)
+            frames[0].save('battle.gif', save_all=True, append_images=frames[1:])
+            #sprite = pb.SpriteResource('pokemon', poke2_id)
+            #img = Image.open(sprite.path).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (550, 50)
         background.paste(img, coordinates, img)
@@ -2272,9 +2293,9 @@ class SenpaiGacha:
         draw.text((538, 368), "Balance: {} pikapoints".format(p1_balance), (255, 255, 255), font=font)
         draw.text((538, 388), "Earnings: {} pikapoints".format(p1_win_payout), (255, 255, 255), font=font)
 
-        save_location = "images/battle_{}_{}.png".format(poke1_id, poke2_id)
+        save_location = "images/battle_{}_{}.gif".format(poke1_id, poke2_id)
         background.save(save_location)
-        file = discord.File(save_location, filename='battle.png')
+        file = discord.File(save_location, filename='battle.gif')
         return file
 
 
