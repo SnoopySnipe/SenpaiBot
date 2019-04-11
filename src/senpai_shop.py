@@ -2230,7 +2230,7 @@ class SenpaiGacha:
             frames = []
             for frame in ImageSequence.Iterator(img):
                 frame = frame.copy()
-                frame.paste(background, mask=transparent_foreground)
+                frame.paste(background, mask=background)
                 frames.append(frame)
             frames[0].save('battle.gif', save_all=True, append_images=frames[1:])
             #sprite = pb.SpriteResource('pokemon', poke1_id)
@@ -2248,7 +2248,7 @@ class SenpaiGacha:
             frames = []
             for frame in ImageSequence.Iterator(img):
                 frame = frame.copy()
-                frame.paste(background, mask=transparent_foreground)
+                frame.paste(background, mask=background)
                 frames.append(frame)
             frames[0].save('battle.gif', save_all=True, append_images=frames[1:])
             #sprite = pb.SpriteResource('pokemon', poke2_id)
