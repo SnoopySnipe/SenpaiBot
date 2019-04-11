@@ -2224,7 +2224,7 @@ class SenpaiGacha:
             img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         else:
             response = requests.get("https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon1))
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT)
+            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
             # sprite = pb.SpriteResource('pokemon', poke1_id)
             # img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         img = img.resize((200, 200))
@@ -2236,7 +2236,7 @@ class SenpaiGacha:
             img = Image.open(BytesIO(response.content)).convert("RGBA")
         else:
             response = requests.get("https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon2))
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT)
+            img = Image.open(BytesIO(response.content)).convert("RGBA")
             # sprite = pb.SpriteResource('pokemon', poke2_id)
             # img = Image.open(sprite.path).convert("RGBA")
         img = img.resize((200, 200))
