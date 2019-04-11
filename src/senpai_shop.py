@@ -2215,18 +2215,13 @@ class SenpaiGacha:
                           p1_balance, p2_balance, wager, p1_win_payout, p2_win_payout, poke1_id, poke2_id):
         background = Image.open('images/battle_background.png', 'r').resize((850, 450))
 
-        str_pokemon1 = pokemon1.lower().replace('.', '').replace(' ', '_')
-        str_pokemon2 = pokemon2.lower().replace('.', '').replace(' ', '_')
-
         # draw pokemon
         if poke1_id >= 10000:
             response = requests.get(SPECIAL_POKEMON[poke1_id])
             img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         else:
-            response = requests.get("https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon1))
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
-            # sprite = pb.SpriteResource('pokemon', poke1_id)
-            # img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            sprite = pb.SpriteResource('pokemon', poke1_id)
+            img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
@@ -2235,10 +2230,8 @@ class SenpaiGacha:
             response = requests.get(SPECIAL_POKEMON[poke2_id])
             img = Image.open(BytesIO(response.content)).convert("RGBA")
         else:
-            response = requests.get("https://www.smogon.com/dex/media/sprites/xy/{}.gif".format(str_pokemon2))
-            img = Image.open(BytesIO(response.content)).convert("RGBA")
-            # sprite = pb.SpriteResource('pokemon', poke2_id)
-            # img = Image.open(sprite.path).convert("RGBA")
+            sprite = pb.SpriteResource('pokemon', poke2_id)
+            img = Image.open(sprite.path).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (550, 50)
         background.paste(img, coordinates, img)
@@ -2279,9 +2272,9 @@ class SenpaiGacha:
         draw.text((538, 368), "Balance: {} pikapoints".format(p1_balance), (255, 255, 255), font=font)
         draw.text((538, 388), "Earnings: {} pikapoints".format(p1_win_payout), (255, 255, 255), font=font)
 
-        save_location = "images/battle_{}_{}.gif".format(poke1_id, poke2_id)
+        save_location = "images/battle_{}_{}.png".format(poke1_id, poke2_id)
         background.save(save_location)
-        file = discord.File(save_location, filename='battle.gif')
+        file = discord.File(save_location, filename='battle.png')
         return file
 
 
