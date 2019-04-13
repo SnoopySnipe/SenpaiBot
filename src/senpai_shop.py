@@ -2715,7 +2715,7 @@ class SenpaiGacha:
                         ball_msg = "You got a Great Ball!"
                     elif new_streak == 15:
                         database_helper.add_item(msg.author.id, 3)
-                        ball_msg = "You got a an Ultra Ball!"
+                        ball_msg = "You got an Ultra Ball!"
                     elif new_streak % 5 == 0 and new_streak >= 20:
                         database_helper.add_item(msg.author.id, 4)
                         ball_msg = "You got a Master Ball!"
