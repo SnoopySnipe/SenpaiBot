@@ -102,10 +102,10 @@ async def on_message(message : str):
             r = random.randint(1, 420)
             if 1 <= r <= 69:
                 await message.channel.send('https://tenor.com/xWBO.gif')
-        for banned_msg in BANNED_MSGS:
-            if banned_msg in message.content.lower():
-                await message.delete()
-                break
+        # for banned_msg in BANNED_MSGS:
+        #     if banned_msg in message.content.lower():
+        #         await message.delete()
+        #         break
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
