@@ -20,15 +20,9 @@ LOGS_CHANNEL_ID = 540189209898647554
 DESCRIPTION = '''The senpai of the server.'''
 
 BANNED_MSGS = [
-    ' owo ',
-    'owo ',
-    ' owo',
-    ' uwu ',
-    'uwu ',
-    ' uwu',
-    ' 0w0 ',
-    '0w0 ',
-    ' 0w0'
+    'owo',
+    'uwu',
+    '0w0'
 ]
 
 # initialize bot
