@@ -19,6 +19,12 @@ COMMANDS_CHANNEL_ID = 282336977418715146
 LOGS_CHANNEL_ID = 540189209898647554
 DESCRIPTION = '''The senpai of the server.'''
 
+BANNED_MSGS = [
+    'owo',
+    'uwu',
+    '0w0'
+]
+
 # initialize bot
 bot = commands.Bot(command_prefix="!", description=DESCRIPTION)
 def signal_handler(signal, frame):
@@ -96,6 +102,10 @@ async def on_message(message : str):
             r = random.randint(1, 420)
             if 1 <= r <= 69:
                 await message.channel.send('https://tenor.com/xWBO.gif')
+        for banned_msg in BANNED_MSGS:
+            if banned_msg in message.content.lower():
+                await message.delete()
+                break
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
