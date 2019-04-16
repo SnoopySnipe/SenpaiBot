@@ -842,6 +842,14 @@ def team_split(conn, id1, id2, shutdown, gain):
     except Error as e:
         print(e)
 
+def get_leaderboard(conn, page):
+    try:
+        c = conn.cursor()
+        sql = """SELECT name, """ + page + """ FROM trainer ORDER BY """ + page """ DESC LIMIT 5"""
+        c.execute(sql)
+        return c.fetchall()
+    except Error as e:
+        print(e)
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,

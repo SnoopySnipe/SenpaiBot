@@ -2586,6 +2586,85 @@ class SenpaiGacha:
         for team in teams:
             await context.invoke(self.team, team)
 
+    @commands.command(name="leaderboard")
+    async def leaderboard(self, context, page='totalxp'):
+        pages = {
+            'totalxp': 0,
+            'rolls': 1,
+            'bricks': 2,
+            'jackpots': 3,
+            'opens': 4,
+            'releases': 5,
+            'trades': 6,
+            'quizzes': 7,
+            'streaks': 8,
+            'shutdowns': 9,
+            'highstreak': 10,
+            'battles': 11,
+            'wins': 12,
+            'underdogs': 13,
+            'highstakewins': 14,
+            'losses': 15,
+            'neverlucky': 16,
+            'highstakeloss': 17
+        }
+        inv_pages = {v: k for k, v in pages.items()}
+        titles = {
+            'totalxp': 'Total EXP Gained',
+            'rolls': 'Pokémon Rolled',
+            'bricks': 'Bricks',
+            'jackpots': 'Jackpot Participation',
+            'opens': 'Balls Opened',
+            'releases': 'Pokémon Released',
+            'trades': 'Pokémon Traded',
+            'quizzes': 'Quizzes Answered',
+            'streaks': 'Hot Streaks',
+            'shutdowns': 'Hot Streak Shutdowns',
+            'highstreak': 'Highest Streak',
+            'battles': 'Total Battles',
+            'wins': 'Total Wins',
+            'underdogs': 'Underdog Wins',
+            'highstakewins': 'High Stake Wins',
+            'losses': 'Total Losses',
+            'neverlucky': 'Never Lucky Losses',
+            'highstakeloss': 'High Stake Losses'
+        }
+        try:
+            title = "**__{}__**".format(titles[page])
+        except KeyError:
+            title = "**__Available Leaderboards__**"
+            description = ""
+            for title in titles:
+                description += "\n" + title
+            await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+            return
+
+        leaderboards = database_helper.get_leaderboard(page)
+        description = ""
+        for leaderboard in leaderboards:
+            description += "\n{} --- {}".format(leaderboard[0], leaderboard[1])
+        sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000000))
+        page_number = pages[page]
+        if 1 <= page_number <= 17:
+            await sent_msg.add_reaction("⬅")
+        if 0 <= page_number <= 16:
+            await sent_msg.add_reaction("➡")
+
+        def check(reaction, user):
+            return user == context.message.author and ((str(reaction.emoji) == '⬅' and 1 <= page_number <= 17) or (str(reaction.emoji) == '➡' and 0 <= page <= 16))
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            return
+        else:
+            if str(reaction.emoji) == '⬅' and 1 <= page_number <= 17:
+                await sent_msg.delete()
+                await context.invoke(self.leaderboard, inv_pages[page_number - 1])
+            elif str(reaction.emoji) == '➡' and 0 <= page_number <= 16:
+                await sent_msg.delete()
+                await context.invoke(self.leaderboard, inv_pages[page_number + 1])
+
+
     @commands.command(name="gachahelp")
     async def gachahelp(self, context, page=0):
         summon_help = [

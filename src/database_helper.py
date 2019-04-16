@@ -454,3 +454,11 @@ def get_box(user_id):
         result = database.get_box(conn, user_id)
         conn.close()
     return result
+
+def get_leaderboard(conn, page):
+    conn = sqlite3.connect(db)
+    result = []
+    if (conn is not None):
+        result = database.get_leaderboard(conn, page)
+        conn.close()
+    return result
