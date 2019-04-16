@@ -2704,6 +2704,7 @@ class SenpaiGacha:
         ]
         profile_help = [
             ("join", "Join a team"),
+            ("leaderboard", "View the top 5 pokémon trainers in each stat"),
             ("prestige", "Prestige your pokémon trainer"),
             ("register", "Register as a pokémon trainer"),
             ("switch", "Switch teams"),
