@@ -2634,7 +2634,7 @@ class SenpaiGacha:
         except KeyError:
             title = "**__Available Leaderboards__**"
             description = ""
-            for i in range(len(inv_pages) - 1):
+            for i in range(len(inv_pages)):
                 stat = inv_pages.get(i)
                 description += "\n" + stat
             await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
