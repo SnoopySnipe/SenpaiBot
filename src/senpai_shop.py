@@ -2630,12 +2630,13 @@ class SenpaiGacha:
             'highstakeloss': 'High Stake Losses'
         }
         try:
-            title = "**__{}__**".format(titles[page])
+            title = "**__{} Leaderboard__**".format(titles[page])
         except KeyError:
             title = "**__Available Leaderboards__**"
             description = ""
-            for title in titles:
-                description += "\n" + title
+            for i in range(len(inv_pages) - 1):
+                stat = inv_pages.get(i)
+                description += "\n" + stat
             await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
             return
 

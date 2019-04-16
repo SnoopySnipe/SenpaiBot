@@ -845,7 +845,7 @@ def team_split(conn, id1, id2, shutdown, gain):
 def get_leaderboard(conn, page):
     try:
         c = conn.cursor()
-        sql = "SELECT name, {} FROM trainer ORDER BY {} DESC LIMIT 5".format(page, page)
+        sql = "SELECT name, {0} FROM trainer WHERE {0} > 0 ORDER BY {0} DESC LIMIT 5".format(page)
         c.execute(sql)
         return c.fetchall()
     except Error as e:
