@@ -2644,7 +2644,7 @@ class SenpaiGacha:
         description = ""
         for leaderboard in leaderboards:
             description += "\n{} --- {}".format(leaderboard[0], leaderboard[1])
-        sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000000))
+        sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
         page_number = pages[page]
         if 1 <= page_number <= 17:
             await sent_msg.add_reaction("⬅")
