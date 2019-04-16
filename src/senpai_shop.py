@@ -404,6 +404,11 @@ class SenpaiGacha:
                         msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, jackpot * 2, payout, ball_str)
                     elif gacha[2] == 8:
+                        ball_id = max(3, ball_id)
+                        if ball_id == 3:
+                            ball_str = 'Ultra Ball'
+                        elif ball_id == 4:
+                            ball_str = 'Master Ball'
                         payout = jackpot // no_contributors
                         msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, payout, ball_str)
@@ -549,6 +554,11 @@ class SenpaiGacha:
                     msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, jackpot * 2, payout, ball_str)
                 elif gacha[2] == 8:
+                    ball_id = max(3, ball_id)
+                    if ball_id == 3:
+                        ball_str = 'Ultra Ball'
+                    elif ball_id == 4:
+                        ball_str = 'Master Ball'
                     payout = jackpot // no_contributors
                     msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, payout, ball_str)
