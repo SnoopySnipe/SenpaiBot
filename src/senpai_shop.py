@@ -27,9 +27,9 @@ LEAGUE_ID = 401518684763586560
 
 SPECIAL_POKEMON = {
     10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
-    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png',
-    10002: 'https://www.serebii.net/sunmoon/pokemon/382-m.png',
-    10003: 'https://www.serebii.net/sunmoon/pokemon/383-m.png'
+    10001: 10077,
+    10002: 10078,
+    10003: 10079
 }
 
 class SenpaiGacha:
@@ -1159,13 +1159,16 @@ class SenpaiGacha:
         for pokemon in display:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000:
-                response = requests.get(SPECIAL_POKEMON[pokemon_id])
-                img = Image.open(BytesIO(response.content)).convert("RGBA")
-                img = img.resize((150, 150))
+                if pokemon_id in (10000):
+                    response = requests.get(SPECIAL_POKEMON[pokemon_id])
+                    img = Image.open(BytesIO(response.content)).convert("RGBA")
+                else:
+                    sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[pokemon_id], other_sprites=True, official_artwork=True)
+                    img = Image.open(sprite.path).convert("RGBA")
             else:
-                sprite = pb.SpriteResource('pokemon', pokemon_id)
+                sprite = pb.SpriteResource('pokemon', pokemon_id, other_sprites=True, official_artwork=True)
                 img = Image.open(sprite.path).convert("RGBA")
-                img = img.resize((150,150))
+            img = img.resize((150,150))
             offset = (x * 100, y * 100)
             background.paste(img, offset, img)
             x += 1
@@ -2229,18 +2232,26 @@ class SenpaiGacha:
 
         # draw pokemon
         if poke1_id >= 10000:
-            response = requests.get(SPECIAL_POKEMON[poke1_id])
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            if poke1_id in (10000):
+                response = requests.get(SPECIAL_POKEMON[poke1_id])
+                img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            else:
+                sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[poke1_id], back=True)
+                img = Image.open(sprite.path).convert("RGBA")
         else:
-            sprite = pb.SpriteResource('pokemon', poke1_id)
-            img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            sprite = pb.SpriteResource('pokemon', poke1_id, back=True)
+            img = Image.open(sprite.path).convert("RGBA")
         img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000:
-            response = requests.get(SPECIAL_POKEMON[poke2_id])
-            img = Image.open(BytesIO(response.content)).convert("RGBA")
+            if poke2_id in (10000):
+                response = requests.get(SPECIAL_POKEMON[poke2_id])
+                img = Image.open(BytesIO(response.content)).convert("RGBA")
+            else:
+                sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[poke2_id])
+                img = Image.open(sprite.path).convert("RGBA")
         else:
             sprite = pb.SpriteResource('pokemon', poke2_id)
             img = Image.open(sprite.path).convert("RGBA")
