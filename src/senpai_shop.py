@@ -1170,10 +1170,10 @@ class SenpaiGacha:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                 else:
-                    sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[pokemon_id], other_sprites=True, official_artwork=True)
+                    sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[pokemon_id], official_artwork=True)
                     img = Image.open(sprite.path).convert("RGBA")
             else:
-                sprite = pb.SpriteResource('pokemon', pokemon_id, other_sprites=True, official_artwork=True)
+                sprite = pb.SpriteResource('pokemon', pokemon_id, official_artwork=True)
                 img = Image.open(sprite.path).convert("RGBA")
             img = img.resize((150,150))
             offset = (x * 100, y * 100)
