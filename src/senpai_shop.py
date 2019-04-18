@@ -34,9 +34,9 @@ SPECIAL_POKEMON = {
 
 SPRITE_MAPPING = {
     10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
-    10001: 10077,
-    10002: 10078,
-    10003: 10079
+    10001: 10079,
+    10002: 10077,
+    10003: 10078
 }
 
 class SenpaiGacha:
