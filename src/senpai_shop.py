@@ -1169,13 +1169,15 @@ class SenpaiGacha:
                 if pokemon_id in [10000]:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
+                    img = img.resize((100, 100))
                 else:
                     sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[pokemon_id])
                     img = Image.open(sprite.path).convert("RGBA")
+                    img = img.resize((150, 150))
             else:
                 sprite = pb.SpriteResource('pokemon', pokemon_id)
                 img = Image.open(sprite.path).convert("RGBA")
-            img = img.resize((150,150))
+                img = img.resize((150,150))
             offset = (x * 100, y * 100)
             background.paste(img, offset, img)
             x += 1
@@ -2242,13 +2244,15 @@ class SenpaiGacha:
             if poke1_id in [10000]:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+                img = img.resize((150, 150))
             else:
                 sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke1_id])
                 img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+                img = img.resize((200, 200))
         else:
             sprite = pb.SpriteResource('pokemon', poke1_id)
             img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
-        img = img.resize((200, 200))
+            img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
@@ -2256,13 +2260,15 @@ class SenpaiGacha:
             if poke2_id in [10000]:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
+                img = img.resize((150, 150))
             else:
                 sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke2_id])
                 img = Image.open(sprite.path).convert("RGBA")
+                img = img.resize((200, 200))
         else:
             sprite = pb.SpriteResource('pokemon', poke2_id)
             img = Image.open(sprite.path).convert("RGBA")
-        img = img.resize((200, 200))
+            img = img.resize((200, 200))
         coordinates = (550, 50)
         background.paste(img, coordinates, img)
 
