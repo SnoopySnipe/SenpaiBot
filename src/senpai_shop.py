@@ -32,6 +32,13 @@ SPECIAL_POKEMON = {
     10003: 10079
 }
 
+SPRITE_MAPPING = {
+    10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
+    10001: 10077,
+    10002: 10078,
+    10003: 10079
+}
+
 class SenpaiGacha:
     def __init__(self, bot):
         self.bot = bot
@@ -1160,10 +1167,10 @@ class SenpaiGacha:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000:
                 if pokemon_id in (10000):
-                    response = requests.get(SPECIAL_POKEMON[pokemon_id])
+                    response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                 else:
-                    sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[pokemon_id], other_sprites=True, official_artwork=True)
+                    sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[pokemon_id], other_sprites=True, official_artwork=True)
                     img = Image.open(sprite.path).convert("RGBA")
             else:
                 sprite = pb.SpriteResource('pokemon', pokemon_id, other_sprites=True, official_artwork=True)
@@ -2233,10 +2240,10 @@ class SenpaiGacha:
         # draw pokemon
         if poke1_id >= 10000:
             if poke1_id in (10000):
-                response = requests.get(SPECIAL_POKEMON[poke1_id])
+                response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
             else:
-                sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[poke1_id], back=True)
+                sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke1_id], back=True)
                 img = Image.open(sprite.path).convert("RGBA")
         else:
             sprite = pb.SpriteResource('pokemon', poke1_id, back=True)
@@ -2247,10 +2254,10 @@ class SenpaiGacha:
 
         if poke2_id >= 10000:
             if poke2_id in (10000):
-                response = requests.get(SPECIAL_POKEMON[poke2_id])
+                response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
             else:
-                sprite = pb.SpriteResource('pokemon', SPECIAL_POKEMON[poke2_id])
+                sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke2_id])
                 img = Image.open(sprite.path).convert("RGBA")
         else:
             sprite = pb.SpriteResource('pokemon', poke2_id)
