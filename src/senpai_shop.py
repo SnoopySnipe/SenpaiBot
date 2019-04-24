@@ -30,7 +30,8 @@ SPECIAL_POKEMON = {
     10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png',
     10002: 'https://www.serebii.net/sunmoon/pokemon/382-p.png',
     10003: 'https://www.serebii.net/sunmoon/pokemon/383-p.png',
-    10004: 'https://www.serebii.net/sunmoon/pokemon/428-m.png'
+    10004: 'https://www.serebii.net/sunmoon/pokemon/428-m.png',
+    10005: 'https://www.serebii.net/sunmoon/pokemon/648-s.png'
 }
 
 SPRITE_MAPPING = {
@@ -38,7 +39,8 @@ SPRITE_MAPPING = {
     10001: 10079,
     10002: 10077,
     10003: 10078,
-    10004: 10088
+    10004: 10088,
+    10005: 10018
 }
 
 class SenpaiGacha:
