@@ -2798,6 +2798,8 @@ class SenpaiGacha:
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 if r in (29, 32):
                     pokemon = 'Nidoran'
+                elif r == 669:
+                    pokemon = 'Flabebe'
                 str_id = "{:03}".format(r)
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
