@@ -41,6 +41,7 @@ class SenpaiImageboard:
     async def all(self, context):
         imageboards = [self.yandere, self.danbooru, self.konachan,
                        self.gelbooru, self.safebooru]
+        imageboards.shuffle()
         for func in imageboards:
             await func.reinvoke(context)
 

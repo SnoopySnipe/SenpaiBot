@@ -2,6 +2,8 @@ import discord
 
 
 class EventList:
+    __slots__ = ('event_list')
+
     def __init__(self):
         self.event_list = []
 
