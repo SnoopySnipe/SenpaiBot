@@ -20,14 +20,29 @@ UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 SPECIAL = ('Special', 10000, 11000)
-REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA]#, KALOS, ALOLA]
+REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS]#, ALOLA]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 
 SPECIAL_POKEMON = {
     10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
-    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png'
+    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png',
+    10002: 'https://www.serebii.net/sunmoon/pokemon/382-p.png',
+    10003: 'https://www.serebii.net/sunmoon/pokemon/383-p.png',
+    10004: 'https://www.serebii.net/sunmoon/pokemon/428-m.png',
+    10005: 'https://www.serebii.net/sunmoon/pokemon/648-s.png',
+    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png'
+}
+
+SPRITE_MAPPING = {
+    10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
+    10001: 10079,
+    10002: 10077,
+    10003: 10078,
+    10004: 10088,
+    10005: 10018,
+    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png'
 }
 
 class SenpaiGacha:
@@ -263,14 +278,14 @@ class SenpaiGacha:
                 region = SINNOH
             elif region == 'unova':
                 region = UNOVA
-            # elif region == 'kalos':
-            #     region = KALOS
+            elif region == 'kalos':
+                region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
             elif region == 'all':
                 region = None
             else:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'all')")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'all')")
                 return
 
             if no_rolls == 'jackpot':
@@ -404,6 +419,11 @@ class SenpaiGacha:
                         msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, jackpot * 2, payout, ball_str)
                     elif gacha[2] == 8:
+                        ball_id = max(3, ball_id)
+                        if ball_id == 3:
+                            ball_str = 'Ultra Ball'
+                        elif ball_id == 4:
+                            ball_str = 'Master Ball'
                         payout = jackpot // no_contributors
                         msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                             jackpot, payout, ball_str)
@@ -445,12 +465,12 @@ class SenpaiGacha:
                 region = SINNOH
             elif region == 'unova':
                 region = UNOVA
-            # elif region == 'kalos':
-            #     region = KALOS
+            elif region == 'kalos':
+                region = KALOS
             # elif region == 'alola':
             #     region = ALOLA
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
                 return
 
             if r == 0:
@@ -549,6 +569,11 @@ class SenpaiGacha:
                     msg = msg + 'Mythic Pokémon! The jackpot contained {} pikapoints --> x2 Mythic Multiplier --> {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, jackpot * 2, payout, ball_str)
                 elif gacha[2] == 8:
+                    ball_id = max(3, ball_id)
+                    if ball_id == 3:
+                        ball_str = 'Ultra Ball'
+                    elif ball_id == 4:
+                        ball_str = 'Master Ball'
                     payout = jackpot // no_contributors
                     msg = msg + 'Special Pokémon! The jackpot contained {} pikapoints. The following users contributed at least 3 pikapoints to the jackpot and will each receive {} pikapoints and a **{}**:'.format(
                         jackpot, payout, ball_str)
@@ -1147,9 +1172,14 @@ class SenpaiGacha:
         for pokemon in display:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000:
-                response = requests.get(SPECIAL_POKEMON[pokemon_id])
-                img = Image.open(BytesIO(response.content)).convert("RGBA")
-                img = img.resize((150, 150))
+                if pokemon_id in [10000, 10006]:
+                    response = requests.get(SPRITE_MAPPING[pokemon_id])
+                    img = Image.open(BytesIO(response.content)).convert("RGBA")
+                    img = img.resize((100, 100))
+                else:
+                    sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[pokemon_id])
+                    img = Image.open(sprite.path).convert("RGBA")
+                    img = img.resize((150, 150))
             else:
                 sprite = pb.SpriteResource('pokemon', pokemon_id)
                 img = Image.open(sprite.path).convert("RGBA")
@@ -1288,14 +1318,14 @@ class SenpaiGacha:
             region = SINNOH
         elif region == 'unova':
             region = UNOVA
-        # elif region == 'kalos':
-        #     region = KALOS
+        elif region == 'kalos':
+            region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'special')")
             return
         if user_id is None:
             user_id = context.message.author.id
@@ -1371,12 +1401,12 @@ class SenpaiGacha:
             region = SINNOH
         elif region == 'unova':
             region = UNOVA
-        # elif region == 'kalos':
-        #     region = KALOS
+        elif region == 'kalos':
+            region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
             return
 
         if rarity == 'all':
@@ -1431,12 +1461,12 @@ class SenpaiGacha:
             region = SINNOH
         elif region == 'unova':
             region = UNOVA
-        # elif region == 'kalos':
-        #     region = KALOS
+        elif region == 'kalos':
+            region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
             return
 
         if rarity == 'all':
@@ -1733,14 +1763,14 @@ class SenpaiGacha:
             region = SINNOH
         elif region == 'unova':
             region = UNOVA
-        # elif region == 'kalos':
-        #     region = KALOS
+        elif region == 'kalos':
+            region = KALOS
         # elif region == 'alola':
         #     region = ALOLA
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'special')")
             return
         units = database_helper.get_units(region)
         if region[0] == 'Special':
@@ -2217,22 +2247,34 @@ class SenpaiGacha:
 
         # draw pokemon
         if poke1_id >= 10000:
-            response = requests.get(SPECIAL_POKEMON[poke1_id])
-            img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+            if poke1_id in [10000, 10006]:
+                response = requests.get(SPRITE_MAPPING[poke1_id])
+                img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+                img = img.resize((150, 150))
+            else:
+                sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke1_id])
+                img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
+                img = img.resize((200, 200))
         else:
             sprite = pb.SpriteResource('pokemon', poke1_id)
             img = Image.open(sprite.path).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
-        img = img.resize((200, 200))
+            img = img.resize((200, 200))
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000:
-            response = requests.get(SPECIAL_POKEMON[poke2_id])
-            img = Image.open(BytesIO(response.content)).convert("RGBA")
+            if poke2_id in [10000, 10006]:
+                response = requests.get(SPRITE_MAPPING[poke2_id])
+                img = Image.open(BytesIO(response.content)).convert("RGBA")
+                img = img.resize((150, 150))
+            else:
+                sprite = pb.SpriteResource('pokemon', SPRITE_MAPPING[poke2_id])
+                img = Image.open(sprite.path).convert("RGBA")
+                img = img.resize((200, 200))
         else:
             sprite = pb.SpriteResource('pokemon', poke2_id)
             img = Image.open(sprite.path).convert("RGBA")
-        img = img.resize((200, 200))
+            img = img.resize((200, 200))
         coordinates = (550, 50)
         background.paste(img, coordinates, img)
 
@@ -2576,6 +2618,86 @@ class SenpaiGacha:
         for team in teams:
             await context.invoke(self.team, team)
 
+    @commands.command(name="leaderboard")
+    async def leaderboard(self, context, page='totalxp'):
+        pages = {
+            'totalxp': 0,
+            'rolls': 1,
+            'bricks': 2,
+            'jackpots': 3,
+            'opens': 4,
+            'releases': 5,
+            'trades': 6,
+            'quizzes': 7,
+            'streaks': 8,
+            'shutdowns': 9,
+            'highstreak': 10,
+            'battles': 11,
+            'wins': 12,
+            'underdogs': 13,
+            'highstakewins': 14,
+            'losses': 15,
+            'neverlucky': 16,
+            'highstakeloss': 17
+        }
+        inv_pages = {v: k for k, v in pages.items()}
+        titles = {
+            'totalxp': 'Total EXP Gained',
+            'rolls': 'Pokémon Rolled',
+            'bricks': 'Bricks',
+            'jackpots': 'Jackpot Participation',
+            'opens': 'Balls Opened',
+            'releases': 'Pokémon Released',
+            'trades': 'Pokémon Traded',
+            'quizzes': 'Quizzes Answered',
+            'streaks': 'Hot Streaks',
+            'shutdowns': 'Hot Streak Shutdowns',
+            'highstreak': 'Highest Streak',
+            'battles': 'Total Battles',
+            'wins': 'Total Wins',
+            'underdogs': 'Underdog Wins',
+            'highstakewins': 'High Stake Wins',
+            'losses': 'Total Losses',
+            'neverlucky': 'Never Lucky Losses',
+            'highstakeloss': 'High Stake Losses'
+        }
+        try:
+            title = "**__{} Leaderboard__**".format(titles[page])
+        except KeyError:
+            title = "**__Available Leaderboards__**"
+            description = ""
+            for i in range(len(inv_pages)):
+                stat = inv_pages.get(i)
+                description += "\n" + stat
+            await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+            return
+
+        leaderboards = database_helper.get_leaderboard(page)
+        description = ""
+        for leaderboard in leaderboards:
+            description += "\n{} --- {}".format(leaderboard[0], leaderboard[1])
+        sent_msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x000080))
+        page_number = pages[page]
+        if 1 <= page_number <= 17:
+            await sent_msg.add_reaction("⬅")
+        if 0 <= page_number <= 16:
+            await sent_msg.add_reaction("➡")
+
+        def check(reaction, user):
+            return user == context.message.author and ((str(reaction.emoji) == '⬅' and 1 <= page_number <= 17) or (str(reaction.emoji) == '➡' and 0 <= page_number <= 16))
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            return
+        else:
+            if str(reaction.emoji) == '⬅' and 1 <= page_number <= 17:
+                await sent_msg.delete()
+                await context.invoke(self.leaderboard, inv_pages[page_number - 1])
+            elif str(reaction.emoji) == '➡' and 0 <= page_number <= 16:
+                await sent_msg.delete()
+                await context.invoke(self.leaderboard, inv_pages[page_number + 1])
+
+
     @commands.command(name="gachahelp")
     async def gachahelp(self, context, page=0):
         summon_help = [
@@ -2614,6 +2736,7 @@ class SenpaiGacha:
         ]
         profile_help = [
             ("join", "Join a team"),
+            ("leaderboard", "View the top 5 pokémon trainers in each stat"),
             ("prestige", "Prestige your pokémon trainer"),
             ("register", "Register as a pokémon trainer"),
             ("switch", "Switch teams"),
@@ -2673,10 +2796,12 @@ class SenpaiGacha:
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 3 < datetime.datetime.now().hour < 12: # generate quizzes only from 8am - 12am
-                r = random.randint(1, 649) # generate random pokemon
+                r = random.randint(1, 721) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 if r in (29, 32):
                     pokemon = 'Nidoran'
+                elif r == 669:
+                    pokemon = 'Flabebe'
                 str_id = "{:03}".format(r)
                 url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
@@ -2715,7 +2840,7 @@ class SenpaiGacha:
                         ball_msg = "You got a Great Ball!"
                     elif new_streak == 15:
                         database_helper.add_item(msg.author.id, 3)
-                        ball_msg = "You got a an Ultra Ball!"
+                        ball_msg = "You got an Ultra Ball!"
                     elif new_streak % 5 == 0 and new_streak >= 20:
                         database_helper.add_item(msg.author.id, 4)
                         ball_msg = "You got a Master Ball!"

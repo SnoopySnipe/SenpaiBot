@@ -842,6 +842,14 @@ def team_split(conn, id1, id2, shutdown, gain):
     except Error as e:
         print(e)
 
+def get_leaderboard(conn, page):
+    try:
+        c = conn.cursor()
+        sql = "SELECT name, {0} FROM trainer WHERE {0} > 0 ORDER BY {0} DESC LIMIT 5".format(page)
+        c.execute(sql)
+        return c.fetchall()
+    except Error as e:
+        print(e)
 
 sql_create_pikapoints_table = """CREATE TABLE IF NOT EXISTS pikapoints (
                                     id integer PRIMARY KEY,
@@ -863,7 +871,7 @@ def load_pikadata(path):
     data = {}
     with open(path, mode='r') as file:
         for line in file:
-            line_data = line.split("\t")
+            line_data = line.split(",")
             data[int(line_data[0])] = (line_data[1], int(line_data[2]), int(line_data[3]), int(line_data[4]))
     return data
 
