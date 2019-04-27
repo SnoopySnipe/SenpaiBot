@@ -9,6 +9,7 @@ AUDIO_FORMAT = "wav"
 _unprocessed_file_path = None
 
 class SenpaiSong:
+    __slots__ = ('title', 'url', 'path')
 
     def __init__(self, title, url, path):
         self.title = title
