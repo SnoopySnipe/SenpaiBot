@@ -1,6 +1,7 @@
 import discord
 
-class Event_List:
+
+class EventList:
     def __init__(self):
         self.event_list = []
 
@@ -12,17 +13,13 @@ class Event_List:
 
     def remove_event(self, eventIndex):
         if (eventIndex < len(self.event_list)):
-            self.event_list.pop(eventIndex);
-            return ("Removed event with event number {}".format(eventIndex))
+            self.event_list.pop(eventIndex)
+            return "Removed event with event number {}".format(eventIndex)
         else:
             return "Invalid event number"
+
     def list_events(self):
-        res = ""
-        for i in range(len(self.event_list)):
-            res += "#" + str(i) + ". " + self.event_list[i].event_name + "  (Date: " + self.event_list[i].event_start_time + ")" + "\n"
-            attendees = self.view_attendees(i)
-            res += "\t `" + " | ".join(str(e) for e in attendees) + " `\n"
-        return res
+        return str(self)
 
     def view_attendees(self, eventIndex):
         if (eventIndex < len(self.event_list)):
@@ -48,8 +45,16 @@ class Event_List:
 
         return msgs
 
+    def __str__(self) -> str:
+        res = ""
+        for (i, event) in enumerate(self.event_list):
+            res += "#{}. {}  (Date: {})".format(i, event.event_name, event.event_start_time)
+            attendees = event.view_attendees()
+            res += "\t `{}`\n".format(" | ".join(str(e) for e in attendees))
+        return res
+
 class Event:
-    def __init__(self, event_name, event_start_time):
+    def __init__(self, event_name: str, event_start_time: str):
         self.event_name = event_name
         self.event_start_time = event_start_time
         self.attendees = []
@@ -74,7 +79,7 @@ class Event:
     def to_embed_msg(self, index):
         title = "Event #{}: {}".format(index, self.event_name)
 
-        date_msg = 'Date: ' + self.event_start_time
+        date_msg = "Date: " + self.event_start_time
         going_attendees = 'Going:\n' + '\n'.join(
                 '{}. {}'.format(i+1, str(attendee))
                 for i, attendee in enumerate(self.attendees))

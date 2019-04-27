@@ -5,8 +5,10 @@ from helpers import *
 from events import *
 
 class SenpaiEvents:
+    __slots__ = ('event_list')
+
     def __init__(self):
-        self.event_list = Event_List()
+        self.event_list = EventList()
 
     # Manages events
     @commands.group(invoke_without_command=True)
@@ -22,8 +24,7 @@ class SenpaiEvents:
                                 "!event leave [event number]`")
             return
 
-        res = "Something went wrong"
-        if(arg[0] == "create"):
+        if (arg[0] == "create"):
             if (len(arg) == 3):
                 index, new_event = self.event_list.add_event(arg[1], arg[2])
                 embed_msg = new_event.to_embed_msg(index)
