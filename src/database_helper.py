@@ -1,23 +1,26 @@
-import database
 import sqlite3
+
+import database
+
 def initialize(server_name):
     global db
     db = server_name + '.db'
     conn = sqlite3.connect(db)
     database.initialize(conn)
     conn.close()
+
 def add_pikapoints(user_id, points):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.add_pikapoints_query(conn, user_id, points)
         conn.close()
 
 def get_pikapoints(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_pikapoints_query(conn, user_id)
-        if(result is not None):
+        if (result is not None):
             result = result[0]
         conn.close()
         return result
@@ -25,9 +28,9 @@ def get_pikapoints(user_id):
 def get_savings(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_savings(conn, user_id)
-        if(result is not None):
+        if (result is not None):
             result = result[0]
         conn.close()
         return result
@@ -35,7 +38,7 @@ def get_savings(user_id):
 def get_pity(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_pity(conn, user_id)
         conn.close()
         return result
@@ -43,7 +46,7 @@ def get_pity(user_id):
 def get_focus(region):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_focus(conn, region)
         conn.close()
         return result
@@ -51,7 +54,7 @@ def get_focus(region):
 def get_user_details(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_user_details(conn, user_id)
         conn.close()
         return result
@@ -59,7 +62,7 @@ def get_user_details(user_id):
 def get_roll(roll, region=None):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_roll(conn, roll, region)
         conn.close()
         return result
@@ -67,33 +70,33 @@ def get_roll(roll, region=None):
 def get_units(region):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_units(conn, region)
         conn.close()
         return result
 
 def adjust_pity(user_id, got_five=None):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.adjust_pikapity(conn, user_id, got_five)
         conn.close()
 
 def adjust_points(user_id, points):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.adjust_points(conn, user_id, points)
         conn.close()
 
 def adjust_savings(user_id, points):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.adjust_savings(conn, user_id, points)
         conn.close()
 
 def get_inventory(user_id, region=None):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_inventory(conn, user_id, region)
         conn.close()
         return result
@@ -101,7 +104,7 @@ def get_inventory(user_id, region=None):
 def get_poke_count(user_id, poke_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_poke_count(conn, user_id, poke_id)
         conn.close()
         return result
@@ -109,7 +112,7 @@ def get_poke_count(user_id, poke_id):
 def get_stadium():
     conn = sqlite3.connect(db)
     result = False
-    if(conn is not None):
+    if (conn is not None):
         if database.get_stadium(conn) is not None:
             result = True
         conn.close()
@@ -124,7 +127,7 @@ def update_stadium(insert):
 def get_bag(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_bag(conn, user_id)
         conn.close()
         return result
@@ -132,7 +135,7 @@ def get_bag(user_id):
 def check_bag(user_id, ball_id):
     conn = sqlite3.connect(db)
     result = False
-    if(conn is not None):
+    if (conn is not None):
         if len(database.check_bag(conn, user_id, ball_id)) > 0:
             result = True
         conn.close()
@@ -140,14 +143,14 @@ def check_bag(user_id, ball_id):
 
 def use_item(user_id, ball_id):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.use_item(conn, user_id, ball_id)
         conn.close()
 
 def get_from_inventory(user_id, poke_id, count=False):
     conn = sqlite3.connect(db)
     result = False
-    if(conn is not None):
+    if (conn is not None):
         if len(database.get_from_inventory(conn, user_id, poke_id)) > 0:
             result = True
         if count:
@@ -166,20 +169,20 @@ def get_high_streak():
 
 def add_inventory(user_id, poke_id):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.add_inventory(conn, user_id, poke_id)
         conn.close()
 
 def add_item(user_id, item_id):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         database.add_item(conn, user_id, item_id)
         conn.close()
 
 def get_pokemon(name):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_pokemon(conn, name)
         conn.close()
         return result
@@ -275,7 +278,7 @@ def get_favs(user_id):
 def get_pokemon_name(id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_pokemon_name(conn, id)
         conn.close()
         return result
@@ -283,7 +286,7 @@ def get_pokemon_name(id):
 def get_streak(user_id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_streak(conn, user_id)
         conn.close()
         return result
@@ -297,7 +300,7 @@ def update_streak(user_id):
 def get_streaker():
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_streaker(conn)
         conn.close()
         return result
@@ -320,7 +323,7 @@ def update_jackpot(id, reset):
 def get_jackpot(sum):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_jackpot(conn, sum)
         conn.close()
         return result
@@ -328,7 +331,7 @@ def get_jackpot(sum):
 def get_contribution(id):
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_contribution(conn, id)
         conn.close()
         return result
@@ -336,14 +339,14 @@ def get_contribution(id):
 def get_jackpot_rewards():
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_jackpot_rewards(conn)
         conn.close()
         return result
 
 def register(id, name):
     conn = sqlite3.connect(db)
-    if(conn is not None):
+    if (conn is not None):
         return database.register(conn, id, name)
         conn.close()
 
@@ -442,7 +445,7 @@ def update_high_streak(id, streak):
 def get_special():
     conn = sqlite3.connect(db)
     result = None
-    if(conn is not None):
+    if (conn is not None):
         result = database.get_special(conn)
         conn.close()
     return result
