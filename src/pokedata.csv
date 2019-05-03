@@ -719,6 +719,94 @@
 719,Diancie,7,0,600
 720,Hoopa,7,0,600
 721,Volcanion,7,0,600
+722,Rowlet,3,0,320
+723,Dartrix,4,0,420
+724,Decidueye,5,0,530
+725,Litten,3,0,320
+726,Torracat,4,0,420
+727,Incineroar,5,0,530
+728,Popplio,3,0,320
+729,Brionne,4,0,420
+730,Primarina,5,0,530
+731,Pikipek,3,0,265
+732,Trumbeak,4,0,355
+733,Toucannon,5,0,485
+734,Yungoos,3,0,253
+735,Gumshoos,4,0,418
+736,Grubbin,3,0,300
+737,Charjabug,4,0,400
+738,Vikavolt,5,0,500
+739,Crabrawler,4,0,338
+740,Crabominable,5,0,478
+741,Oricorio,4,0,476
+742,Cutiefly,3,0,304
+743,Ribombee,4,0,464
+744,Rockruff,3,0,280
+745,Lycanroc,5,0,487
+746,Wishiwashi,3,0,175
+747,Mareanie,4,0,305
+748,Toxapex,5,0,495
+749,Mudbray,4,0,385
+750,Mudsdale,5,0,500
+751,Dewpider,3,0,269
+752,Araquanid,4,0,454
+753,Fomantis,3,0,250
+754,Lurantis,4,0,480
+755,Morelull,3,0,285
+756,Shiinotic,4,0,405
+757,Salandit,4,0,320
+758,Salazzle,5,0,480
+759,Stufful,3,0,340
+760,Bewear,4,0,500
+761,Bounsweet,3,0,210
+762,Steenee,4,0,290
+763,Tsareena,5,0,510
+764,Comfey,4,0,485
+765,Oranguru,4,0,490
+766,Passimian,4,0,490
+767,Wimpod,3,0,230
+768,Golisopod,5,0,530
+769,Sandygast,3,0,320
+770,Palossand,4,0,480
+771,Pyukumuku,3,0,410
+772,Type: Null,6,0,534
+773,Silvally,6,0,570
+774,Minior,3,0,440
+775,Komala,4,0,480
+776,Turtonator,4,0,485
+777,Togedemaru,3,0,435
+778,Mimikyu,5,0,476
+779,Bruxish,4,0,475
+780,Drampa,4,0,485
+781,Dhelmise,5,0,517
+782,Jangmo-o,3,0,300
+783,Hakamo-o,4,0,420
+784,Kommo-o,5,0,600
+785,Tapu Koko,6,0,570
+786,Tapu Lele,6,0,570
+787,Tapu Bulu,6,0,570
+788,Tapu Fini,6,0,570
+789,Cosmog,6,0,200
+790,Cosmoem,6,0,400
+791,Solgaleo,6,0,680
+792,Lunala,6,0,680
+793,Nihilego,5,0,570
+794,Buzzwole,5,0,570
+795,Pheromosa,5,0,570
+796,Xurkitree,5,0,570
+797,Celesteela,5,0,570
+798,Kartana,5,0,570
+799,Guzzlord,5,0,570
+800,Necrozma,6,0,600
+801,Magearna,7,0,600
+802,Marshadow,7,0,600
+803,Poipole,4,0,420
+804,Naganadel,5,0,540
+805,Stakataka,5,0,570
+806,Blacephalon,5,0,570
+807,Zeraora,7,0,600
+808,Meltan,7,0,300
+809,Melmetal,7,0,600
 10000,Flying Pikachu,8,0,420
 10001,Mega Rayquaza,8,0,780
 10002,Primal Kyogre,8,0,770
@@ -726,3 +814,4 @@
 10004,Mega Lopunny,8,0,580
 10005,Pirouette Meloetta,8,0,600
 10006,Ash-Greninja,8,0,640
+10007,Ultra Necrozma,8,0,754
