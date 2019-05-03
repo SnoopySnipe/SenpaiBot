@@ -1060,7 +1060,7 @@ class SenpaiGacha:
                             (curr_index, remain_num) = page_indices[page_num]
                         if (page_num not in page_indices):
                             page_indices[page_num] = (curr_index, remain_num)
-                        (save_location, curr_index, remain_num) = self.draw_box(context, bag, curr_index,
+                        (save_location, curr_index, remain_num) = self.draw_bag(context, bag, curr_index,
                                                                                 remain_num)
                         file = discord.File(save_location, filename='bag.png')
                         await msg.delete()
