@@ -1174,7 +1174,7 @@ class SenpaiGacha:
         for pokemon in display:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000:
-                if pokemon_id in [10000, 10006]:
+                if pokemon_id in [10000, 10006, 10007]:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                     img = img.resize((100, 100))
@@ -2249,7 +2249,7 @@ class SenpaiGacha:
 
         # draw pokemon
         if poke1_id >= 10000:
-            if poke1_id in [10000, 10006]:
+            if poke1_id in [10000, 10006, 10007]:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2265,7 +2265,7 @@ class SenpaiGacha:
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000:
-            if poke2_id in [10000, 10006]:
+            if poke2_id in [10000, 10006, 10007]:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
                 img = img.resize((150, 150))
