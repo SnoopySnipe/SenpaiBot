@@ -43,7 +43,8 @@ SPECIAL_POKEMON = {
     10003: 'https://www.serebii.net/sunmoon/pokemon/383-p.png',
     10004: 'https://www.serebii.net/sunmoon/pokemon/428-m.png',
     10005: 'https://www.serebii.net/sunmoon/pokemon/648-s.png',
-    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png'
+    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png',
+    10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png'
 }
 
 SPRITE_MAPPING = {
@@ -53,7 +54,8 @@ SPRITE_MAPPING = {
     10003: 10078,
     10004: 10088,
     10005: 10018,
-    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png'
+    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png',
+    10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png'
 }
 
 class SenpaiGacha(commands.Cog):
@@ -311,10 +313,24 @@ class SenpaiGacha(commands.Cog):
                 await context.send("Number of rolls must be an integer or 'jackpot'")
                 return
 
-            if num_rolls <= rolls:
-                rolls = max(num_rolls, 0)
+            if region == 'kanto':
+                region = KANTO
+            elif region == 'johto':
+                region = JOHTO
+            elif region == 'hoenn':
+                region = HOENN
+            elif region == 'sinnoh':
+                region = SINNOH
+            elif region == 'unova':
+                region = UNOVA
+            elif region == 'kalos':
+                region = KALOS
+            elif region == 'alola':
+                region = ALOLA
+            elif region == 'all':
+                region = None
             else:
-                await context.send("You cannot roll that many times!")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'all')")
                 return
 
         if rolls == 0:
@@ -476,10 +492,10 @@ class SenpaiGacha(commands.Cog):
                 region = UNOVA
             elif region == 'kalos':
                 region = KALOS
-            # elif region == 'alola':
-            #     region = ALOLA
+            elif region == 'alola':
+                region = ALOLA
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
                 return
 
             if r == 0:
@@ -1069,7 +1085,7 @@ class SenpaiGacha(commands.Cog):
                             (curr_index, remain_num) = page_indices[page_num]
                         if (page_num not in page_indices):
                             page_indices[page_num] = (curr_index, remain_num)
-                        (save_location, curr_index, remain_num) = self.draw_box(context, bag, curr_index,
+                        (save_location, curr_index, remain_num) = self.draw_bag(context, bag, curr_index,
                                                                                 remain_num)
                         file = discord.File(save_location, filename='bag.png')
                         await msg.delete()
@@ -1181,7 +1197,7 @@ class SenpaiGacha(commands.Cog):
         for pokemon in display:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000:
-                if pokemon_id in [10000, 10006]:
+                if pokemon_id in [10000, 10006, 10007]:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                     img = img.resize((100, 100))
@@ -1329,12 +1345,12 @@ class SenpaiGacha(commands.Cog):
             region = UNOVA
         elif region == 'kalos':
             region = KALOS
-        # elif region == 'alola':
-        #     region = ALOLA
+        elif region == 'alola':
+            region = ALOLA
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'special')")
             return
         if user_id is None:
             user_id = context.message.author.id
@@ -1412,10 +1428,10 @@ class SenpaiGacha(commands.Cog):
             region = UNOVA
         elif region == 'kalos':
             region = KALOS
-        # elif region == 'alola':
-        #     region = ALOLA
+        elif region == 'alola':
+            region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
             return
 
         if rarity == 'all':
@@ -1472,10 +1488,10 @@ class SenpaiGacha(commands.Cog):
             region = UNOVA
         elif region == 'kalos':
             region = KALOS
-        # elif region == 'alola':
-        #     region = ALOLA
+        elif region == 'alola':
+            region = ALOLA
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
             return
 
         if rarity == 'all':
@@ -1774,12 +1790,12 @@ class SenpaiGacha(commands.Cog):
             region = UNOVA
         elif region == 'kalos':
             region = KALOS
-        # elif region == 'alola':
-        #     region = ALOLA
+        elif region == 'alola':
+            region = ALOLA
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'special')")
             return
         units = database_helper.get_units(region)
         if region[0] == 'Special':
@@ -2256,7 +2272,7 @@ class SenpaiGacha(commands.Cog):
 
         # draw pokemon
         if poke1_id >= 10000:
-            if poke1_id in [10000, 10006]:
+            if poke1_id in [10000, 10006, 10007]:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2272,7 +2288,7 @@ class SenpaiGacha(commands.Cog):
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000:
-            if poke2_id in [10000, 10006]:
+            if poke2_id in [10000, 10006, 10007]:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2805,7 +2821,7 @@ class SenpaiGacha(commands.Cog):
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 3 < datetime.datetime.now().hour < 12: # generate quizzes only from 8am - 12am
-                r = random.randint(1, 721) # generate random pokemon
+                r = random.randint(1, 809) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 if r in (29, 32):
                     pokemon = 'Nidoran'
