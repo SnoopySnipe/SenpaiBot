@@ -14,14 +14,22 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
   - discord.py rewrite for python (see [here](https://github.com/Rapptz/discord.py/tree/rewrite) for dependencies) (installation instructions under install the development version)
   - [youtube-dl](https://github.com/rg3/youtube-dl)
   - [webpreview](https://github.com/ludbek/webpreview)
+  - [toml](https://github.com/uiri/toml)
+  - [xdg](https://github.com/srstevenson/xdg)
  - ffmpeg
   - must be in class path ($PATH)
  - see Makefile for more details
 
+## Configuration
+Place config files inside `$XDG_CONFIG_HOME/SenpaiBot` (usually `$HOME/.config/SenpaiBot/` on GNU/Linux).
+```
+token="your bot token here"
+```
+
 ## Running
 ```
 ~ $ cd SenpaiBot/src
-~ $ python3 senpai.py -t [discord_bot_token]
+~ $ python3 senpai.py
 ```
 
 ## Features

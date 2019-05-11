@@ -4,7 +4,7 @@ import discord
 
 from discord.ext import commands
 
-class SenpaiFortune:
+class SenpaiFortune(commands.Cog):
 
     @commands.command()
     async def fortune(self, context):

@@ -4,7 +4,7 @@ from discord.ext import commands
 from helpers import *
 from events import *
 
-class SenpaiEvents:
+class SenpaiEvents(commands.Cog):
     __slots__ = ('event_list')
 
     def __init__(self):

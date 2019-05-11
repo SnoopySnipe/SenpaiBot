@@ -36,9 +36,7 @@ _8ball_answers = [
            "Concentrate and ask again",
            ]
 
-class Senpai8ball:
-
-    # Answers question with a yes or no
+class Senpai8ball(commands.Cog):
     @commands.command(name="8ball")
     async def _8ball(self, context):
         offset = len("!8ball")

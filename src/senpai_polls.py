@@ -5,7 +5,7 @@ from discord.ext import commands
 from helpers import *
 from polls import *
 
-class SenpaiPolls:
+class SenpaiPolls(commands.Cog):
     def __init__(self):
         self.poll_list = Poll_List()
 

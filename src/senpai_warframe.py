@@ -9,7 +9,7 @@ COLOR=0xff93ac
 
 _WARFRAME_WIKIA_URL = "http://warframe.wikia.com/wiki/{}"
 
-class SenpaiWarframe:
+class SenpaiWarframe(commands.Cog):
 
     @commands.command()
     async def codex(self, context):

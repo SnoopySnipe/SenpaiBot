@@ -1,19 +1,27 @@
-import sys
-import signal
 import asyncio
 import datetime
-import time
-import discord
-from discord.ext import commands
-import database_helper
 import logging
 import random
+import sys
+import signal
+import time
+
+import discord
+from discord.ext import commands
+import toml
+import xdg
+
+import database_helper
+
 voice_times = {}
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
+
+PROGRAM_NAME = "SenpaiBot"
+CONFIG_FILE = "config.toml"
 
 COMMANDS_CHANNEL_ID = 282336977418715146
 LOGS_CHANNEL_ID = 540189209898647554
@@ -150,34 +158,30 @@ modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls", "senpai_shop", "senpai_spoiler"]
 
 if (__name__ == "__main__"):
+    config_dir = xdg.XDG_CONFIG_HOME/PROGRAM_NAME
+    config_file = config_dir/CONFIG_FILE
+    if (config_file.exists()):
+        for module in modules:
+            bot.load_extension(module)
 
-    # amount of arguments
-    argc = len(sys.argv)
-    # bot token
-    token = None
+        parsed_toml = {}
+        with open(config_file) as f:
+            parsed_toml = toml.load(f)
 
-    # map Ctrl+C to trigger signal_handler function
-    #signal.signal(signal.SIGINT, signal_handler)
+        if ("token" in parsed_toml):
+            token = parsed_toml["token"]
+            print("Logging in...")
+            try:
+                asyncio.get_event_loop().run_until_complete(bot.start(token))
+            except KeyboardInterrupt:
+                asyncio.get_event_loop().run_until_complete(tally_before_exit())
+                asyncio.get_event_loop().run_until_complete(bot.logout())
+                # cancel all tasks lingering
 
-    print("Logging in...")
-
-    # parse command line arguments
-    for i in range(argc):
-        if (sys.argv[i] == "-t" and i < argc):
-            token = sys.argv[i+1]
-    if (token is None):
-        print("Error: no token given")
-        sys.exit(1)
-
-    for module in modules:
-        bot.load_extension(module)
-    try:
-        asyncio.get_event_loop().run_until_complete(bot.start(token))
-    except KeyboardInterrupt:
-        asyncio.get_event_loop().run_until_complete(tally_before_exit())
-        asyncio.get_event_loop().run_until_complete(bot.logout())
-        # cancel all tasks lingering
-
-    finally:
-        asyncio.get_event_loop().run_until_complete(bot.close())
-        asyncio.get_event_loop().run_until_complete(asyncio.gather(*asyncio.Task.all_tasks()))
+            finally:
+                asyncio.get_event_loop().run_until_complete(bot.close())
+                asyncio.get_event_loop().run_until_complete(asyncio.gather(*asyncio.Task.all_tasks()))
+        else:
+            print("No bot token configured!")
+    else:
+        print("No configuration found!")
