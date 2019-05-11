@@ -21,6 +21,8 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
  - see Makefile for more details
 
 ## Configuration
+See [config.toml](https://github.com/SnoopySnipe/SenpaiBot/blob/master/config/config.toml)
+
 Place config files inside `$XDG_CONFIG_HOME/SenpaiBot` (usually `$HOME/.config/SenpaiBot/` on GNU/Linux).
 ```
 token="your bot token here"

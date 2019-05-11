@@ -1,0 +1,5 @@
+[bot]
+token="your bot token here"
+
+[log]
+logfile="SenpaiBot.log"
