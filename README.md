@@ -8,10 +8,10 @@ Our bot for our Discord server.
 
 Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 
-## Requirements
- - python3.5.2 or higher
+## Dependencies
+ - python3.6+
  - pip
-  - discord.py rewrite for python (see [here](https://github.com/Rapptz/discord.py/tree/rewrite) for dependencies) (installation instructions under install the development version)
+  - [discord.py](https://github.com/Rapptz/discord.py)
   - [youtube-dl](https://github.com/rg3/youtube-dl)
   - [webpreview](https://github.com/ludbek/webpreview)
   - [toml](https://github.com/uiri/toml)
