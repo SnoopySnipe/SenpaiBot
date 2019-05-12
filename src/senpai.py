@@ -84,36 +84,36 @@ async def leave():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if(after.channel != None and member.id not in voice_times):
+    if (after.channel != None and member.id not in voice_times):
         voice_times[member.id] = datetime.datetime.now()
-    elif(after.channel == None and member.id in voice_times):
+    elif (after.channel == None and member.id in voice_times):
         elapsed_time = tally_time(member)
         database_helper.add_pikapoints(member.id, elapsed_time)
         channel = bot.get_channel(COMMANDS_CHANNEL_ID)
-        if(channel is not None):
+        if (channel is not None):
             await channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
-        else:
-            pass
 
 def tally_time(member):
-    if(member.id not in voice_times):
+    if (member.id not in voice_times):
         return 0
+
     start_time = voice_times[member.id]
     voice_times.pop(member.id)
     elapsed_time = round((datetime.datetime.now()-start_time).total_seconds()/60)
     return elapsed_time
 
 @bot.event
-async def on_message(message : str):
+async def on_message(message: str):
     try:
         if ":electrocution:" in message.content and "!team" not in message.content:
             r = random.randint(1, 420)
             if 1 <= r <= 69:
                 await message.channel.send('https://tenor.com/xWBO.gif')
-        # for banned_msg in BANNED_MSGS:
-        #     if banned_msg in message.content.lower():
-        #         await message.delete()
-        #         break
+
+        # print out commands executed
+        if message.content.startswith("!"):
+            print(message.content)
+
         await bot.process_commands(message)
     except commands.errors.CommandNotFound:
         await bot.say("command not supported")
@@ -148,14 +148,9 @@ async def tally_before_exit():
             for member in channel.members:
                 elapsed_time = tally_time(member)
                 database_helper.add_pikapoints(member.id, elapsed_time)
-                if(commands_channel is not None):
+                if (commands_channel is not None):
                     await commands_channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
-                else:
-                    pass                  
-  
-modules = ["senpai_fortnite", "senpai_fortune",
-           "senpai_imageboards", "senpai_player", "senpai_warframe",
-           "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls", "senpai_shop", "senpai_spoiler"]
+
 
 if (__name__ == "__main__"):
     config_dir = xdg.XDG_CONFIG_HOME/PROGRAM_NAME
@@ -163,9 +158,6 @@ if (__name__ == "__main__"):
     if (not config_file.exists()):
         print("No configuration found!")
         exit(1)
-
-    for module in modules:
-        bot.load_extension(module)
 
     parsed_toml = {}
     with open(config_file) as f:
@@ -180,7 +172,19 @@ if (__name__ == "__main__"):
         print("No bot token configured!")
         exit(1)
 
+    if ("modules" in bot_config):
+        modules = bot_config["modules"]
+    else:
+        modules = {}
+
+    print("Loading modules...")
+    for module in modules:
+        print("Loading module:", module, end="")
+        bot.load_extension(module)
+        print("... Successful")
+
     token = bot_config["token"]
+
     print("Logging in...")
     try:
         asyncio.get_event_loop().run_until_complete(bot.start(token))
