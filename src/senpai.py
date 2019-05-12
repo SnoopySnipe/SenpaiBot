@@ -172,10 +172,7 @@ if (__name__ == "__main__"):
         print("No bot token configured!")
         exit(1)
 
-    if ("modules" in bot_config):
-        modules = bot_config["modules"]
-    else:
-        modules = {}
+    modules = bot_config.get("modules", {})
 
     print("Loading modules...")
     for module in modules:
