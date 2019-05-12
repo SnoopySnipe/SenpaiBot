@@ -11,11 +11,11 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ## Dependencies
  - python3.6+
  - pip
-   - [discord.py](https://github.com/Rapptz/discord.py)
+   - [discord.py-1.1.0+](https://github.com/Rapptz/discord.py)
    - [youtube-dl](https://github.com/rg3/youtube-dl)
    - [webpreview](https://github.com/ludbek/webpreview)
-   - [toml](https://github.com/uiri/toml)
-   - [xdg](https://github.com/srstevenson/xdg)
+   - [toml-0.10.0+](https://github.com/uiri/toml)
+   - [xdg-4.0.0+](https://github.com/srstevenson/xdg)
  - ffmpeg
   - must be in class path ($PATH)
  - see Makefile for more details
