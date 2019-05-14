@@ -3,8 +3,9 @@ import discord
 from discord.ext import commands
 
 class SenpaiSpoiler(commands.Cog):
-    @commands.command(name="spoiler")
-    async def _spoiler(self, context, *arg):
+
+    @commands.command()
+    async def spoiler(self, context, *arg):
         offset = len("!spoiler")
         msg = context.message.content[offset+1:]
 
@@ -15,10 +16,9 @@ class SenpaiSpoiler(commands.Cog):
             return
         else:
             title = arg[0]
-            msg = ""
-            for i in range (1, len(arg)):
-                msg = msg + " " + "".join(arg[i])
-            msg = "||" + msg + "||"
+            itera = iter(arg)
+            next(itera)
+            msg = "||{}||".format(" ".join(itera))
 
             # Embeded message
             embed_msg = discord.Embed(color=0xff93ac)

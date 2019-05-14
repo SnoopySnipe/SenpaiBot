@@ -2,7 +2,8 @@ import random
 
 import discord
 from discord.ext import commands
-_fortnite_location_pics = {
+
+_FORTNITE_LOCATION_PICS = {
     "Anarchy Acres": "images/fortnite_locations/anarchy_acres.png",
     "Dusty Divot": "images/fortnite_locations/dusty_divot.png",
     "Fatal Fields": "images/fortnite_locations/fatal_fields.png",
@@ -26,7 +27,7 @@ _fortnite_location_pics = {
     "A37": "images/fortnite_locations/a37.jpg"
     }
 
-_fortnite_locations = list(_fortnite_location_pics.keys())
+_FORTNITE_LOCATIONS = list(_FORTNITE_LOCATION_PICS.keys())
 
 class SenpaiFortnite(commands.Cog):
 
@@ -44,9 +45,9 @@ def setup(bot):
 
 # Fortnite dropman
 async def _send_fortnite_location(context):
-    answer_index = random.randint(0, len(_fortnite_locations)-1)
-    location = _fortnite_locations[answer_index]
-    location_pic = _fortnite_location_pics[location]
+    answer_index = random.randint(0, len(_FORTNITE_LOCATIONS)-1)
+    location = _FORTNITE_LOCATIONS[answer_index]
+    location_pic = _FORTNITE_LOCATION_PICS[location]
     reply = "We dropping {} bois".format(location)
     drop_msg = await context.send(reply, file=discord.File(location_pic))
 

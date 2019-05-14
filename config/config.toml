@@ -1,5 +1,18 @@
 [bot]
 token="your bot token here"
+modules = [
+    "senpai_8ball",
+    "senpai_events",
+    "senpai_fortnite",
+    "senpai_fortune",
+    "senpai_imageboards",
+    "senpai_player",
+    "senpai_polls",
+    "senpai_shop",
+    "senpai_spoiler",
+    "senpai_warframe",
+    "senpai_yugioh",
+]
 
 [log]
 logfile="SenpaiBot.log"
