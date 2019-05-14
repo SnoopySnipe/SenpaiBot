@@ -125,7 +125,7 @@ async def on_message_delete(message):
     if message.channel.id != LOGS_CHANNEL_ID and message.author != bot.user:
         msg = msg + "`In " + message.channel.name + ", " + message.author.name + " deleted: `"
         if message.content != "":
-		    msg = msg + "||" message.content + "||"
+            msg = msg + "||" message.content + "||"
         for attachment in message.attachments:
             msg = msg + "\n`proxy url: `||" + attachment.proxy_url + "||"
         await channel.send(msg)
