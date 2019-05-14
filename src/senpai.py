@@ -141,7 +141,7 @@ async def on_message_edit(before, after):
         for b_attachment in before.attachments:
             msg = msg + "\n`proxy url: `||" + b_attachment.proxy_url + "||"
         msg = msg + "\n`to: `"
-		if after.content != "":
+        if after.content != "":
             msg = msg + "||" + after.content + "||"
         for a_attachment in after.attachments:
             msg = msg + "\n`proxy url: `||" + a_attachment.proxy_url + "||"
