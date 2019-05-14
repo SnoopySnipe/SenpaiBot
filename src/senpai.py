@@ -33,6 +33,12 @@ BANNED_MSGS = [
     '0w0'
 ]
 
+EXEMPT_IDS = [
+    140109634722594816,
+    235619465134342145,
+    171100459564662784
+]
+
 # initialize bot
 bot = commands.Bot(command_prefix="!", description=DESCRIPTION)
 def signal_handler(signal, frame):
@@ -120,36 +126,38 @@ async def on_message(message : str):
 
 @bot.event
 async def on_message_delete(message):
-    channel = bot.get_channel(LOGS_CHANNEL_ID)
-    msg = ""
-    if message.channel.id != LOGS_CHANNEL_ID and message.author != bot.user:
-        msg = msg + "`In " + message.channel.name + ", " + message.author.name + " deleted: `"
-        if message.content != "":
-            msg = msg + "||" + message.content + "||"
-        for attachment in message.attachments:
-            msg = msg + "\n`proxy url: `||" + attachment.proxy_url + "||"
-        await channel.send(msg)
-    # await asyncio.sleep(600)
-    # await msg.delete()
+    if message.author.id not in EXEMPT_IDS:
+        channel = bot.get_channel(LOGS_CHANNEL_ID)
+        msg = ""
+        if message.channel.id != LOGS_CHANNEL_ID and message.author != bot.user:
+            msg = msg + "`In " + message.channel.name + ", " + message.author.name + " deleted: `"
+            if message.content != "":
+                msg = msg + "||" + message.content + "||"
+            for attachment in message.attachments:
+                msg = msg + "\n`proxy url: `||" + attachment.proxy_url + "||"
+            await channel.send(msg)
+        # await asyncio.sleep(600)
+        # await msg.delete()
 
 @bot.event
 async def on_message_edit(before, after):
-    channel = bot.get_channel(LOGS_CHANNEL_ID)
-    msg = ""
-    if before.channel.id != LOGS_CHANNEL_ID and before.author != bot.user:
-        msg = msg + "`In " + before.channel.name + ", " + before.author.name + " edited: `"
-        if before.content != "":
-            msg = msg + "||" + before.content + "||"
-        for b_attachment in before.attachments:
-            msg = msg + "\n`proxy url: `||" + b_attachment.proxy_url + "||"
-        msg = msg + "\n`to: `"
-        if after.content != "":
-            msg = msg + "||" + after.content + "||"
-        for a_attachment in after.attachments:
-            msg = msg + "\n`proxy url: `||" + a_attachment.proxy_url + "||"
-        await channel.send(msg)
-    # await asyncio.sleep(600)
-    # await msg.delete()
+    if before.author.id not in EXEMPT_IDS:
+        channel = bot.get_channel(LOGS_CHANNEL_ID)
+        msg = ""
+        if before.channel.id != LOGS_CHANNEL_ID and before.author != bot.user:
+            msg = msg + "`In " + before.channel.name + ", " + before.author.name + " edited: `"
+            if before.content != "":
+                msg = msg + "||" + before.content + "||"
+            for b_attachment in before.attachments:
+                msg = msg + "\n`proxy url: `||" + b_attachment.proxy_url + "||"
+            msg = msg + "\n`to: `"
+            if after.content != "":
+                msg = msg + "||" + after.content + "||"
+            for a_attachment in after.attachments:
+                msg = msg + "\n`proxy url: `||" + a_attachment.proxy_url + "||"
+            await channel.send(msg)
+        # await asyncio.sleep(600)
+        # await msg.delete()
 
 async def tally_before_exit():
     commands_channel = bot.get_channel(COMMANDS_CHANNEL_ID)
