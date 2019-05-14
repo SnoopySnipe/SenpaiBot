@@ -14,5 +14,8 @@ modules = [
     "senpai_yugioh",
 ]
 
+[server]
+quiz_channel = 00000000000000000
+
 [log]
 logfile="SenpaiBot.log"

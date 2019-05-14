@@ -21,7 +21,6 @@ KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 SPECIAL = ('Special', 10000, 11000)
 REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
-QUIZ_CHANNEL_ID = 542441381210226748
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 
@@ -2789,9 +2788,21 @@ class SenpaiGacha(commands.Cog):
 
     async def background_quiz(self):
         await self.bot.wait_until_ready()
-        channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
+        SERVER = "server"
+        QUIZ_CHANNEL = "quiz_channel"
+        if (SERVER not in self.bot.config):
+            print("Error: No server configuration found")
+
+        server_config = self.bot.config[SERVER]
+        if (QUIZ_CHANNEL not in server_config):
+            print("Error: No quiz channel configured")
+            return
+
+        quiz_channel_id = server_config[QUIZ_CHANNEL]
+
+        channel = self.bot.get_channel(quiz_channel_id)
         if (channel is None):
-            print("Error: Cannot find Quiz Channel")
+            print("Error: Cannot find quiz channel")
             return
 
         while True:

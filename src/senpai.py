@@ -33,8 +33,27 @@ BANNED_MSGS = [
     '0w0'
 ]
 
+class SenpaiBot(commands.Bot):
+
+    def __init__(self, config, prefix, description):
+        commands.Bot.__init__(self, command_prefix=prefix, description=description)
+        self.config = config
+
+def get_config_or_default():
+    config_dir = xdg.XDG_CONFIG_HOME/PROGRAM_NAME
+    config_file = config_dir/CONFIG_FILE
+    if (not config_file.exists()):
+        print("No configuration found!")
+        exit(1)
+
+    parsed_toml = {}
+    with open(config_file) as f:
+        parsed_toml = toml.load(f)
+    return parsed_toml
+
 # initialize bot
-bot = commands.Bot(command_prefix="!", description=DESCRIPTION)
+bot = SenpaiBot(get_config_or_default(), prefix="!", description=DESCRIPTION)
+
 def signal_handler(signal, frame):
     '''(Signal, Frame) -> null
     Upon signal, stop the bot and exit the program
@@ -153,21 +172,11 @@ async def tally_before_exit():
 
 
 if (__name__ == "__main__"):
-    config_dir = xdg.XDG_CONFIG_HOME/PROGRAM_NAME
-    config_file = config_dir/CONFIG_FILE
-    if (not config_file.exists()):
-        print("No configuration found!")
-        exit(1)
-
-    parsed_toml = {}
-    with open(config_file) as f:
-        parsed_toml = toml.load(f)
-
-    if ("bot" not in parsed_toml):
+    if ("bot" not in bot.config):
         print("No bot configuration found!")
         exit(1)
 
-    bot_config = parsed_toml["bot"]
+    bot_config = bot.config["bot"]
     if ("token" not in bot_config):
         print("No bot token configured!")
         exit(1)
