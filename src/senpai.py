@@ -129,6 +129,8 @@ async def on_message_delete(message):
         for attachment in message.attachments:
             msg = msg + "\n`proxy url: `||" + attachment.proxy_url + "||"
         await channel.send(msg)
+    # await asyncio.sleep(600)
+    # await msg.delete()
 
 @bot.event
 async def on_message_edit(before, after):
@@ -146,6 +148,8 @@ async def on_message_edit(before, after):
         for a_attachment in after.attachments:
             msg = msg + "\n`proxy url: `||" + a_attachment.proxy_url + "||"
         await channel.send(msg)
+    # await asyncio.sleep(600)
+    # await msg.delete()
 
 async def tally_before_exit():
     commands_channel = bot.get_channel(COMMANDS_CHANNEL_ID)
