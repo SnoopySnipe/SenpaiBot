@@ -21,7 +21,7 @@ KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
 SPECIAL = ('Special', 10000, 11000)
 REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
-QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
+QUIZ_CHANNEL_ID = 542441381210226748
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 
@@ -52,10 +52,13 @@ SPRITE_MAPPING = {
 class SenpaiGacha(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.league_players = list()
+        self.league_players = []
+
+    @commands.Cog.listener()
     async def on_ready(self):
         database_helper.initialize(str(self.bot.guilds[0].id))
         self.bot.loop.create_task(self.background_quiz())
+
     async def on_member_update(self, before, after):
         if(type(after.activity) == discord.activity.Activity and self.in_champ_select(before)):
             if(after.id not in self.league_players):
@@ -85,6 +88,7 @@ class SenpaiGacha(commands.Cog):
             if(type(activity) == discord.activity.Activity and activity.state == "In Game" and activity.application_id == LEAGUE_ID):
                 return True
         return False
+
     @commands.command(name="balance")
     async def balance(self, context, user_id=None):
         if user_id is None:
@@ -2786,8 +2790,10 @@ class SenpaiGacha(commands.Cog):
     async def background_quiz(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(QUIZ_CHANNEL_ID)
-        if(channel is None):
+        if (channel is None):
+            print("Error: Cannot find Quiz Channel")
             return
+
         while True:
             t = random.randint(600, 1800)
             high_streak = database_helper.get_high_streak()
@@ -2798,6 +2804,7 @@ class SenpaiGacha(commands.Cog):
                     if display_hour == 0:
                         display_hour = 12
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
+
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 3 < datetime.datetime.now().hour < 12: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 809) # generate random pokemon
