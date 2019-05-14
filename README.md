@@ -11,11 +11,14 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 ## Dependencies
  - python3.6+
  - pip
-   - [discord.py-1.1.0+](https://github.com/Rapptz/discord.py)
-   - [youtube-dl](https://github.com/rg3/youtube-dl)
+   - [discord.py](https://github.com/Rapptz/discord.py)-1.1.0+
+   - [image](https://github.com/francescortiz/image)
+   - [pokebase](https://github.com/PokeAPI/pokebase)
+   - [requests](https://2.python-requests.org/en/master/)
+   - [toml](https://github.com/uiri/toml)-0.10.0+
    - [webpreview](https://github.com/ludbek/webpreview)
-   - [toml-0.10.0+](https://github.com/uiri/toml)
-   - [xdg-4.0.0+](https://github.com/srstevenson/xdg)
+   - [xdg](https://github.com/srstevenson/xdg)-4.0.0+
+   - [youtube-dl](https://github.com/rg3/youtube-dl)
  - ffmpeg
   - must be in class path ($PATH)
  - see Makefile for more details
@@ -24,9 +27,6 @@ Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
 See [config.toml](https://github.com/SnoopySnipe/SenpaiBot/blob/master/config/config.toml)
 
 Place config files inside `$XDG_CONFIG_HOME/SenpaiBot` (usually `$HOME/.config/SenpaiBot/` on GNU/Linux).
-```
-token="your bot token here"
-```
 
 ## Running
 ```
