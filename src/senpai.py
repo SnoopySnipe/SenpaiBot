@@ -137,12 +137,12 @@ async def on_message_edit(before, after):
     if before.channel.id != LOGS_CHANNEL_ID and before.author != bot.user:
         msg = msg + "`In " + before.channel.name + ", " + before.author.name + " edited: `"
         if before.content != "":
-            msg = msg + "||" before.content + "||"
+            msg = msg + "||" + before.content + "||"
         for b_attachment in before.attachments:
             msg = msg + "\n`proxy url: `||" + b_attachment.proxy_url + "||"
         msg = msg + "\n`to: `"
 		if after.content != "":
-            msg = msg + "||" after.content + "||"
+            msg = msg + "||" + after.content + "||"
         for a_attachment in after.attachments:
             msg = msg + "\n`proxy url: `||" + a_attachment.proxy_url + "||"
         await channel.send(msg)
