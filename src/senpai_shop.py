@@ -1880,12 +1880,17 @@ class SenpaiGacha(commands.Cog):
         if len(contributors) == 0:
             await context.send("The jackpot is currently empty!")
             return
+
         for contributor in contributors:
-            if context.message.author == self.bot.get_user(contributor[0]):
-                description = description + "\n`" + self.bot.get_user(contributor[0]).name + " - {} pikapoints`".format(contributor[1])
+            user = self.bot.get_user(contributor[0])
+            if (user is None):
+                continue
+
+            if context.message.author == user:
+                description = description + "\n`" + user.name + " - {} pikapoints`".format(contributor[1])
             else:
-                description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} pikapoints".format(
-                    contributor[1])
+                description = description + "\n" + user.name + " - {} pikapoints".format(contributor[1])
+
         jackpot_sum = database_helper.get_jackpot(True)[0]
         no_contributors = len(database_helper.get_jackpot_rewards())
         if no_contributors == 0:
