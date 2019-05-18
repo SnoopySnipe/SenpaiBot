@@ -28,7 +28,7 @@ _fortnite_location_pics = {
 
 _fortnite_locations = list(_fortnite_location_pics.keys())
 
-class SenpaiFortnite:
+class SenpaiFortnite(commands.cog):
 
     @commands.command()
     async def wherewedroppingbois(self, context):
@@ -40,7 +40,7 @@ class SenpaiFortnite:
 
 
 def setup(bot):
-    bot.add_cog(SenpaiFortnite())
+    bot.load_extension(SenpaiFortnite())
 
 # Fortnite dropman
 async def _send_fortnite_location(context):
