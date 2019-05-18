@@ -28,7 +28,7 @@ _fortnite_location_pics = {
 
 _fortnite_locations = list(_fortnite_location_pics.keys())
 
-class SenpaiFortnite(commands.cog):
+class SenpaiFortnite:
 
     @commands.command()
     async def wherewedroppingbois(self, context):
