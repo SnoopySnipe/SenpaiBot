@@ -7,7 +7,7 @@ import senpai_song
 
 from discord.ext import commands
 
-class SenpaiPlayer:
+class SenpaiPlayer(commands.Cog):
 
     def __init__(self):
         self.delay = 3

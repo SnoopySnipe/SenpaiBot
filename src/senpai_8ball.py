@@ -36,7 +36,7 @@ _8ball_answers = [
            "Concentrate and ask again",
            ]
 
-class Senpai8ball:
+class Senpai8ball(commands.Cog):
 
     # Answers question with a yes or no
     @commands.command(name="8ball")
@@ -85,4 +85,3 @@ class Senpai8ball:
 
 def setup(bot):
     bot.add_cog(Senpai8ball())
-

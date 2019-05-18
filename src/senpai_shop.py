@@ -49,7 +49,7 @@ SPRITE_MAPPING = {
 	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png'
 }
 
-class SenpaiGacha:
+class SenpaiGacha(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.league_players = list()

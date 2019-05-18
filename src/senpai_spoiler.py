@@ -2,7 +2,7 @@ import discord
 
 from discord.ext import commands
 
-class SenpaiSpoiler:
+class SenpaiSpoiler(commands.Cog):
     @commands.command(name="spoiler")
     async def _spoiler(self, context, *arg):
         offset = len("!spoiler")

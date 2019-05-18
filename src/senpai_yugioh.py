@@ -9,7 +9,7 @@ COLOR=0xff93ac
 
 _YUGIOH_WIKIA_URL = "http://yugioh.wikia.com/wiki/{}"
 
-class SenpaiYugioh:
+class SenpaiYugioh(commands.Cog):
 
     @commands.command()
     async def yugioh(self, context):

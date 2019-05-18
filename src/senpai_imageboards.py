@@ -21,7 +21,7 @@ async def _send_embed_imageboard_msg(context, board, title, post_url, file_url):
                 message = await context.send(embed=embed_msg, file=file)
                 board.messages.append(message)
 
-class SenpaiImageboard:
+class SenpaiImageboard(commands.Cog):
     def __init__(self):
         self.imageboards = [self.yandere, self.danbooru, self.konachan,
                                    self.gelbooru, self.safebooru]

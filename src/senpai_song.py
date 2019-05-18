@@ -114,4 +114,3 @@ def get_download_dir():
 
 def get_audio_format():
     return AUDIO_FORMAT
-
