@@ -40,7 +40,7 @@ class SenpaiFortnite:
 
 
 def setup(bot):
-    bot.load_extension(SenpaiFortnite())
+    bot.add_cog(SenpaiFortnite())
 
 # Fortnite dropman
 async def _send_fortnite_location(context):

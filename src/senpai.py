@@ -143,8 +143,8 @@ async def tally_before_exit():
                 if(commands_channel is not None):
                     await commands_channel.send("`" + member.display_name + " was in voice channel for " + str(elapsed_time) + " minutes" + "`")
                 else:
-                    pass                  
-  
+                    pass
+
 modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
            "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls", "senpai_shop", "senpai_spoiler"]
