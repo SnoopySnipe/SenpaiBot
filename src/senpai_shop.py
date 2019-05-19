@@ -53,6 +53,7 @@ class SenpaiGacha(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.league_players = list()
+    @commands.Cog.listener()
     async def on_ready(self):
         database_helper.initialize(str(self.bot.guilds[0].id))
         self.bot.loop.create_task(self.background_quiz())
