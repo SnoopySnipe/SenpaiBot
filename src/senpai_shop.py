@@ -2799,7 +2799,6 @@ class SenpaiGacha(commands.Cog):
                     if display_hour == 0:
                         display_hour = 12
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
-            print(datetime.datetime.now())
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 0 < datetime.datetime.now().hour < 8: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 809) # generate random pokemon
