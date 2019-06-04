@@ -34,7 +34,9 @@ SPECIAL_POKEMON = {
     10005: 'https://www.serebii.net/sunmoon/pokemon/648-s.png',
     10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png',
     10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png',
-	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png'
+	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png',
+    10009: 'https://www.serebii.net/sunmoon/pokemon/006-mx.png',
+    10010: 'https://www.serebii.net/sunmoon/pokemon/006-my.png'
 }
 
 SPRITE_MAPPING = {
@@ -48,7 +50,9 @@ SPRITE_MAPPING = {
     10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png',
 	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png',
     808: 'https://www.serebii.net/sunmoon/pokemon/808.png',
-    809: 'https://www.serebii.net/sunmoon/pokemon/809.png'
+    809: 'https://www.serebii.net/sunmoon/pokemon/809.png',
+    10009: 10034,
+    10010: 10035
 }
 
 class SenpaiGacha(commands.Cog):
