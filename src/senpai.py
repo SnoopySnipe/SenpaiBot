@@ -70,7 +70,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.change_presence(game=discord.Game(name='Ara-ara~~❤ Kouhai-kun'))
+    await bot.change_presence(activity=discord.Game(name='Ara-ara~~❤ Kouhai-kun'))
     database_helper.initialize(str(bot.guilds[0].id))
     for channel in bot.get_all_channels():
         if (isinstance(channel, discord.VoiceChannel)):
