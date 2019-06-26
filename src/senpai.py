@@ -25,11 +25,7 @@ BANNED_MSGS = [
     '0w0'
 ]
 
-EXEMPT_IDS = [
-    140109634722594816,
-    235619465134342145,
-    171100459564662784
-]
+EXEMPT_IDS = []
 
 # initialize bot
 bot = commands.Bot(command_prefix="!", description=DESCRIPTION)
