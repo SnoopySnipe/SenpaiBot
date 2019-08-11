@@ -39,7 +39,9 @@ SPECIAL_POKEMON = {
     10010: 'https://www.serebii.net/sunmoon/pokemon/006-my.png',
     10011: 'https://www.serebii.net/sunmoon/pokemon/150-mx.png',
     10012: 'https://www.serebii.net/sunmoon/pokemon/150-my.png',
-    10013: 'https://www.serebii.net/sunmoon/pokemon/373-m.png'
+    10013: 'https://www.serebii.net/sunmoon/pokemon/373-m.png',
+    10014: 'https://www.serebii.net/sunmoon/pokemon/103-a.png',
+    10015: 'https://www.serebii.net/swordshield/galarweezing.png'
 }
 
 SPRITE_MAPPING = {
@@ -58,7 +60,9 @@ SPRITE_MAPPING = {
     10010: 10035,
     10011: 10043,
     10012: 10044,
-    10013: 10089
+    10013: 10089,
+    10014: 'https://www.serebii.net/sunmoon/pokemon/103-a.png',
+    10015: 'https://www.serebii.net/swordshield/galarweezing.png'
 }
 
 class SenpaiGacha(commands.Cog):
@@ -1189,7 +1193,7 @@ class SenpaiGacha(commands.Cog):
         for pokemon in display:
             pokemon_id = pokemon[0]
             if pokemon_id >= 10000 or pokemon_id in [808, 809]:
-                if pokemon_id in [10000, 10006, 10007, 10008, 808, 809]:
+                if pokemon_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015]:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                     img = img.resize((100, 100))
@@ -2264,7 +2268,7 @@ class SenpaiGacha(commands.Cog):
 
         # draw pokemon
         if poke1_id >= 10000 or poke1_id in [808, 809]:
-            if poke1_id in [10000, 10006, 10007, 10008, 808, 809]:
+            if poke1_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015]:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2280,7 +2284,7 @@ class SenpaiGacha(commands.Cog):
         background.paste(img, coordinates, img)
 
         if poke2_id >= 10000 or poke2_id in [808, 809]:
-            if poke2_id in [10000, 10006, 10007, 10008, 808, 809]:
+            if poke2_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015]:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
                 img = img.resize((150, 150))
