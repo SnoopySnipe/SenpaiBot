@@ -33,7 +33,7 @@ class SenpaiSpoiler(commands.Cog):
             if (len(msg) > 0):
                 await context.message.delete()
                 return
-           
+
     @commands.command(name="daniel")
     async def _daniel(self, context, *arg):
         await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
