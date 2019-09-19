@@ -39,7 +39,7 @@ class SenpaiSpoiler(commands.Cog):
         await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
         
     @commands.command(name="danieI")
-    async def _daniel(self, context, *arg):
+    async def _danieI(self, context, *arg):
         await context.send("https://gfycat.com/MeagerThreadbareDogfish")
 
 def setup(bot):
