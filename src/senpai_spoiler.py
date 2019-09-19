@@ -9,6 +9,12 @@ class SenpaiSpoiler(commands.Cog):
     def __init__(self):
         self.messages = set()
         
+    @commands.group(invoke_without_command=True)
+    async def daniel(self, context):
+        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
+        if msg:
+            self.messages.add(msg)
+        
     @daniel.command()
     async def purge(self, context):
         msgs = len(self.messages)
@@ -47,12 +53,6 @@ class SenpaiSpoiler(commands.Cog):
             if (len(msg) > 0):
                 await context.message.delete()
                 return
-
-    @commands.command(name="daniel")
-    async def _daniel(self, context, *arg):
-        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
-        if msg:
-            self.messages.add(msg)
         
     @commands.command(name="danieI")
     async def _danieI(self, context, *arg):
