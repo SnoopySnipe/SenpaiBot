@@ -3,6 +3,20 @@ import discord
 from discord.ext import commands
 
 class SenpaiSpoiler(commands.Cog):
+
+    __slots__ = ("messages")
+
+    def __init__(self):
+        self.messages = set()
+        
+    @daniel.command()
+    async def purge(self, context):
+        msgs = len(self.messages)
+        for i in range(msgs):
+            await self.messages.pop().delete()
+        if msgs > 0:
+            await context.send("Successfully purged daniel.")
+    
     @commands.command(name="spoiler")
     async def _spoiler(self, context, *arg):
         offset = len("!spoiler")
@@ -36,11 +50,15 @@ class SenpaiSpoiler(commands.Cog):
 
     @commands.command(name="daniel")
     async def _daniel(self, context, *arg):
-        await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
+        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish||")
+        if msg:
+            self.messages.add(msg)
         
     @commands.command(name="danieI")
     async def _danieI(self, context, *arg):
-        await context.send("https://gfycat.com/MeagerThreadbareDogfish")
+        msg = await context.send("https://gfycat.com/MeagerThreadbareDogfish")
+        if msg:
+            self.messages.add(msg)
 
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
