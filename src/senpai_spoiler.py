@@ -56,7 +56,7 @@ class SenpaiSpoiler(commands.Cog):
         
     @commands.command(name="danieI")
     async def _danieI(self, context, *arg):
-        msg = await context.send("https://gfycat.com/MeagerThreadbareDogfish")
+        msg = await context.send(context.message.author.name + " is a fucking degenerate.")
         if msg:
             self.messages.add(msg)
 
