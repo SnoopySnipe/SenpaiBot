@@ -45,7 +45,8 @@ def setup(bot):
 # Fortnite dropman
 async def _send_fortnite_location(context):
     answer_index = random.randint(0, len(_fortnite_locations)-1)
-    location = _fortnite_locations[answer_index]
+    #location = _fortnite_locations[answer_index]
+    location = _fortnite_locations[20]
     location_pic = _fortnite_location_pics[location]
     reply = "We dropping {} bois".format(location)
     drop_msg = await context.send(reply, file=discord.File(location_pic))
