@@ -45,7 +45,8 @@ SPECIAL_POKEMON = {
     10016: 'https://www.serebii.net/sunmoon/pokemon/094-m.png',
     10017: 'https://www.serebii.net/sunmoon/pokemon/354-m.png',
     10018: 'https://www.serebii.net/sunmoon/pokemon/359-m.png',
-    10019: 'https://www.serebii.net/sunmoon/pokemon/302-m.png'
+    10019: 'https://www.serebii.net/sunmoon/pokemon/302-m.png',
+    10020: 'https://www.serebii.net/sunmoon/pokemon/282-m.png'
 }
 
 SPRITE_MAPPING = {
@@ -70,7 +71,8 @@ SPRITE_MAPPING = {
     10016: 10038,
     10017: 10056,
     10018: 10057,
-    10019: 10066
+    10019: 10066,
+    10020: 10051
 }
 
 class SenpaiGacha(commands.Cog):
