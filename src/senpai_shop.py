@@ -82,7 +82,7 @@ class SenpaiGacha(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         database_helper.initialize(str(self.bot.guilds[0].id))
-        #self.bot.loop.create_task(self.background_quiz())
+        self.bot.loop.create_task(self.background_quiz())
     async def on_member_update(self, before, after):
         if(type(after.activity) == discord.activity.Activity and self.in_champ_select(before)):
             if(after.id not in self.league_players):
