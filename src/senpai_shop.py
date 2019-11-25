@@ -19,35 +19,38 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
+GALAR = ('Galar', 810, 890)
 SPECIAL = ('Special', 10000, 11000)
-REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA]
+REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA, GALAR]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
 COMMANDS_CHANNEL_ID = 282336977418715146
 LEAGUE_ID = 401518684763586560
 
 SPECIAL_POKEMON = {
     10000: 'https://cdn.bulbagarden.net/upload/a/aa/Flying_Pikachu_Dash.png',
-    10001: 'https://www.serebii.net/sunmoon/pokemon/384-m.png',
-    10002: 'https://www.serebii.net/sunmoon/pokemon/382-p.png',
-    10003: 'https://www.serebii.net/sunmoon/pokemon/383-p.png',
-    10004: 'https://www.serebii.net/sunmoon/pokemon/428-m.png',
-    10005: 'https://www.serebii.net/sunmoon/pokemon/648-s.png',
-    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png',
-    10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png',
+    10001: 'https://www.serebii.net/swordshield/pokemon/384-m.png',
+    10002: 'https://www.serebii.net/swordshield/pokemon/382-p.png',
+    10003: 'https://www.serebii.net/swordshield/pokemon/383-p.png',
+    10004: 'https://www.serebii.net/swordshield/pokemon/428-m.png',
+    10005: 'https://www.serebii.net/swordshield/pokemon/648-s.png',
+    10006: 'https://www.serebii.net/swordshield/pokemon/658-a.png',
+    10007: 'https://www.serebii.net/swordshield/pokemon/800-u.png',
 	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png',
-    10009: 'https://www.serebii.net/sunmoon/pokemon/006-mx.png',
-    10010: 'https://www.serebii.net/sunmoon/pokemon/006-my.png',
-    10011: 'https://www.serebii.net/sunmoon/pokemon/150-mx.png',
-    10012: 'https://www.serebii.net/sunmoon/pokemon/150-my.png',
-    10013: 'https://www.serebii.net/sunmoon/pokemon/373-m.png',
-    10014: 'https://www.serebii.net/sunmoon/pokemon/103-a.png',
+    10009: 'https://www.serebii.net/swordshield/pokemon/006-mx.png',
+    10010: 'https://www.serebii.net/swordshield/pokemon/006-my.png',
+    10011: 'https://www.serebii.net/swordshield/pokemon/150-mx.png',
+    10012: 'https://www.serebii.net/swordshield/pokemon/150-my.png',
+    10013: 'https://www.serebii.net/swordshield/pokemon/373-m.png',
+    10014: 'https://www.serebii.net/swordshield/pokemon/103-a.png',
     10015: 'https://www.serebii.net/swordshield/galarweezing.png',
-    10016: 'https://www.serebii.net/sunmoon/pokemon/094-m.png',
-    10017: 'https://www.serebii.net/sunmoon/pokemon/354-m.png',
-    10018: 'https://www.serebii.net/sunmoon/pokemon/359-m.png',
-    10019: 'https://www.serebii.net/sunmoon/pokemon/302-m.png',
-    10020: 'https://www.serebii.net/sunmoon/pokemon/282-m.png',
-    10021: 'https://www.serebii.net/swordshield/pokemon/890-e.png'
+    10016: 'https://www.serebii.net/swordshield/pokemon/094-m.png',
+    10017: 'https://www.serebii.net/swordshield/pokemon/354-m.png',
+    10018: 'https://www.serebii.net/swordshield/pokemon/359-m.png',
+    10019: 'https://www.serebii.net/swordshield/pokemon/302-m.png',
+    10020: 'https://www.serebii.net/swordshield/pokemon/282-m.png',
+    10021: 'https://www.serebii.net/swordshield/pokemon/890-e.png',
+    10022: 'https://www.serebii.net/swordshield/pokemon/888-c.png',
+    10023: 'https://www.serebii.net/swordshield/pokemon/889-c.png'
 }
 
 SPRITE_MAPPING = {
@@ -57,25 +60,33 @@ SPRITE_MAPPING = {
     10003: 10078,
     10004: 10088,
     10005: 10018,
-    10006: 'https://www.serebii.net/sunmoon/pokemon/658-a.png',
-    10007: 'https://www.serebii.net/sunmoon/pokemon/800-u.png',
+    10006: 'https://www.serebii.net/swordshield/pokemon/658-a.png',
+    10007: 'https://www.serebii.net/swordshield/pokemon/800-u.png',
 	10008: 'https://cdn.bulbagarden.net/upload/f/f5/Detective_Pikachu_artwork_2.png',
-    808: 'https://www.serebii.net/sunmoon/pokemon/808.png',
-    809: 'https://www.serebii.net/sunmoon/pokemon/809.png',
+    808: 'https://www.serebii.net/swordshield/pokemon/808.png',
+    809: 'https://www.serebii.net/swordshield/pokemon/809.png',
     10009: 10034,
     10010: 10035,
     10011: 10043,
     10012: 10044,
     10013: 10089,
-    10014: 'https://www.serebii.net/sunmoon/pokemon/103-a.png',
+    10014: 'https://www.serebii.net/swordshield/pokemon/103-a.png',
     10015: 'https://www.serebii.net/swordshield/galarweezing.png',
     10016: 10038,
     10017: 10056,
     10018: 10057,
     10019: 10066,
     10020: 10051,
-    10021: 'https://www.serebii.net/swordshield/pokemon/890-e.png'
+    10021: 'https://www.serebii.net/swordshield/pokemon/890-e.png',
+    10022: 'https://www.serebii.net/swordshield/pokemon/888-c.png',
+    10023: 'https://www.serebii.net/swordshield/pokemon/889-c.png'
 }
+
+for i in range(GALAR[1], GALAR[2] + 1):
+    i_id = "{:03}".format(i)
+    SPRITE_MAPPING[i] = "https://www.serebii.net/swordshield/pokemon/{}.png".format(i_id)
+
+
 
 class SenpaiGacha(commands.Cog):
     def __init__(self, bot):
@@ -227,7 +238,7 @@ class SenpaiGacha(commands.Cog):
     #             database_helper.add_inventory(user_id, gacha[1])
     #             embed = discord.Embed(title=title, description=description, color=0x9370db)
     #             str_id = "{:03}".format(gacha[1])
-    #             url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+    #             url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
     #             embed.set_thumbnail(url=url)
     #             await context.send(embed=embed)
     #             if gacha[2] > 5:
@@ -315,10 +326,12 @@ class SenpaiGacha(commands.Cog):
                 region = KALOS
             elif region == 'alola':
                 region = ALOLA
+            elif region == 'galar':
+                region = GALAR
             elif region == 'all':
                 region = None
             else:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'all')")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'all')")
                 return
 
             if no_rolls == 'jackpot':
@@ -402,7 +415,7 @@ class SenpaiGacha(commands.Cog):
                     url = SPECIAL_POKEMON[gacha[1]]
                 else:
                     str_id = "{:03}".format(gacha[1])
-                    url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                    url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
                 embed.set_thumbnail(url=url)
                 await context.send(embed=embed)
                 database_helper.increment_stat(user_id, "rolls")
@@ -502,8 +515,10 @@ class SenpaiGacha(commands.Cog):
                 region = KALOS
             elif region == 'alola':
                 region = ALOLA
+            elif region == 'galar':
+                region = GALAR
             elif region is not None:
-                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
+                await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', None)")
                 return
 
             if r == 0:
@@ -554,7 +569,7 @@ class SenpaiGacha(commands.Cog):
                 url = SPECIAL_POKEMON[gacha[1]]
             else:
                 str_id = "{:03}".format(gacha[1])
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("You now have " + str(balance) + " pikapoints.", embed=embed)
             database_helper.increment_stat(user_id, "rolls")
@@ -635,7 +650,7 @@ class SenpaiGacha(commands.Cog):
                 url = SPECIAL_POKEMON[id]
             else:
                 str_id = "{:03}".format(id)
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
             if 1 <= id <= 151:
                 region = 'Kanto'
             elif 152 <= id <= 251:
@@ -650,6 +665,8 @@ class SenpaiGacha(commands.Cog):
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
+            elif 810 <= id <= 890:
+                region = 'Galar'
             elif id >= 10000:
                 region = 'Special'
             dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(poke_id[0]), name, poke_id[2], region), color=0xffb6c1)
@@ -664,7 +681,7 @@ class SenpaiGacha(commands.Cog):
                 url = SPECIAL_POKEMON[id]
             else:
                 str_id = "{:03}".format(id)
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
             if 1 <= id <= 151:
                 region = 'Kanto'
             elif 152 <= id <= 251:
@@ -679,6 +696,8 @@ class SenpaiGacha(commands.Cog):
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
+            elif 810 <= id <= 890:
+                region = 'Galar'
             elif id >= 10000:
                 region = 'Special'
             dex = discord.Embed(title="ID: {}\nName: {}\nBST: {}\nRegion: {}".format(str(name), poke_name[0], poke_name[1], region), color=0xffb6c1)
@@ -898,7 +917,7 @@ class SenpaiGacha(commands.Cog):
     #         database_helper.add_inventory(user_id, gacha[1])
     #         embed = discord.Embed(title=title, description=description, color=0x9370db)
     #         str_id = "{:03}".format(gacha[1])
-    #         url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+    #         url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
     #         embed.set_thumbnail(url=url)
     #         await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
 
@@ -1044,7 +1063,7 @@ class SenpaiGacha(commands.Cog):
                 url = SPECIAL_POKEMON[gacha[1]]
             else:
                 str_id = "{:03}".format(gacha[1])
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
             embed.set_thumbnail(url=url)
             await context.send("{} opened a {} and got a {}!".format(username, ball_str, gacha[0]), embed=embed)
             database_helper.increment_stat(user_id, "opens")
@@ -1204,8 +1223,8 @@ class SenpaiGacha(commands.Cog):
         (x, y) = (0, 0)
         for pokemon in display:
             pokemon_id = pokemon[0]
-            if pokemon_id >= 10000 or pokemon_id in [808, 809]:
-                if pokemon_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015, 10021]:
+            if pokemon_id >= 10000 or 808 <= pokemon_id <= 890:
+                if pokemon_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023] or 808 <= pokemon_id <= 890:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                     img = img.resize((100, 100))
@@ -1355,10 +1374,12 @@ class SenpaiGacha(commands.Cog):
             region = KALOS
         elif region == 'alola':
             region = ALOLA
+        elif region == 'galar':
+            region = GALAR
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'special')")
             return
         if user_id is None:
             user_id = context.message.author.id
@@ -1438,8 +1459,10 @@ class SenpaiGacha(commands.Cog):
             region = KALOS
         elif region == 'alola':
             region = ALOLA
+        elif region == 'galar':
+            region = GALAR
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', None)")
             return
 
         if rarity == 'all':
@@ -1498,8 +1521,10 @@ class SenpaiGacha(commands.Cog):
             region = KALOS
         elif region == 'alola':
             region = ALOLA
+        elif region == 'galar':
+            region = GALAR
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', None)")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', None)")
             return
 
         if rarity == 'all':
@@ -1800,10 +1825,12 @@ class SenpaiGacha(commands.Cog):
             region = KALOS
         elif region == 'alola':
             region = ALOLA
+        elif region == 'galar':
+            region = GALAR
         elif region == 'special':
             region = SPECIAL
         elif region is not None:
-            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'special')")
+            await context.send("Region must be in ('kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'special')")
             return
         units = database_helper.get_units(region)
         if region[0] == 'Special':
@@ -2279,8 +2306,8 @@ class SenpaiGacha(commands.Cog):
         background = Image.open('images/battle_background.png', 'r').resize((850, 450))
 
         # draw pokemon
-        if poke1_id >= 10000 or poke1_id in [808, 809]:
-            if poke1_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015, 10021]:
+        if poke1_id >= 10000 or 808 <= poke1_id <= 890:
+            if poke1_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023] or 808 <= poke1_id <= 890:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2295,8 +2322,8 @@ class SenpaiGacha(commands.Cog):
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
-        if poke2_id >= 10000 or poke2_id in [808, 809]:
-            if poke2_id in [10000, 10006, 10007, 10008, 808, 809, 10014, 10015, 10021]:
+        if poke2_id >= 10000 or 808 <= poke2_id <= 890:
+            if poke2_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023] or 808 <= poke2_id <= 890:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2829,14 +2856,14 @@ class SenpaiGacha(commands.Cog):
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 0 <= datetime.datetime.now().hour < 8: # generate quizzes only from 8am - 12am
-                r = random.randint(1, 809) # generate random pokemon
+                r = random.randint(1, 890) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 if r in (29, 32):
                     pokemon = 'Nidoran'
                 elif r == 669:
                     pokemon = 'Flabebe'
                 str_id = "{:03}".format(r)
-                url = "https://www.serebii.net/sunmoon/pokemon/{}.png".format(str_id)
+                url = "https://www.serebii.net/swordshield/pokemon/{}.png".format(str_id)
                 quiz = discord.Embed(title="Who's That Pokémon?", color=0x00bfff)
                 quiz.set_image(url=url)
                 await channel.send(embed=quiz)
