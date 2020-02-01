@@ -65,6 +65,12 @@ class SenpaiSpoiler(commands.Cog):
         msg = await context.send("https://66.media.tumblr.com/3ae6d77f7c042bedbb33dc21ab2ad551/tumblr_n2peapGD931rzz2jbo1_400.gif")
         if msg:
             self.messages.add(msg)
+            
+    @commands.group(invoke_without_command=True)
+    async def exodia(self, context):
+        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish,https://gfycat.com/accurateconcernedcuckoo,https://gfycat.com/givingshowyamericanalligator,https://gfycat.com/raggedfavorableaurochs||")
+        if msg:
+            self.messages.add(msg)
 
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
