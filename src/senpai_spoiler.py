@@ -68,7 +68,7 @@ class SenpaiSpoiler(commands.Cog):
             
     @commands.group(invoke_without_command=True)
     async def exodia(self, context):
-        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish https://gfycat.com/accurateconcernedcuckoo https://gfycat.com/givingshowyamericanalligator https://gfycat.com/raggedfavorableaurochs||")
+        msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish https://gfycat.com/accurateconcernedcuckoo https://gfycat.com/givingshowyamericanalligator https://gfycat.com/raggedfavorableaurochs\n||")
         if msg:
             self.messages.add(msg)
 
