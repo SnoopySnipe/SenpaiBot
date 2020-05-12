@@ -2888,8 +2888,8 @@ class SenpaiGacha(commands.Cog):
                     streak = streaker[1]
                     shutdown = 0
                     if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
-                        shutdown = 10 * (streak - 1)
-                    gain = min(20 + 10 * curr_streak, 60) + shutdown
+                        shutdown = 15 * (streak - 1)
+                    gain = min(30 + 15 * curr_streak, 90) + shutdown
                     database_helper.adjust_points(msg.author.id, gain)
                     balance = database_helper.get_pikapoints(msg.author.id)
                     database_helper.update_streak(msg.author.id)
@@ -2927,7 +2927,7 @@ class SenpaiGacha(commands.Cog):
                         await channel.send(promote)
                     if new_streak == 5:
                         database_helper.increment_stat(msg.author.id, "streaks")
-                    if shutdown >= 40:
+                    if shutdown >= 60:
                         database_helper.increment_stat(msg.author.id, "shutdowns")
                     if database_helper.get_trainer_team(msg.author.id) is not None and new_streak > database_helper.get_trainer_team(msg.author.id)[5]:
                         database_helper.update_high_streak(msg.author.id, new_streak)
