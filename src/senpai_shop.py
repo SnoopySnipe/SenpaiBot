@@ -2500,7 +2500,7 @@ class SenpaiGacha(commands.Cog):
 
         if ":electrocution:" in team_emoji and ":lensflare:" not in team_emoji and ":hyperjoy:" not in team_emoji:
             team = 'Team Electrocution'
-            thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+            thumb = "https://cdn.discordapp.com/emojis/674064096664223745.png?v=1"
         elif ":electrocution:" not in team_emoji and ":lensflare:" in team_emoji and ":hyperjoy:" not in team_emoji:
             team = 'Team Lensflare'
             thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
@@ -2536,20 +2536,20 @@ class SenpaiGacha(commands.Cog):
         title = "Team Switch"
         description = "Which team would you like to switch to?\n\n**Remember, switching teams causes you to lose all your progress and costs {} pikapoints!**".format(COST)
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
-        await msg.add_reaction(':electrocution:496081109558362134')
+        await msg.add_reaction(':electrocution:674064096664223745')
         await msg.add_reaction(':lensflare:496138997391687710')
         await msg.add_reaction(':hyperjoy:431882995289554978')
 
         def check(reaction, user):
-            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution') and reaction.emoji.id in (496081109558362134, 496138997391687710, 431882995289554978)
+            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution') and reaction.emoji.id in (674064096664223745, 496138997391687710, 431882995289554978)
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Team switch timed out...")
         else:
-            if reaction.emoji.name == 'electrocution' and reaction.emoji.id == 496081109558362134:
+            if reaction.emoji.name == 'electrocution' and reaction.emoji.id == 674064096664223745:
                 team = 'Team Electrocution'
-                thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+                thumb = "https://cdn.discordapp.com/emojis/674064096664223745.png?v=1"
             elif reaction.emoji.name == 'lensflare' and reaction.emoji.id == 496138997391687710:
                 team = 'Team Lensflare'
                 thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
@@ -2599,19 +2599,19 @@ class SenpaiGacha(commands.Cog):
         title = "Team Invitation"
         description = "You have been invited by 3 different teams to join their ranks - Team Electrocution, Team Lensflare, and Team Hyperjoy! However, you can only choose one.\n\n**Choose wisely - if you switch teams in the future, you will lose all your progress and will be charged pikapoints!**"
         msg = await context.send(embed=discord.Embed(title=title, description=description, color=0x4b0082))
-        await msg.add_reaction(':electrocution:496081109558362134')
+        await msg.add_reaction(':electrocution:674064096664223745')
         await msg.add_reaction(':lensflare:496138997391687710')
         await msg.add_reaction(':hyperjoy:431882995289554978')
         def check(reaction, user):
-            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution') and reaction.emoji.id in (496081109558362134, 496138997391687710, 431882995289554978)
+            return user == context.message.author and reaction.emoji.name in ('lensflare', 'hyperjoy', 'electrocution') and reaction.emoji.id in (674064096664223745, 496138997391687710, 431882995289554978)
         try:
             reaction, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             await context.send("Team invitation timed out...")
         else:
-            if reaction.emoji.name == 'electrocution' and reaction.emoji.id == 496081109558362134:
+            if reaction.emoji.name == 'electrocution' and reaction.emoji.id == 674064096664223745:
                 team = 'Team Electrocution'
-                thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+                thumb = "https://cdn.discordapp.com/emojis/674064096664223745.png?v=1"
             elif reaction.emoji.name == 'lensflare' and reaction.emoji.id == 496138997391687710:
                 team = 'Team Lensflare'
                 thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
@@ -2652,7 +2652,7 @@ class SenpaiGacha(commands.Cog):
         title = 'Prestige Confirmation'
         description = 'Are you sure you want to prestige? Your rank will be reset but you get to flex on those below you.'
         if trainer_team == 'Team Electrocution':
-            thumb = "https://cdn.discordapp.com/emojis/496081109558362134.png?v=1"
+            thumb = "https://cdn.discordapp.com/emojis/674064096664223745.png?v=1"
         elif trainer_team == 'Team Lensflare':
             thumb = 'https://cdn.discordapp.com/emojis/496138997391687710.png?v=1'
         elif trainer_team == 'Team Hyperjoy':
