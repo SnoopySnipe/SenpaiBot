@@ -71,6 +71,12 @@ class SenpaiSpoiler(commands.Cog):
         msg = await context.send("||https://gfycat.com/MeagerThreadbareDogfish https://gfycat.com/accurateconcernedcuckoo https://gfycat.com/givingshowyamericanalligator https://gfycat.com/raggedfavorableaurochs\n||")
         if msg:
             self.messages.add(msg)
-
+            
+    @commands.group(invoke_without_command=True)
+    async def nut(self, context):
+        msg = await context.send("https://media.discordapp.net/attachments/218898501805801472/717809265586339931/daniel.png?width=789&height=789")
+        if msg:
+            self.messages.add(msg)
+            
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
