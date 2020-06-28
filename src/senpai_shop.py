@@ -19,7 +19,7 @@ SINNOH = ('Sinnoh', 387, 493)
 UNOVA = ('Unova', 494, 649)
 KALOS = ('Kalos', 650, 721)
 ALOLA = ('Alola', 722, 809)
-GALAR = ('Galar', 810, 890)
+GALAR = ('Galar', 810, 893)
 SPECIAL = ('Special', 10000, 11000)
 REGIONS = [KANTO, JOHTO, HOENN, SINNOH, UNOVA, KALOS, ALOLA, GALAR]
 QUIZ_CHANNEL_ID = 542441381210226748 #349942469804425216
@@ -53,7 +53,8 @@ SPECIAL_POKEMON = {
     10023: 'https://www.serebii.net/swordshield/pokemon/889-c.png',
     10024: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2019-07/armored-mewtwo.png',
     10025: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2018-07/squirtleSun.png',
-    10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png'
+    10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png',
+    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png'
 }
 
 SPRITE_MAPPING = {
@@ -85,7 +86,8 @@ SPRITE_MAPPING = {
     10023: 'https://www.serebii.net/swordshield/pokemon/889-c.png',
     10024: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2019-07/armored-mewtwo.png',
     10025: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2018-07/squirtleSun.png',
-    10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png'
+    10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png',
+    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png'
 }
 
 for i in range(GALAR[1], GALAR[2] + 1):
@@ -671,7 +673,7 @@ class SenpaiGacha(commands.Cog):
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
-            elif 810 <= id <= 890:
+            elif 810 <= id <= 893:
                 region = 'Galar'
             elif id >= 10000:
                 region = 'Special'
@@ -702,7 +704,7 @@ class SenpaiGacha(commands.Cog):
                 region = 'Kalos'
             elif 722 <= id <= 809:
                 region = 'Alola'
-            elif 810 <= id <= 890:
+            elif 810 <= id <= 893:
                 region = 'Galar'
             elif id >= 10000:
                 region = 'Special'
@@ -1229,8 +1231,8 @@ class SenpaiGacha(commands.Cog):
         (x, y) = (0, 0)
         for pokemon in display:
             pokemon_id = pokemon[0]
-            if pokemon_id >= 10000 or 808 <= pokemon_id <= 890:
-                if pokemon_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026] or 808 <= pokemon_id <= 890:
+            if pokemon_id >= 10000 or 808 <= pokemon_id <= 893:
+                if pokemon_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026, 10027] or 808 <= pokemon_id <= 893:
                     response = requests.get(SPRITE_MAPPING[pokemon_id])
                     img = Image.open(BytesIO(response.content)).convert("RGBA")
                     img = img.resize((100, 100))
@@ -2312,8 +2314,8 @@ class SenpaiGacha(commands.Cog):
         background = Image.open('images/battle_background.png', 'r').resize((850, 450))
 
         # draw pokemon
-        if poke1_id >= 10000 or 808 <= poke1_id <= 890:
-            if poke1_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026] or 808 <= poke1_id <= 890:
+        if poke1_id >= 10000 or 808 <= poke1_id <= 893:
+            if poke1_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026, 10027] or 808 <= poke1_id <= 893:
                 response = requests.get(SPRITE_MAPPING[poke1_id])
                 img = Image.open(BytesIO(response.content)).transpose(Image.FLIP_LEFT_RIGHT).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2328,8 +2330,8 @@ class SenpaiGacha(commands.Cog):
         coordinates = (50, 225)
         background.paste(img, coordinates, img)
 
-        if poke2_id >= 10000 or 808 <= poke2_id <= 890:
-            if poke2_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026] or 808 <= poke2_id <= 890:
+        if poke2_id >= 10000 or 808 <= poke2_id <= 893:
+            if poke2_id in [10000, 10006, 10007, 10008, 10014, 10015, 10021, 10022, 10023, 10024, 10025, 10026, 10027] or 808 <= poke2_id <= 893:
                 response = requests.get(SPRITE_MAPPING[poke2_id])
                 img = Image.open(BytesIO(response.content)).convert("RGBA")
                 img = img.resize((150, 150))
@@ -2862,7 +2864,7 @@ class SenpaiGacha(commands.Cog):
                     await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 0 <= datetime.datetime.now().hour < 8: # generate quizzes only from 8am - 12am
-                r = random.randint(1, 890) # generate random pokemon
+                r = random.randint(1, 893) # generate random pokemon
                 pokemon = database_helper.get_pokemon_name(r)[0]
                 if r in (29, 32):
                     pokemon = 'Nidoran'
