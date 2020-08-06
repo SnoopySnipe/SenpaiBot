@@ -7,6 +7,7 @@ from discord.ext import commands
 
 NEWS_CHANNEL_ID = 568068520965963790
 TEST_CHANNEL_ID = 601616446694621235
+ANN_CHANNNEL_ID = 655847890169626674
 SNOOPY_ID = 103634047929962496
 SFLARE_ID = 225081018728710144
 
@@ -22,12 +23,12 @@ class SenpaiBirthdays(commands.Cog):
     async def on_ready(self):
         birthday_db_helper.initialize()
         self.bot.loop.create_task(self.background_birthdays())
-        print("task created")
+        #print("task created")
 
     async def background_birthdays(self):
         await self.bot.wait_until_ready()
         #channel = self.bot.get_channel(NEWS_CHANNEL_ID)
-        channel = self.bot.get_channel(NEWS_CHANNEL_ID)
+        channel = self.bot.get_channel(ANN_CHANNEL_ID)
         if(channel is None):
             return
         while True:
