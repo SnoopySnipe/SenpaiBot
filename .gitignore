@@ -2,3 +2,6 @@ __pycache__/
 *~
 *.sh
 .idea/*
+.DS_Store
+test_run.sh
+578082133646639126.db

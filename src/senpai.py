@@ -164,6 +164,8 @@ modules = ["senpai_fortnite", "senpai_fortune",
            "senpai_imageboards", "senpai_player", "senpai_warframe",
            "senpai_8ball", "senpai_events", "senpai_yugioh", "senpai_polls", "senpai_shop", "senpai_spoiler"]
 
+#modules = ["senpai_birthdays"]
+
 if (__name__ == "__main__"):
 
     # amount of arguments
