@@ -46,7 +46,7 @@ def list():
     if(conn is not None):
         try:
             c = conn.cursor()
-            sql_all_birthday="""SELECT * FROM birthdays ORDER BY mm DESC, dd;"""
+            sql_all_birthday="""SELECT * FROM birthdays ORDER BY mm, dd;"""
             c.execute(sql_all_birthday)
             return c.fetchall()
         except Error as e:
