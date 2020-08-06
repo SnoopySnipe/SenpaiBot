@@ -37,7 +37,7 @@ class SenpaiBirthdays(commands.Cog):
                 dd = datetime.datetime.now().day
                 list = birthday_db_helper.get_today_birthdays(mm, dd)
 
-                title = "HAPPY BIRTHDAY TO:"
+                title = "🎊HAPPY BIRTHDAY TO🎊"
 
                 description = ""
                 for entry in list:
