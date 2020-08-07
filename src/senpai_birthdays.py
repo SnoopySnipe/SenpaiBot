@@ -36,17 +36,17 @@ class SenpaiBirthdays(commands.Cog):
                 mm = datetime.datetime.now().month
                 dd = datetime.datetime.now().day
                 list = birthday_db_helper.get_today_birthdays(mm, dd)
+                if list:
+                    title = "🎊HAPPY BIRTHDAY TO🎊"
 
-                title = "🎊HAPPY BIRTHDAY TO🎊"
-
-                description = ""
-                for entry in list:
-                    username = self.bot.get_user(entry[0]).name
-                    description += "{}".format(username)
-                embed = discord.Embed(title=title, description=description, color=0xffffff)
-                msg = await channel.send(embed=embed)
-                if msg:
-                    self.messages.add(msg)
+                    description = ""
+                    for entry in list:
+                        username = self.bot.get_user(entry[0]).name
+                        description += "{}".format(username)
+                    embed = discord.Embed(title=title, description=description, color=0xffffff)
+                    msg = await channel.send(embed=embed)
+                    if msg:
+                        self.messages.add(msg)
             await asyncio.sleep(3600)
 
     async def get_birthdays():
