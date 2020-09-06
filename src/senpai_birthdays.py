@@ -32,7 +32,7 @@ class SenpaiBirthdays(commands.Cog):
         if(channel is None):
             return
         while True:
-            if datetime.datetime.now().hour == 7:
+            if datetime.datetime.now().hour == 0:
                 mm = datetime.datetime.now().month
                 dd = datetime.datetime.now().day
                 list = birthday_db_helper.get_today_birthdays(mm, dd)
