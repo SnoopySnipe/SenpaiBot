@@ -78,5 +78,11 @@ class SenpaiSpoiler(commands.Cog):
         if msg:
             self.messages.add(msg)
             
+    @commands.group(invoke_without_command=True)
+    async def elaine(self, context):
+        msg = await context.send("https://cdn.discordapp.com/attachments/218898501805801472/757808013452247050/elaine.gif")
+        if msg:
+            self.messages.add(msg)
+            
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
