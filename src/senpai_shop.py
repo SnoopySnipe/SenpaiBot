@@ -54,7 +54,16 @@ SPECIAL_POKEMON = {
     10024: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2019-07/armored-mewtwo.png',
     10025: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2018-07/squirtleSun.png',
     10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png',
-    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png'
+    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png',
+    10028: 'https://www.serebii.net/swordshield/pokemon/130-m.png',
+    10029: 'https://www.serebii.net/swordshield/pokemon/142-m.png',
+    10030: 'https://www.serebii.net/swordshield/pokemon/229-m.png',
+    10031: 'https://www.serebii.net/swordshield/pokemon/248-m.png',
+    10032: 'https://www.serebii.net/swordshield/pokemon/303-m.png',
+    10033: 'https://www.serebii.net/swordshield/pokemon/445-m.png',
+    10034: 'https://www.serebii.net/swordshield/pokemon/015-m.png',
+    10035: 'https://www.serebii.net/swordshield/pokemon/319-m.png',
+    10036: 'https://www.serebii.net/swordshield/pokemon/362-m.png',
 }
 
 SPRITE_MAPPING = {
@@ -87,7 +96,16 @@ SPRITE_MAPPING = {
     10024: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2019-07/armored-mewtwo.png',
     10025: 'https://gamepress.gg/pokemongo/sites/pokemongo/files/2018-07/squirtleSun.png',
     10026: 'https://www.serebii.net/swordshield/pokemon/718-c.png',
-    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png'
+    10027: 'https://www.serebii.net/swordshield/pokemon/892-r.png',
+    10028: 10041,
+    10029: 10042,
+    10030: 10048,
+    10031: 10049,
+    10032: 10052,
+    10033: 10058,
+    10034: 10074,
+    10035: 10070,
+    10036: 10090,
 }
 
 for i in range(GALAR[1], GALAR[2] + 1):
