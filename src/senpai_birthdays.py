@@ -103,7 +103,6 @@ class SenpaiBirthdays(commands.Cog):
         # description += "this"
         description = "Person | Month | Day\n\n"
         for entry in list:
-            print(entry[0])
             username = self.bot.get_user(entry[0]).name
             description += "{}: {}/{}\n".format(username, entry[1], entry[2])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
