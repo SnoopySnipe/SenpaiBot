@@ -1959,6 +1959,7 @@ class SenpaiGacha(commands.Cog):
             await context.send("The jackpot is currently empty!")
             return
         for contributor in contributors:
+            print(contributor[0])
             if context.message.author == self.bot.get_user(contributor[0]):
                 description = description + "\n`" + self.bot.get_user(contributor[0]).name + " - {} pikapoints`".format(contributor[1])
             else:
