@@ -891,6 +891,11 @@
 891,Kubfu,6,0,385
 892,Urshifu,6,0,550
 893,Zarude,7,0,600
+894,Regieleki,6,0,580
+895,Regidrago,6,0,580
+896,Glastrier,6,0,580
+897,Spectrier,6,0,580
+898,Calyrex,6,0,500
 10000,Flying Pikachu,8,0,420
 10001,Mega Rayquaza,8,0,780
 10002,Primal Kyogre,8,0,770
@@ -928,3 +933,5 @@
 10034,Mega Beedrill,8,0,495
 10035,Mega Sharpedo,8,0,560
 10036,Mega Glalie,8,0,580
+10037,Ice Rider Calyrex,8,0,680
+10038,Shadow Rider Calyrex,8,0,680
