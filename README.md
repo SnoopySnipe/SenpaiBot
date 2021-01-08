@@ -6,7 +6,7 @@ Our bot for our Discord server.
 <img src="https://github.com/SnoopySnipe/SenpaiBot/raw/master/senpai_bot.png" width="350">
 </p>
 
-Credits: art by [Sen_Yomi](https://www.instagram.com/sen_yomi/?hl=en)
+Credits: art by [mangagirl987](https://www.instagram.com/mangagirl987/)
 
 ## Dependencies
  - python3.6+
