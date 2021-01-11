@@ -84,5 +84,11 @@ class SenpaiSpoiler(commands.Cog):
         if msg:
             self.messages.add(msg)
             
+    @commands.group(invoke_without_command=True)
+    async def wes(self, context):
+        msg = await context.send("https://cdn.discordapp.com/attachments/218898501805801472/798253142289940520/myth_of_consensual_league_of_legends.png")
+        if msg:
+            self.messages.add(msg)
+            
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
