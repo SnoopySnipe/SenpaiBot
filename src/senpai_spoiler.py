@@ -90,5 +90,11 @@ class SenpaiSpoiler(commands.Cog):
         if msg:
             self.messages.add(msg)
             
+    @commands.group(invoke_without_command=True)
+    async def voodoo(self, context):
+        msg = await context.send("https://screenshots.gamebanana.com/img/ss/guis/50f91f6c77a21.jpg")
+        if msg:
+            self.messages.add(msg)        
+            
 def setup(bot):
     bot.add_cog(SenpaiSpoiler())
