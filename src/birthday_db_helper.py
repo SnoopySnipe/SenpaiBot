@@ -8,7 +8,7 @@ def initialize():
     try:
         c = conn.cursor()
         c.execute("""CREATE TABLE IF NOT EXISTS birthdays (
-                                            id integer PRIMARY KEY,
+                                            id CHAR(50) PRIMARY KEY,
                                             mm integer DEFAULT 0,
                                             dd integer DEFAULT 0)""")
     except Error as e:
