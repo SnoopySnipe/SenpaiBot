@@ -41,7 +41,11 @@ class SenpaiBirthdays(commands.Cog):
 
                     description = ""
                     for entry in list:
-                        username = self.bot.get_user(entry[0]).name
+                        #username = self.bot.get_user(entry[0]).name
+                        if (self.bot.get_user(entry[0]) is None):
+                            username = entry[0]
+                        else:
+                            username = self.bot.get_user(entry[0]).name
                         description += "{}".format(username)
                     embed = discord.Embed(title=title, description=description, color=0xffffff)
                     msg = await channel.send(embed=embed)
