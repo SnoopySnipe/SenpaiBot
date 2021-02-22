@@ -44,7 +44,7 @@ class SenpaiBirthdays(commands.Cog):
                         #username = self.bot.get_user(entry[0]).name
                         try:
                             username = self.bot.get_user(entry[0]).name
-                        except AttributeError:
+                        except:
                             username = entry[0]
                         description += "{}".format(username)
                     embed = discord.Embed(title=title, description=description, color=0xffffff)
