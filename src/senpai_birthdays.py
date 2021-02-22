@@ -42,10 +42,11 @@ class SenpaiBirthdays(commands.Cog):
                     description = ""
                     for entry in list:
                         #username = self.bot.get_user(entry[0]).name
-                        try:
-                            username = self.bot.get_user(entry[0]).name
-                        except:
-                            username = entry[0]
+#                         try:
+#                             username = self.bot.get_user(entry[0]).name
+#                         except:
+#                             username = entry[0]
+                        username = entry[0]
                         description += "{}".format(username)
                     embed = discord.Embed(title=title, description=description, color=0xffffff)
                     msg = await channel.send(embed=embed)
@@ -108,10 +109,11 @@ class SenpaiBirthdays(commands.Cog):
         description = "Person | Month | Day\n\n"
         for entry in list:
             #username = self.bot.get_user(entry[0]).name
-            try:
-                username = self.bot.get_user(entry[0]).name
-            except:
-                username = entry[0]
+#             try:
+#                 username = self.bot.get_user(entry[0]).name
+#             except:
+#                 username = entry[0]
+            username = entry[0]
             description += "{}: {}/{}\n".format(username, entry[1], entry[2])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
         #channel = self.bot.get_channel(TEST_CHANNEL_ID)
