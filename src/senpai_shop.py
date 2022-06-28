@@ -159,7 +159,7 @@ class SenpaiGacha(commands.Cog):
     async def balance(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(int(user_id)).name
+        username = (await self.bot.fetch_user(int(user_id))).name
         balance = database_helper.get_pikapoints(user_id)
         if (balance is None):
             await context.send("{} has no pikapoints!".format(username))
@@ -170,7 +170,7 @@ class SenpaiGacha(commands.Cog):
     async def pity(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(int(user_id)).name
+        username = (await self.bot.fetch_user(int(user_id))).name
         pity = database_helper.get_pity(user_id)
         title = "{}'s Pity Rates: \n".format(username)
         if pity is None:
@@ -328,7 +328,7 @@ class SenpaiGacha(commands.Cog):
     async def fullroll(self, context, region=None, no_rolls=None):
         PRICE = 30
         user_id = context.message.author.id
-        user = self.bot.get_user(user_id)
+        user = await self.bot.fetch_user(user_id)
         username = user.name
         database_helper.adjust_pity(user_id)
         details = database_helper.get_user_details(user_id)
@@ -509,7 +509,7 @@ class SenpaiGacha(commands.Cog):
                             database_helper.adjust_points(contributor[0], payout)
                             database_helper.add_item(contributor[0], ball_id)
                             database_helper.increment_stat(contributor[0], "jackpots")
-                            msg = msg + '\n' + self.bot.get_user(contributor[0]).mention
+                            msg = msg + '\n' + (await self.bot.fetch_user(contributor[0])).mention
                     database_helper.update_jackpot(user_id, True)
                     await context.send(msg)
             balance = database_helper.get_pikapoints(user_id)
@@ -523,7 +523,7 @@ class SenpaiGacha(commands.Cog):
     async def roll(self, context, region=None):
         PRICE = 30
         user_id = context.message.author.id
-        user = self.bot.get_user(user_id)
+        user = await self.bot.fetch_user(user_id)
         username = user.name
         database_helper.adjust_pity(user_id)
         details = database_helper.get_user_details(user_id)
@@ -661,7 +661,7 @@ class SenpaiGacha(commands.Cog):
                         database_helper.adjust_points(contributor[0], payout)
                         database_helper.add_item(contributor[0], ball_id)
                         database_helper.increment_stat(contributor[0], "jackpots")
-                        msg = msg + '\n' + self.bot.get_user(contributor[0]).mention
+                        msg = msg + '\n' + (await self.bot.fetch_user(contributor[0])).mention
                 database_helper.update_jackpot(user_id, True)
                 await context.send(msg)
         else:
@@ -778,8 +778,8 @@ class SenpaiGacha(commands.Cog):
             await context.send("Pokémon's rarities must match!")
             return
 
-        user1 = self.bot.get_user(int(id1))
-        user2 = self.bot.get_user(int(id2))
+        user1 = await self.bot.fetch_user(int(id1))
+        user2 = await self.bot.fetch_user(int(id2))
         username1 = user1.name
         username2 = user2.name
 
@@ -987,7 +987,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(user_id)
+        user = await self.bot.fetch_user(user_id)
         username = user.name
         if not database_helper.check_bag(user_id, ball_id):
             await context.send("You do not have that item!")
@@ -1108,7 +1108,7 @@ class SenpaiGacha(commands.Cog):
         # img = Image.open('images/crate.png', 'r')
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(int(user_id)).name
+        username = (await self.bot.fetch_user(int(user_id))).name
         bag = database_helper.get_bag(user_id)
         if len(bag) == 0:
             await context.send("{} has no items in their bag!".format(username))
@@ -1208,7 +1208,7 @@ class SenpaiGacha(commands.Cog):
         if user_id is None or user_id == 'self':
             user_id = context.message.author.id
 
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
         box_list = database_helper.get_box(user_id)
 
@@ -1413,7 +1413,7 @@ class SenpaiGacha(commands.Cog):
             return
         if user_id is None:
             user_id = context.message.author.id
-        username = self.bot.get_user(int(user_id)).name
+        username = (await self.bot.fetch_user(int(user_id))).name
         title = "{}'s {} Party: \n".format(username, region[0])
         description = ""
         inventory = database_helper.get_inventory(user_id, region)
@@ -1711,7 +1711,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
 
         favs = database_helper.get_favs(user_id)
@@ -1732,7 +1732,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
 
         if name == 'all':
@@ -1760,7 +1760,7 @@ class SenpaiGacha(commands.Cog):
     async def favs(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
 
         favs = database_helper.get_favs(user_id)
@@ -1963,10 +1963,10 @@ class SenpaiGacha(commands.Cog):
             await context.send("The jackpot is currently empty!")
             return
         for contributor in contributors:
-            if context.message.author == self.bot.get_user(contributor[0]):
-                description = description + "\n`" + self.bot.get_user(contributor[0]).name + " - {} pikapoints`".format(contributor[1])
+            if context.message.author == await self.bot.fetch_user(contributor[0]):
+                description = description + "\n`" + (await self.bot.fetch_user(contributor[0])).name + " - {} pikapoints`".format(contributor[1])
             else:
-                description = description + "\n" + self.bot.get_user(contributor[0]).name + " - {} pikapoints".format(
+                description = description + "\n" + (await self.bot.fetch_user(contributor[0])).name + " - {} pikapoints".format(
                     contributor[1])
         jackpot_sum = database_helper.get_jackpot(True)[0]
         no_contributors = len(database_helper.get_jackpot_rewards())
@@ -1982,7 +1982,7 @@ class SenpaiGacha(commands.Cog):
     async def bank(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
         balance = database_helper.get_savings(user_id)
         if (balance is None):
@@ -1994,7 +1994,7 @@ class SenpaiGacha(commands.Cog):
     async def points(self, context, user_id=None):
         if user_id is None:
             user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
         balance = database_helper.get_pikapoints(user_id)
         savings = database_helper.get_savings(user_id)
@@ -2019,7 +2019,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
 
         balance = database_helper.get_pikapoints(user_id)
@@ -2059,7 +2059,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(int(user_id))
+        user = await self.bot.fetch_user(int(user_id))
         username = user.name
 
         balance = database_helper.get_savings(user_id)
@@ -2117,12 +2117,12 @@ class SenpaiGacha(commands.Cog):
             return
 
         id1 = int(context.message.author.id)
-        user1 = self.bot.get_user(id1)
+        user1 = await self.bot.fetch_user(id1)
         username1 = user1.name
 
         try:
             id2 = int(id2)
-            user2 = self.bot.get_user(id2)
+            user2 = await self.bot.fetch_user(id2)
             username2 = user2.name
         except:
             await context.send("Player 2's ID is invalid!")
@@ -2443,7 +2443,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = context.message.author.id
-        user = self.bot.get_user(user_id)
+        user = await self.bot.fetch_user(user_id)
         username = user.name
 
         result = database_helper.register(user_id, name)
@@ -2469,7 +2469,7 @@ class SenpaiGacha(commands.Cog):
             return
 
         user_id = trainer[0]
-        user = self.bot.get_user(user_id)
+        user = await self.bot.fetch_user(user_id)
         username = user.name
 
         trainer_team = trainer[19]
@@ -2493,7 +2493,7 @@ class SenpaiGacha(commands.Cog):
         description += "**__Battle Stats__**\n"
         description += "Total Battles: {}\nTotal Wins: {}\nUnderdog Wins: {}\nHigh Stake Wins: {}\nTotal Losses: {}\nNever Lucky Losses: {}\nHigh Stake Losses: {}".format(trainer[12], trainer[13], trainer[14], trainer[15], trainer[16], trainer[17], trainer[18])
         embed = discord.Embed(title=title, description=description, color=0xffffff)
-        embed.set_thumbnail(url=self.bot.get_user(trainer[0]).avatar_url)
+        embed.set_thumbnail(url=(await self.bot.fetch_user(trainer[0])).avatar_url)
         await context.send(embed=embed)
 
     @commands.command("trainers")
@@ -2505,7 +2505,7 @@ class SenpaiGacha(commands.Cog):
         title = "All Registered Pokémon Trainers"
         description = ""
         for trainer in trainers:
-            username = self.bot.get_user(trainer[0]).name
+            username = (await self.bot.fetch_user(trainer[0])).name
             trainer_team = trainer[3]
             if trainer[3] != '':
                 trainer_team += ' '
@@ -2883,7 +2883,7 @@ class SenpaiGacha(commands.Cog):
                     display_hour = next_quiz.hour % 12
                     if display_hour == 0:
                         display_hour = 12
-                    await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format(self.bot.get_user(high_streak[0]).name, high_streak[1], display_hour, next_quiz.minute))
+                    await channel.send("{} is on a {}-streak! Next quiz will be at approximately {}:{:02}. Shut them down!".format((await self.bot.fetch_user(high_streak[0])).name, high_streak[1], display_hour, next_quiz.minute))
             await asyncio.sleep(t) # generate quizzes every 10 - 30 minutes
             if not 0 <= datetime.datetime.now().hour < 8: # generate quizzes only from 8am - 12am
                 r = random.randint(1, 898) # generate random pokemon
@@ -2911,7 +2911,7 @@ class SenpaiGacha(commands.Cog):
                     streak_user = streaker[0]
                     streak = streaker[1]
                     shutdown = 0
-                    if self.bot.get_user(int(streak_user)) != msg.author and streak != 1:
+                    if await self.bot.fetch_user(int(streak_user)) != msg.author and streak != 1:
                         shutdown = 15 * (streak - 1)
                     gain = min(30 + 15 * curr_streak, 90) + shutdown
                     database_helper.adjust_points(msg.author.id, gain)
@@ -2920,7 +2920,7 @@ class SenpaiGacha(commands.Cog):
                     new_streak = database_helper.get_streak(msg.author.id)[0]
                     shutdown_msg = ''
                     if shutdown > 0:
-                        shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format(self.bot.get_user(int(streak_user)).name, str(shutdown))
+                        shutdown_msg = 'You shutdown {} for an additional {} pikapoints! '.format((await self.bot.fetch_user(int(streak_user))).name, str(shutdown))
                     ball_msg = ''
                     if new_streak == 5:
                         database_helper.add_item(msg.author.id, 1)

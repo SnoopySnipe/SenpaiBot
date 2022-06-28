@@ -192,9 +192,9 @@ if (__name__ == "__main__"):
         asyncio.get_event_loop().run_until_complete(bot.start(token))
     except KeyboardInterrupt:
         asyncio.get_event_loop().run_until_complete(tally_before_exit())
-        asyncio.get_event_loop().run_until_complete(bot.logout())
+        asyncio.get_event_loop().run_until_complete(bot.close())
         # cancel all tasks lingering
 
     finally:
         asyncio.get_event_loop().run_until_complete(bot.close())
-        asyncio.get_event_loop().run_until_complete(asyncio.gather(*asyncio.Task.all_tasks()))
+        asyncio.get_event_loop().run_until_complete(asyncio.gather(*asyncio.all_tasks()))
